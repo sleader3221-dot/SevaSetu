@@ -1,113 +1,157 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShieldCheck, Zap, Languages } from "lucide-react";
-import Image from "next/image";
+import { 
+  ArrowRight, ShieldCheck, Zap, Languages, Award, 
+  Landmark, FileCheck, CheckCircle2, Search, ExternalLink 
+} from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col bg-white overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-40 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none"></div>
-        <div className="absolute top-0 right-0 -mr-40 -mt-40 w-[600px] h-[600px] rounded-full bg-orange-100/50 blur-3xl opacity-60 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 -ml-40 -mb-40 w-[600px] h-[600px] rounded-full bg-emerald-100/40 blur-3xl opacity-60 pointer-events-none"></div>
-        
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-5xl">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-200 text-orange-700 font-semibold text-sm mb-8">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-            </span>
-            AI-Powered Government Scheme Discovery
+    <main className="min-h-screen flex flex-col bg-slate-50/50 overflow-hidden">
+      
+      {/* Official Hero Section */}
+      <section className="relative pt-16 pb-24 lg:pt-24 lg:pb-32 bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-4xl">
+          
+          {/* Government Initiative Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-800 font-bold text-xs uppercase tracking-wider mb-6">
+            <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+            National Citizen Welfare AI Gateway • Digital India
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-8 leading-tight">
-            Discover Government Schemes <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-500 to-amber-500">
-              You're Eligible For
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-gray-900 mb-6 leading-tight">
+            Discover Government Schemes <br className="hidden sm:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-500 to-amber-600">
+              You Are Statutorily Eligible For
             </span>
           </h1>
           
-          <p className="mt-6 text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Answer a few simple questions and let our AI engine find the perfect government benefits for you out of 700+ central and state schemes.
+          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+            A unified, multi-agent AI navigator cross-referencing your demographic parameters against official central and state welfare programs — verified with real-time statutory guidelines.
           </p>
           
+          {/* Action CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/profile">
-              <Button size="lg" className="h-14 px-8 text-lg font-bold bg-primary hover:bg-orange-600 text-white rounded-xl shadow-xl shadow-orange-200/50 transition-all hover:scale-105">
-                Find My Schemes <ArrowRight className="ml-2 w-5 h-5" />
+              <Button size="lg" className="h-13 px-8 text-base font-bold bg-primary hover:bg-orange-600 text-white rounded-xl shadow-md transition-all">
+                Initiate Eligibility Assessment <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+
+            <Link href="/verify">
+              <Button size="lg" variant="outline" className="h-13 px-7 text-base font-semibold border-gray-300 text-gray-700 hover:bg-gray-50 rounded-xl">
+                <ShieldCheck className="mr-2 w-5 h-5 text-emerald-600" />
+                OCR Document Vault
               </Button>
             </Link>
           </div>
+
+          {/* Trust Guarantees */}
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-12 text-xs text-gray-500 font-medium">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" /> 100% Real Live AWS Cloud Data
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Zero Mock Data Guarantee
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Official DigiLocker & OGD Aligned
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-secondary text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/20">
-            <div className="p-4">
-              <div className="text-4xl font-black text-orange-400 mb-2">700+</div>
-              <div className="text-white/80 font-medium">Government Schemes</div>
+      {/* Official Welfare Metrics Section */}
+      <section className="bg-slate-900 text-white py-12 border-b border-slate-800">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
+            <div className="p-3">
+              <div className="text-3xl sm:text-4xl font-black text-orange-400">30+</div>
+              <div className="text-xs text-slate-300 uppercase tracking-wider font-semibold mt-1">Verified Official Schemes</div>
             </div>
-            <div className="p-4">
-              <div className="text-4xl font-black text-emerald-400 mb-2">₹1 Crore+</div>
-              <div className="text-white/80 font-medium">in Benefits Unlocked</div>
+            <div className="p-3">
+              <div className="text-3xl sm:text-4xl font-black text-emerald-400">₹1.5 Cr+</div>
+              <div className="text-xs text-slate-300 uppercase tracking-wider font-semibold mt-1">Direct Benefit Potential</div>
             </div>
-            <div className="p-4">
-              <div className="text-4xl font-black text-blue-400 mb-2">10</div>
-              <div className="text-white/80 font-medium">Languages Supported</div>
+            <div className="p-3">
+              <div className="text-3xl sm:text-4xl font-black text-blue-400">5 Languages</div>
+              <div className="text-xs text-slate-300 uppercase tracking-wider font-semibold mt-1">Amazon Translate Neural Engine</div>
+            </div>
+            <div className="p-3">
+              <div className="text-3xl sm:text-4xl font-black text-amber-400">Sub-Second</div>
+              <div className="text-xs text-slate-300 uppercase tracking-wider font-semibold mt-1">DynamoDB Cloud Retrieval</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How it Works Section */}
-      <section className="py-24 bg-gray-50">
+      {/* System Methodology / How It Works */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How SevaSetu Works</h2>
-            <p className="text-gray-600">Three simple steps to unlock your benefits</p>
+          <div className="text-center mb-14">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Statutory Welfare Discovery Architecture
+            </h2>
+            <p className="text-gray-500 text-sm mt-2 max-w-xl mx-auto">
+              How SevaSetu delivers accurate, personalized scheme matches without middlemen or fees.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center relative">
-              <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
-                <ShieldCheck className="w-8 h-8" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-2xl border border-gray-200 bg-white hover:border-gray-300 shadow-xs">
+              <div className="w-12 h-12 bg-orange-50 text-primary rounded-xl flex items-center justify-center mb-5 font-bold text-lg">
+                01
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">1. Answer Questions</h3>
-              <p className="text-gray-600">Provide basic details like age, income, and state in our simple wizard.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Demographic Profile Input</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Provide essential socioeconomic metrics (age, state, occupation, income ceiling, social category) through an intuitive 7-step wizard.
+              </p>
             </div>
             
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center relative">
-              <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 -rotate-3">
-                <Zap className="w-8 h-8" />
+            <div className="p-6 rounded-2xl border border-gray-200 bg-white hover:border-gray-300 shadow-xs">
+              <div className="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center mb-5 font-bold text-lg">
+                02
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">2. AI Matches Schemes</h3>
-              <p className="text-gray-600">Our engine instantly cross-references your profile against hundreds of schemes.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Multi-Agent Rule Evaluation</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Deterministic and LLM-powered agents evaluate composite eligibility criteria to calculate exact percentage matches for every central scheme.
+              </p>
             </div>
             
-            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center relative">
-              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-3">
-                <Languages className="w-8 h-8" />
+            <div className="p-6 rounded-2xl border border-gray-200 bg-white hover:border-gray-300 shadow-xs">
+              <div className="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center mb-5 font-bold text-lg">
+                03
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">3. Apply with Guide</h3>
-              <p className="text-gray-600">Get step-by-step application instructions in your preferred language.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Direct Official Application</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Generate your verifiable Digital Citizen Passbook, inspect side-by-side comparison matrices, and apply directly via authentic ministry portals.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12 border-t border-gray-800 mt-auto">
-        <div className="container mx-auto px-4 text-center">
-          <div className="text-2xl font-black text-white mb-4">SevaSetu</div>
-          <p className="text-gray-400 mb-8 max-w-md mx-auto">Bridging the gap between citizens and government benefits through AI.</p>
-          <div className="flex justify-center items-center gap-4 text-sm text-gray-500 font-medium">
-            <span>Built with AWS</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
-            <span>Next.js</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
-            <span>Tailwind</span>
+      {/* Official Disclaimer & Footer */}
+      <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-auto text-xs">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-slate-800">
+            <div>
+              <div className="text-lg font-black text-white">SevaSetu (सेवासेतु)</div>
+              <p className="text-slate-400 mt-1 max-w-md">
+                National Citizen Welfare AI Navigator. Built on Amazon Web Services for the Bharat Builds Tour Hackathon 2026.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4 text-xs font-semibold text-slate-300">
+              <Link href="/profile" className="hover:text-white">Scheme Finder</Link>
+              <Link href="/dashboard" className="hover:text-white">Citizen Dashboard</Link>
+              <Link href="/verify" className="hover:text-white">OCR Vault</Link>
+              <a href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white">CPGRAMS Grievance</a>
+            </div>
+          </div>
+          
+          <div className="pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-slate-500">
+            <p>© 2026 SevaSetu • Open Government Data Alignment • Non-commercial Public Service Platform</p>
+            <p>Infrastructure: AWS Lambda, DynamoDB, Textract, Polly, Translate, Amplify</p>
           </div>
         </div>
       </footer>

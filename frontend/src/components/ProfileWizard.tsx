@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, ChevronRight, ChevronLeft, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import confetti from "canvas-confetti";
 
 const STATES = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", 
@@ -53,13 +52,6 @@ export default function ProfileWizard() {
   const prevStep = () => { if (step > 1) setStep(step - 1); };
 
   const submit = () => {
-    try {
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.5 }
-      });
-    } catch (e) {}
     localStorage.setItem('userProfile', JSON.stringify(profile));
     router.push('/dashboard');
   };
