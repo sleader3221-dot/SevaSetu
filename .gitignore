@@ -1,0 +1,55 @@
+# Node
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# AWS
+.aws-sam/
+samconfig.toml
+packaged.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.production
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+
+# Misc
+*.bak
+*.tmp
+*.zip
+lambda_build/
+amplify_bundle.zip
+lambda_package.zip

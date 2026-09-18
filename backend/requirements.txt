@@ -1,0 +1,8 @@
+strands-agents
+strands-agents-tools
+boto3>=1.35.0
+fastapi>=0.115.0
+uvicorn>=0.32.0
+mangum>=0.19.0
+python-multipart>=0.0.12
+pydantic>=2.9.0

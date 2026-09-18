@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SevaSetu Backend SAM Template
+
+Resources:
+  SevaSetuApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - "*"
+        AllowMethods:
+          - "*"
+
+  BackendFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: lambda_handler.handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Timeout: 30
+      MemorySize: 512
+      Environment:
+        Variables:
+          SCHEMES_TABLE: !Ref SchemesTable
+          USERS_TABLE: !Ref UsersTable
+          DOCUMENTS_BUCKET: !Ref DocumentsBucket
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SchemesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+        - S3CrudPolicy:
+            BucketName: !Ref DocumentsBucket
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - textract:AnalyzeDocument
+                - translate:TranslateText
+              Resource: "*"
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SevaSetuApi
+            Path: /{proxy+}
+            Method: ANY
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowOrigins:
+            - "*"
+
+  SchemesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: SevaSetuSchemes
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: SevaSetuUsers
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  DocumentsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "sevasetu-docs-${AWS::AccountId}-${AWS::Region}"
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+              - POST
+              - PUT
+            AllowedHeaders:
+              - "*"
+
+Outputs:
+  ApiEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${SevaSetuApi}.execute-api.${AWS::Region}.amazonaws.com/"
+  FunctionUrl:
+    Description: "Lambda Function URL"
+    Value: !GetAtt BackendFunctionUrl.FunctionUrl
