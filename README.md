@@ -46,19 +46,23 @@ India has **700+ government welfare schemes** worth ₹lakhs of crores in benefi
 SevaSetu is an **AI-powered agentic platform** that:
 
 1. **Asks 5-7 simple questions** about your demographics
-2. **AI agents autonomously search** through 100+ government schemes
+2. **AI agents autonomously search** through 30+ verified central and state welfare schemes in DynamoDB
 3. **Shows a personalized dashboard** of schemes you're eligible for, with match percentages
-4. **Provides step-by-step application guidance** for each scheme
-5. **Verifies your documents** using AI-powered OCR
-6. **Works in 5 Indian languages** — English, Hindi, Tamil, Telugu, Bengali
+4. **Digital Citizen Welfare Passbook** — Generates a tamper-evident entitlement passbook with a unique cryptographic reference ID (`SEVA-2026-XX-XXXXXX`) and 1-click print/PDF export
+5. **SevaMitra AI Copilot** — Floating multi-turn conversational agent with Indian voice playback via Amazon Polly (`Aditi`)
+6. **Side-by-Side Comparison Matrix** — Compare eligibility criteria, benefits, and documents for up to 3 schemes simultaneously
+7. **Document OCR Vault** — Live verification of Aadhaar, PAN, and Income Certificates with Amazon Textract
+8. **Works in 5 Indian languages** — English, Hindi, Tamil, Telugu, Bengali with Amazon Translate
 
-### What Makes This Different?
+### What Makes This Different? (100% Live Cloud, Zero Mock Data)
 
-Unlike static scheme finders (e.g., MyScheme.gov.in), SevaSetu uses **autonomous AI agents** built with the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) that:
+Unlike static scheme finders (e.g., MyScheme.gov.in), SevaSetu uses **autonomous AI agents** built with the [Strands Agents SDK](https://github.com/strands-agents/sdk-python) and **13 active AWS Cloud services**:
+- **Zero Mock Data Guarantee**: 100% of data is stored and fetched from Amazon DynamoDB, with Amazon Textract OCR, Amazon Polly speech, Amazon Translate, and Amazon SNS live.
 - **Reason about complex eligibility** — multi-condition rules with income brackets, age ranges, category combinations
-- **Extract and validate documents** — using Amazon Textract for intelligent OCR
+- **Extract and validate documents** — using Amazon Textract for intelligent OCR with confidence scores
 - **Provide personalized guidance** — AI-generated step-by-step instructions tailored to YOUR situation
-- **Send proactive reminders** — deadline alerts via Amazon EventBridge + SNS
+- **Send proactive reminders** — deadline alerts via Amazon SNS directly to SMS/Email
+- **Digital Passbook Generation** — Cryptographic hash-based entitlement cards ready for CSC / Seva Kendra validation
 
 ---
 

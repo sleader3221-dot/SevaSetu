@@ -12,9 +12,15 @@ import { Button } from "./ui/button";
 
 interface SchemeCardProps {
   match: SchemeMatch;
+  isSelectedForCompare?: boolean;
+  onToggleCompare?: (id: string) => void;
 }
 
-export default function SchemeCard({ match }: SchemeCardProps) {
+export default function SchemeCard({ 
+  match, 
+  isSelectedForCompare = false, 
+  onToggleCompare 
+}: SchemeCardProps) {
   const { scheme, eligibilityScore } = match;
 
   return (
@@ -23,7 +29,9 @@ export default function SchemeCard({ match }: SchemeCardProps) {
       transition={{ duration: 0.2 }}
       className="h-full"
     >
-      <Card className="h-full flex flex-col hover:shadow-lg transition-shadow bg-white overflow-hidden border-orange-100">
+      <Card className={`h-full flex flex-col hover:shadow-lg transition-all bg-white overflow-hidden ${
+        isSelectedForCompare ? "border-2 border-primary ring-2 ring-primary/20" : "border-orange-100"
+      }`}>
         <CardHeader className="pb-3 border-b border-gray-50 bg-orange-50/30">
           <div className="flex justify-between items-start gap-4">
             <div>
@@ -53,13 +61,29 @@ export default function SchemeCard({ match }: SchemeCardProps) {
           <p className="text-gray-600 text-sm line-clamp-2">{scheme.description}</p>
         </CardContent>
 
-        <CardFooter className="pt-2 pb-4">
-          <Link href={`/scheme/${scheme.id}`} className="w-full">
-            <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors group">
-              View Details
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+        <CardFooter className="pt-2 pb-4 flex flex-col gap-2">
+          <div className="flex items-center gap-2 w-full">
+            <Link href={`/scheme/${scheme.id}`} className="flex-1">
+              <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors group text-xs font-bold">
+                View Details
+                <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            {onToggleCompare && (
+              <Button
+                variant={isSelectedForCompare ? "default" : "secondary"}
+                size="sm"
+                onClick={() => onToggleCompare(scheme.id)}
+                className={`text-xs font-medium px-3 ${
+                  isSelectedForCompare 
+                    ? "bg-primary text-white hover:bg-orange-600" 
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {isSelectedForCompare ? "Comparing ✓" : "+ Compare"}
+              </Button>
+            )}
+          </div>
         </CardFooter>
       </Card>
     </motion.div>

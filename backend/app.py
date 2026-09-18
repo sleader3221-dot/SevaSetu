@@ -14,6 +14,7 @@ from services.translate_service import translate_text
 from services.textract_service import process_document
 from services.polly_service import text_to_speech
 from services.sns_service import subscribe_user
+from services.chat_service import process_chat_message
 
 # Try importing agents (graceful fallback if Bedrock unavailable)
 try:
@@ -66,6 +67,18 @@ class SpeechRequest(BaseModel):
 class AlertRequest(BaseModel):
     destination: str
     schemeName: str = 'All Schemes'
+
+class ChatRequest(BaseModel):
+    message: str
+    profile: Optional[dict] = None
+    language: str = 'en'
+
+class CompareRequest(BaseModel):
+    schemeIds: list[str]
+
+class PassbookRequest(BaseModel):
+    profile: ProfileRequest
+    matchedSchemeIds: list[str] = []
 
 import boto3
 from decimal import Decimal
@@ -224,6 +237,55 @@ def generate_speech(request: SpeechRequest):
 @app.post('/alerts/subscribe')
 def subscribe_alert(request: AlertRequest):
     return subscribe_user(request.destination, request.schemeName)
+
+@app.post('/api/chat')
+@app.post('/chat')
+def chat_copilot(request: ChatRequest):
+    return process_chat_message(request.message, request.profile, request.language)
+
+@app.post('/api/schemes/compare')
+@app.post('/schemes/compare')
+def compare_schemes(request: CompareRequest):
+    schemes = get_all_schemes()
+    selected = [s for s in schemes if str(s.get('id')) in [str(x) for x in request.schemeIds]]
+    return {'schemes': selected, 'total_compared': len(selected)}
+
+@app.post('/api/passbook/generate')
+@app.post('/passbook/generate')
+def generate_passbook(request: PassbookRequest):
+    import hashlib
+    import time
+    schemes = get_all_schemes()
+    profile_dict = request.profile.model_dump()
+    matches = match_schemes(profile_dict, schemes)
+    
+    # Calculate unlocked financial benefits
+    total_unlocked = sum(m['scheme'].get('benefit_amount', 0) for m in matches if m['eligibility_score'] >= 50)
+    
+    # Generate cryptographic reference certificate ID
+    raw_hash = f"{profile_dict['state']}-{profile_dict['annualIncome']}-{time.time()}"
+    cert_id = f"SEVA-2026-{profile_dict['state'][:2].upper()}-{hashlib.md5(raw_hash.encode()).hexdigest()[:6].upper()}"
+    
+    return {
+        'passbook_id': cert_id,
+        'citizen_profile': profile_dict,
+        'eligible_schemes_count': len(matches),
+        'total_annual_entitlement': total_unlocked,
+        'schemes': [
+            {
+                'id': m['scheme'].get('id'),
+                'name': m['scheme'].get('name'),
+                'ministry': m['scheme'].get('ministry'),
+                'benefit_value': m['scheme'].get('benefit_value'),
+                'score': m['eligibility_score'],
+                'portal_url': m['scheme'].get('portal_url')
+            }
+            for m in matches[:10]
+        ],
+        'generated_at': time.strftime('%d %B %Y, %I:%M %p IST'),
+        'verified_by': 'National Citizen Welfare AI Gateway (SevaSetu)'
+    }
+
 
 
 

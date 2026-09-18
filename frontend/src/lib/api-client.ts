@@ -115,3 +115,34 @@ export async function subscribeAlert(destination: string, schemeName: string = '
   return res.json();
 }
 
+export async function chatWithAI(message: string, profile: any = null, language: string = 'en'): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, profile, language }),
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+export async function compareSchemes(schemeIds: string[]): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/schemes/compare`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ schemeIds }),
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+export async function generatePassbook(profile: any, matchedSchemeIds: string[] = []): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/passbook/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ profile, matchedSchemeIds }),
+  });
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
+
+

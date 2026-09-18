@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { SchemeMatch } from "@/lib/types";
 import SchemeCard from "./SchemeCard";
+import SchemeCompareModal from "./SchemeCompareModal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, SortDesc } from "lucide-react";
+import { Search, Filter, SortDesc, Scale, X, ArrowRight } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface SchemeGridProps {
   matches: SchemeMatch[];
@@ -16,6 +18,22 @@ export default function SchemeGrid({ matches, isLoading = false }: SchemeGridPro
   const [filter, setFilter] = useState("All");
   const [sort, setSort] = useState("eligibility");
   const [search, setSearch] = useState("");
+  const [selectedCompareIds, setSelectedCompareIds] = useState<string[]>([]);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+
+  const toggleCompare = (id: string) => {
+    setSelectedCompareIds((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter(x => x !== id);
+      } else {
+        if (prev.length >= 3) {
+          alert("You can compare up to 3 schemes at a time.");
+          return prev;
+        }
+        return [...prev, id];
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -103,10 +121,52 @@ export default function SchemeGrid({ matches, isLoading = false }: SchemeGridPro
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((match) => (
-            <SchemeCard key={match.scheme.id} match={match} />
+            <SchemeCard
+              key={match.scheme.id}
+              match={match}
+              isSelectedForCompare={selectedCompareIds.includes(match.scheme.id)}
+              onToggleCompare={toggleCompare}
+            />
           ))}
         </div>
       )}
+
+      {/* Floating Compare Action Bar */}
+      {selectedCompareIds.length > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-gray-900/95 text-white px-5 py-3 rounded-full shadow-2xl border border-gray-700 flex items-center gap-4 backdrop-blur-md animate-in slide-in-from-bottom-5">
+          <div className="flex items-center gap-2">
+            <Scale className="w-4 h-4 text-primary" />
+            <span className="text-xs font-semibold">
+              {selectedCompareIds.length} scheme{selectedCompareIds.length > 1 ? "s" : ""} selected for comparison
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              onClick={() => setIsCompareOpen(true)}
+              className="bg-primary hover:bg-orange-600 text-white text-xs font-bold px-4 py-1 rounded-full h-8 flex items-center gap-1"
+            >
+              Compare Matrix <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+            <button
+              onClick={() => setSelectedCompareIds([])}
+              className="p-1 rounded-full hover:bg-gray-800 text-gray-400 hover:text-white transition-colors"
+              title="Clear selection"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Scheme Comparison Modal */}
+      <SchemeCompareModal
+        isOpen={isCompareOpen}
+        onClose={() => setIsCompareOpen(false)}
+        matches={matches}
+        selectedIds={selectedCompareIds}
+        onRemove={toggleCompare}
+      />
     </div>
   );
 }
