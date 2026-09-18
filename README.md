@@ -14,11 +14,15 @@
 | Service | Live AWS URL / Identifier |
 |---|---|
 | **Live Web App (Amplify + CloudFront)** | **[https://main.d29f8mjvik7gji.amplifyapp.com](https://main.d29f8mjvik7gji.amplifyapp.com)** |
+| **Document OCR Vault** | **[https://main.d29f8mjvik7gji.amplifyapp.com/verify](https://main.d29f8mjvik7gji.amplifyapp.com/verify)** |
 | **S3 Website Mirror** | **[http://sevasetu-frontend-991752.s3-website-us-east-1.amazonaws.com](http://sevasetu-frontend-991752.s3-website-us-east-1.amazonaws.com)** |
 | **Live Cloud API Gateway** | **`https://snlktzwf6g.execute-api.us-east-1.amazonaws.com`** |
 | **API Health Check** | **[`https://snlktzwf6g.execute-api.us-east-1.amazonaws.com/api/health`](https://snlktzwf6g.execute-api.us-east-1.amazonaws.com/api/health)** |
 | **DynamoDB Database Table** | `SevaSetu-Schemes` (30 Real Verified Welfare Schemes) |
 | **S3 Document Vault** | `s3://sevasetu-documents-991752` |
+| **Voice Speech Synthesis** | Amazon Polly (`Aditi` Indian bilingual voice) |
+| **Deadline & SMS Alerts** | Amazon SNS (`arn:aws:sns:us-east-1:991752019659:SevaSetu-Alerts`) |
+| **Document OCR Engine** | Amazon Textract (`detect_document_text`) |
 | **AWS Region** | `us-east-1` (N. Virginia) |
 
 ---
