@@ -217,17 +217,143 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmarkCity: "Old Goa",
     bgUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-teal-950/90 via-slate-950/85 to-black/95"
+  },
+  "Haryana": {
+    name: "Haryana",
+    hindi: "हरियाणा",
+    landmark: "Brahma Sarovar & Kurukshetra Heritage",
+    landmarkHindi: "ब्रह्म सरोवर",
+    landmarkCity: "Kurukshetra",
+    bgUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  },
+  "Jharkhand": {
+    name: "Jharkhand",
+    hindi: "झारखंड",
+    landmark: "Parasnath Temple & Hundru Falls",
+    landmarkHindi: "पारसनाथ मंदिर",
+    landmarkCity: "Ranchi",
+    bgUrl: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Chhattisgarh": {
+    name: "Chhattisgarh",
+    hindi: "छत्तीसगढ़",
+    landmark: "Chitrakote Waterfalls & Bastar Heritage",
+    landmarkHindi: "चित्रकूट जलप्रपात",
+    landmarkCity: "Bastar",
+    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Ladakh": {
+    name: "Ladakh",
+    hindi: "लद्दाख",
+    landmark: "Pangong Tso Lake & Thiksey Monastery",
+    landmarkHindi: "पैंगोंग त्सो",
+    landmarkCity: "Leh",
+    bgUrl: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-blue-950/90 via-slate-950/85 to-black/95"
+  },
+  "Sikkim": {
+    name: "Sikkim",
+    hindi: "सिक्किम",
+    landmark: "Rumtek Monastery & Kanchenjunga",
+    landmarkHindi: "रुमटेक मठ",
+    landmarkCity: "Gangtok",
+    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-teal-950/90 via-slate-950/85 to-black/95"
+  },
+  "Meghalaya": {
+    name: "Meghalaya",
+    hindi: "मेघालय",
+    landmark: "Double Decker Living Root Bridges",
+    landmarkHindi: "जीवित जड़ पुल",
+    landmarkCity: "Cherrapunji",
+    bgUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Manipur": {
+    name: "Manipur",
+    hindi: "मणिपुर",
+    landmark: "Loktak Floating Lake & Kangla Fort",
+    landmarkHindi: "लोकटक झील",
+    landmarkCity: "Imphal",
+    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-blue-950/90 via-slate-950/85 to-black/95"
+  },
+  "Tripura": {
+    name: "Tripura",
+    hindi: "त्रिपुरा",
+    landmark: "Ujjayanta Palace & Neermahal",
+    landmarkHindi: "उज्जयंत पैलेस",
+    landmarkCity: "Agartala",
+    bgUrl: "https://images.unsplash.com/photo-1600100397608-f010f445b9b4?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
+  },
+  "Mizoram": {
+    name: "Mizoram",
+    hindi: "मिज़ोरम",
+    landmark: "Vantawng Falls & Blue Mountains",
+    landmarkHindi: "वानतावांग जलप्रपात",
+    landmarkCity: "Aizawl",
+    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Nagaland": {
+    name: "Nagaland",
+    hindi: "नागालैंड",
+    landmark: "Dzukou Valley & Hornbill Heritage",
+    landmarkHindi: "द्ज़ुको घाटी",
+    landmarkCity: "Kohima",
+    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-green-950/90 via-slate-950/85 to-black/95"
+  },
+  "Arunachal Pradesh": {
+    name: "Arunachal Pradesh",
+    hindi: "अरुणाचल प्रदेश",
+    landmark: "Tawang Monastery & Sela Pass",
+    landmarkHindi: "तवांग मठ",
+    landmarkCity: "Tawang",
+    bgUrl: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-sky-950/90 via-slate-950/85 to-black/95"
+  },
+  "Chandigarh": {
+    name: "Chandigarh",
+    hindi: "चंडीगढ़",
+    landmark: "Rock Garden & Capitol Complex",
+    landmarkHindi: "रॉक गार्डन",
+    landmarkCity: "Chandigarh",
+    bgUrl: "https://images.unsplash.com/photo-1588096344356-9b5a882a201c?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  },
+  "Puducherry": {
+    name: "Puducherry",
+    hindi: "पुडुचेरी",
+    landmark: "Promenade & Auroville Matrimandir",
+    landmarkHindi: "मातृमंदिर",
+    landmarkCity: "Pondicherry",
+    bgUrl: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-yellow-950/90 via-slate-950/85 to-black/95"
+  },
+  "Andaman and Nicobar Islands": {
+    name: "Andaman and Nicobar Islands",
+    hindi: "अंडमान और निकोबार",
+    landmark: "Cellular Jail & Radhanagar Beach",
+    landmarkHindi: "सेलुलर जेल",
+    landmarkCity: "Port Blair",
+    bgUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-cyan-950/90 via-slate-950/85 to-black/95"
   }
 };
 
 const DEFAULT_LANDMARK: StateLandmark = {
-  name: "National Capital",
+  name: "National Capital Territory",
   hindi: "भारत",
   landmark: "India Gate & Rashtrapati Bhavan",
-  landmarkHindi: "इंडिया गेट",
+  landmarkHindi: "इंडिया गेट एवं राष्ट्रपति भवन",
   landmarkCity: "New Delhi",
-  bgUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop",
-  themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  bgUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1920&auto=format&fit=crop",
+  themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
 };
 
 const POPULAR_STATES = [
@@ -280,7 +406,10 @@ export default function ProfileWizard() {
 
   const [stateConfirmedNotice, setStateConfirmedNotice] = useState(false);
 
-  const selectedLandmark = profile.state ? (STATE_LANDMARKS[profile.state] || DEFAULT_LANDMARK) : null;
+  // Active landmark is always defined: defaults to India Gate (National Capital), then switches to state landmark
+  const activeLandmark = (profile.state && STATE_LANDMARKS[profile.state]) 
+    ? STATE_LANDMARKS[profile.state] 
+    : DEFAULT_LANDMARK;
 
   const updateProfile = (key: keyof UserProfile, value: any) => {
     setProfile((prev) => ({ ...prev, [key]: value }));
@@ -340,32 +469,50 @@ export default function ProfileWizard() {
   };
 
   return (
-    <div className="relative w-full min-h-[640px] rounded-3xl overflow-hidden shadow-2xl transition-all duration-700">
-      
-      {/* 🌆 DYNAMIC STATE LANDMARK BACKGROUND (Activates after selecting state) */}
-      {selectedLandmark && (
+    <>
+      {/* 🌆 FULL-SCREEN DYNAMIC STATE LANDMARK BACKGROUND */}
+      <div className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden select-none">
         <div 
-          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 z-0 scale-105"
-          style={{ backgroundImage: `url(${selectedLandmark.bgUrl})` }}
-        >
-          {/* Deep GovTech Scrim to keep questions 100% crisp & readable */}
-          <div className={`absolute inset-0 bg-gradient-to-b ${selectedLandmark.themeGradient} backdrop-blur-xs`} />
-          
-          {/* Watermarked Landmark Identification Badge at bottom */}
-          <div className="absolute bottom-4 right-6 hidden md:flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-[11px] text-slate-300 pointer-events-none z-10">
-            <Landmark className="w-3.5 h-3.5 text-orange-400" />
-            <span>Landmark: <strong className="text-white">{selectedLandmark.landmark}</strong> ({selectedLandmark.landmarkCity}, {selectedLandmark.name})</span>
-          </div>
+          key={activeLandmark.name}
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-out transform scale-105"
+          style={{ backgroundImage: `url(${activeLandmark.bgUrl})` }}
+        />
+        {/* Balanced, translucent dark scrim so the landmark architecture is clearly, vividly visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/45 via-slate-950/55 to-slate-950/75 backdrop-blur-[1px]" />
+      </div>
+
+      {/* 🏛️ Prominent Global Landmark Status Banner */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 sm:px-5 rounded-2xl bg-black/65 backdrop-blur-md border border-white/20 mb-6 shadow-2xl">
+        <div className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-200">
+          <span className="flex h-3 w-3 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+          </span>
+          <Landmark className="w-4 h-4 text-orange-400 shrink-0" />
+          <span>
+            <span className="text-slate-400 font-medium">State Landmark:</span>{" "}
+            <strong className="text-white font-bold">{activeLandmark.landmark}</strong>{" "}
+            <span className="text-orange-400 font-semibold">({activeLandmark.landmarkCity}, {activeLandmark.name})</span>
+          </span>
         </div>
-      )}
 
-      {/* Fallback dark mesh background for Step 1 before state selection */}
-      {!selectedLandmark && (
-        <div className="absolute inset-0 bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black z-0" />
-      )}
+        <div className="flex items-center gap-2.5 text-xs">
+          <span className="px-2.5 py-1 rounded-xl bg-orange-500/20 text-orange-300 font-bold border border-orange-500/30 font-mono">
+            {activeLandmark.hindi}
+          </span>
+          {profile.state && step > 1 && (
+            <button
+              onClick={() => setStep(1)}
+              className="text-[11px] text-slate-300 hover:text-white underline cursor-pointer bg-slate-900/60 px-2.5 py-1 rounded-lg border border-slate-700 hover:border-orange-500 transition-colors"
+            >
+              Change State
+            </button>
+          )}
+        </div>
+      </div>
 
-      {/* Foreground Interactive Content Container */}
-      <div className="relative z-10 p-6 sm:p-10 flex flex-col justify-between min-h-[640px]">
+      {/* Main Glassmorphic Assessment Card */}
+      <div className="relative w-full min-h-[640px] rounded-3xl overflow-hidden bg-slate-950/80 backdrop-blur-xl border border-white/15 shadow-2xl transition-all duration-700 p-6 sm:p-10 flex flex-col justify-between">
         
         {/* Top Header & Progress */}
         <div>
@@ -386,7 +533,7 @@ export default function ProfileWizard() {
                 <MapPin className="w-4 h-4 text-primary" />
                 <span>
                   <strong className="text-white">{profile.state}</strong>
-                  {selectedLandmark && <span className="text-slate-400 ml-1">({selectedLandmark.landmark})</span>}
+                  <span className="text-slate-400 ml-1">({activeLandmark.landmark})</span>
                 </span>
                 <button
                   onClick={() => setStep(1)}
@@ -452,7 +599,7 @@ export default function ProfileWizard() {
                   {/* State Selection Confirmation Overlay Notification */}
                   {stateConfirmedNotice && (
                     <div className="text-center py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-2xl text-emerald-400 font-bold text-xs animate-in fade-in zoom-in-95">
-                      ✓ State Selected: {profile.state}! Loading questions with {selectedLandmark?.landmark} landmark backdrop...
+                      ✓ State Selected: {profile.state}! Loading questions with {activeLandmark.landmark} landmark backdrop...
                     </div>
                   )}
 
@@ -735,7 +882,6 @@ export default function ProfileWizard() {
         </div>
 
       </div>
-
-    </div>
+    </>
   );
 }

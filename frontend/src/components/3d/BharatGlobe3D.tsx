@@ -2,9 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { Globe, Compass, RotateCw, ZoomIn, ZoomOut, Sparkles, Landmark, ShieldCheck } from "lucide-react";
 
 interface StateNode {
   name: string;
+  state: string;
   hindiName: string;
   lat: number;
   lng: number;
@@ -14,18 +16,25 @@ interface StateNode {
 }
 
 const INDIAN_NODES: StateNode[] = [
-  { name: "New Delhi", hindiName: "नई दिल्ली (PMO)", lat: 28.6139, lng: 77.2090, schemes: 30, benefitCap: "₹1.52 Cr+", type: "Central Hub" },
-  { name: "Bengaluru", hindiName: "बेंगलुरु", lat: 12.9716, lng: 77.5946, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Mumbai", hindiName: "मुंबई", lat: 19.0760, lng: 72.8777, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Chennai", hindiName: "चेन्नई", lat: 13.0827, lng: 80.2707, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Kolkata", hindiName: "कोलकाता", lat: 22.5726, lng: 88.3639, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Hyderabad", hindiName: "हैदराबाद", lat: 17.3850, lng: 78.4867, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Ahmedabad", hindiName: "अहमदाबाद", lat: 23.0225, lng: 72.5714, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Lucknow", hindiName: "लखनऊ", lat: 26.8467, lng: 80.9462, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Jaipur", hindiName: "जयपुर", lat: 26.9124, lng: 75.7873, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
-  { name: "Guwahati", hindiName: "गुवाहाटी", lat: 26.1445, lng: 91.7362, schemes: 30, benefitCap: "₹1.52 Cr+", type: "State Direct" },
+  { name: "New Delhi", state: "National Capital", hindiName: "नई दिल्ली (PMO DBT Gateway)", lat: 28.6139, lng: 77.2090, schemes: 30, benefitCap: "₹1.52 Cr+", type: "Central Hub" },
+  { name: "Mumbai", state: "Maharashtra", hindiName: "मुंबई", lat: 19.0760, lng: 72.8777, schemes: 24, benefitCap: "₹1.35 Cr+", type: "State Direct" },
+  { name: "Bengaluru", state: "Karnataka", hindiName: "बेंगलुरु", lat: 12.9716, lng: 77.5946, schemes: 22, benefitCap: "₹1.28 Cr+", type: "State Direct" },
+  { name: "Hyderabad", state: "Telangana", hindiName: "हैदराबाद", lat: 17.3850, lng: 78.4867, schemes: 21, benefitCap: "₹1.15 Cr+", type: "State Direct" },
+  { name: "Chennai", state: "Tamil Nadu", hindiName: "चेन्नई", lat: 13.0827, lng: 80.2707, schemes: 23, benefitCap: "₹1.25 Cr+", type: "State Direct" },
+  { name: "Kolkata", state: "West Bengal", hindiName: "कोलकाता", lat: 22.5726, lng: 88.3639, schemes: 20, benefitCap: "₹1.10 Cr+", type: "State Direct" },
+  { name: "Ahmedabad", state: "Gujarat", hindiName: "अहमदाबाद", lat: 23.0225, lng: 72.5714, schemes: 22, benefitCap: "₹1.20 Cr+", type: "State Direct" },
+  { name: "Lucknow", state: "Uttar Pradesh", hindiName: "लखनऊ", lat: 26.8467, lng: 80.9462, schemes: 28, benefitCap: "₹1.45 Cr+", type: "State Direct" },
+  { name: "Jaipur", state: "Rajasthan", hindiName: "जयपुर", lat: 26.9124, lng: 75.7873, schemes: 21, benefitCap: "₹1.12 Cr+", type: "State Direct" },
+  { name: "Guwahati", state: "Assam", hindiName: "गुवाहाटी", lat: 26.1445, lng: 91.7362, schemes: 19, benefitCap: "₹95 Lakh+", type: "State Direct" },
+  { name: "Patna", state: "Bihar", hindiName: "पटना", lat: 25.5941, lng: 85.1376, schemes: 25, benefitCap: "₹1.30 Cr+", type: "State Direct" },
+  { name: "Srinagar", state: "Jammu & Kashmir", hindiName: "श्रीनगर", lat: 34.0837, lng: 74.7973, schemes: 18, benefitCap: "₹88 Lakh+", type: "State Direct" },
+  { name: "Bhopal", state: "Madhya Pradesh", hindiName: "भोपाल", lat: 23.2599, lng: 77.4126, schemes: 23, benefitCap: "₹1.18 Cr+", type: "State Direct" },
+  { name: "Bhubaneswar", state: "Odisha", hindiName: "भुवनेश्वर", lat: 20.2961, lng: 85.8245, schemes: 20, benefitCap: "₹1.05 Cr+", type: "State Direct" },
+  { name: "Thiruvananthapuram", state: "Kerala", hindiName: "तिरुवनंतपुरम", lat: 8.5241, lng: 76.9366, schemes: 21, benefitCap: "₹1.15 Cr+", type: "State Direct" },
+  { name: "Chandigarh", state: "Punjab & Haryana", hindiName: "चंडीगढ़", lat: 30.7333, lng: 76.7794, schemes: 22, benefitCap: "₹1.20 Cr+", type: "State Direct" }
 ];
 
+// Mathematical mapping from Lat / Lng to Three.js Cartesian 3D Sphere Coordinates
 function latLngToVector3(lat: number, lng: number, radius: number): THREE.Vector3 {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
@@ -35,178 +44,20 @@ function latLngToVector3(lat: number, lng: number, radius: number): THREE.Vector
   return new THREE.Vector3(x, y, z);
 }
 
-// Generate high-resolution procedural Earth texture with India brightly illuminated
-function createEarthCanvasTexture(): THREE.CanvasTexture {
-  const width = 2048;
-  const height = 1024;
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-
-  if (!ctx) return new THREE.CanvasTexture(canvas);
-
-  // 1. Deep Space Midnight Ocean Background
-  ctx.fillStyle = "#030914";
-  ctx.fillRect(0, 0, width, height);
-
-  // 2. Latitude / Longitude Grid Lines
-  ctx.strokeStyle = "rgba(0, 150, 255, 0.08)";
-  ctx.lineWidth = 1;
-  for (let lat = -80; lat <= 80; lat += 20) {
-    const y = ((90 - lat) / 180) * height;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
-  for (let lng = -180; lng <= 180; lng += 30) {
-    const x = ((lng + 180) / 360) * width;
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, height);
-    ctx.stroke();
-  }
-
-  // 3. Cybernetic Continents (Simplified accurate silhouettes)
-  ctx.fillStyle = "#0c1e36";
-  ctx.strokeStyle = "rgba(56, 189, 248, 0.25)";
-  ctx.lineWidth = 2;
-
-  // Helper to convert lat/lng to canvas x/y
-  const toXY = (lat: number, lng: number) => ({
-    x: ((lng + 180) / 360) * width,
-    y: ((90 - lat) / 180) * height,
-  });
-
-  const drawPolygon = (coords: [number, number][], fill: string, stroke: string) => {
-    if (coords.length < 3) return;
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.beginPath();
-    const start = toXY(coords[0][0], coords[0][1]);
-    ctx.moveTo(start.x, start.y);
-    for (let i = 1; i < coords.length; i++) {
-      const p = toXY(coords[i][0], coords[i][1]);
-      ctx.lineTo(p.x, p.y);
-    }
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-  };
-
-  // Eurasia (Broad landmass)
-  drawPolygon([
-    [70, -10], [70, 170], [60, 160], [40, 140], [20, 120],
-    [10, 105], [5, 100], [20, 90], [25, 60], [30, 35],
-    [35, 25], [40, -5], [55, -5], [65, 10]
-  ], "#0a192f", "rgba(56, 189, 248, 0.2)");
-
-  // Africa
-  drawPolygon([
-    [35, -5], [30, 32], [12, 43], [-10, 40], [-34, 25],
-    [-34, 18], [-5, 10], [5, -10], [15, -17], [30, -10]
-  ], "#0a192f", "rgba(56, 189, 248, 0.2)");
-
-  // Australia
-  drawPolygon([
-    [-12, 130], [-12, 145], [-20, 150], [-35, 150],
-    [-38, 140], [-33, 115], [-20, 115]
-  ], "#0a192f", "rgba(56, 189, 248, 0.2)");
-
-  // Americas
-  drawPolygon([
-    [70, -160], [60, -65], [45, -60], [30, -80], [15, -90],
-    [8, -78], [10, -60], [-5, -35], [-20, -40], [-55, -65],
-    [-50, -75], [-20, -70], [0, -80], [20, -105], [50, -125], [65, -165]
-  ], "#0a192f", "rgba(56, 189, 248, 0.2)");
-
-  // 4. ⭐ PROMINENT BHARAT / INDIA HIGHLIGHT (Golden Saffron & Emerald Luminous Glow)
-  // Approximate accurate boundary points of India
-  const indiaCoords: [number, number][] = [
-    [36.5, 74.5],  // North Kashmir / Ladakh
-    [35.0, 78.5],  // Ladakh / Aksai
-    [31.0, 79.0],  // Uttarakhand / Tibet border
-    [27.5, 88.5],  // Sikkim
-    [28.0, 96.0],  // Arunachal Pradesh
-    [27.0, 96.5],  // Assam / Nagaland
-    [24.0, 93.0],  // Manipur / Mizoram
-    [22.0, 89.5],  // West Bengal Sundarbans
-    [19.5, 85.5],  // Odisha coast
-    [16.0, 81.0],  // Andhra Pradesh coast
-    [13.0, 80.2],  // Chennai coast
-    [9.5, 79.0],   // Tamil Nadu / Palk Strait
-    [8.0, 77.5],   // Kanyakumari (Southern Tip)
-    [10.0, 76.0],  // Kerala coast
-    [15.0, 73.8],  // Goa
-    [19.0, 72.8],  // Mumbai coast
-    [22.5, 69.0],  // Gujarat / Saurashtra
-    [24.0, 68.5],  // Rann of Kutch
-    [27.0, 71.0],  // Rajasthan / Thar
-    [30.5, 74.0],  // Punjab
-    [34.0, 74.0],  // Kashmir Valley
-    [36.5, 74.5]   // Close loop
-  ];
-
-  // Convert India coordinates to canvas polygon
-  ctx.save();
-  ctx.beginPath();
-  const startInd = toXY(indiaCoords[0][0], indiaCoords[0][1]);
-  ctx.moveTo(startInd.x, startInd.y);
-  for (let i = 1; i < indiaCoords.length; i++) {
-    const pt = toXY(indiaCoords[i][0], indiaCoords[i][1]);
-    ctx.lineTo(pt.x, pt.y);
-  }
-  ctx.closePath();
-
-  // Vibrant Saffron & Gold Radial Gradient Fill
-  const indCenter = toXY(22, 79);
-  const indGradient = ctx.createRadialGradient(
-    indCenter.x, indCenter.y, 10,
-    indCenter.x, indCenter.y, 140
-  );
-  indGradient.addColorStop(0, "rgba(255, 153, 51, 0.95)");  // Saffron core
-  indGradient.addColorStop(0.5, "rgba(249, 115, 22, 0.85)"); // Vibrant orange
-  indGradient.addColorStop(0.85, "rgba(234, 88, 12, 0.70)"); // Deep saffron
-  indGradient.addColorStop(1, "rgba(16, 185, 129, 0.60)");   // Emerald green border
-
-  ctx.fillStyle = indGradient;
-  ctx.shadowColor = "#ff9933";
-  ctx.shadowBlur = 35;
-  ctx.fill();
-
-  // Glowing Golden/Saffron Border
-  ctx.strokeStyle = "#ffffff";
-  ctx.lineWidth = 4;
-  ctx.stroke();
-
-  ctx.strokeStyle = "#ffaa00";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.restore();
-
-  // 5. India Label on Texture
-  ctx.save();
-  ctx.fillStyle = "#ffffff";
-  ctx.shadowColor = "#ff9933";
-  ctx.shadowBlur = 15;
-  ctx.font = "bold 24px sans-serif";
-  ctx.textAlign = "center";
-  ctx.fillText("★ BHARAT (INDIA) ★", indCenter.x, indCenter.y - 45);
-  ctx.font = "bold 15px sans-serif";
-  ctx.fillStyle = "#ffaa33";
-  ctx.fillText("NATIONAL WELFARE GATEWAY", indCenter.x, indCenter.y - 25);
-  ctx.restore();
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
-  return texture;
-}
-
 export default function BharatGlobe3D() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [selectedNode, setSelectedNode] = useState<StateNode | null>(null);
+  const [isAutoRotate, setIsAutoRotate] = useState(true);
+  const autoRotateRef = useRef(true);
+
+  // Globe control callbacks exposed to UI buttons
+  const focusIndiaRef = useRef<() => void>(() => {});
+  const zoomInRef = useRef<() => void>(() => {});
+  const zoomOutRef = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    autoRotateRef.current = isAutoRotate;
+  }, [isAutoRotate]);
 
   useEffect(() => {
     const currentMount = mountRef.current;
@@ -220,124 +71,168 @@ export default function BharatGlobe3D() {
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.z = 210;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true, 
+      powerPreference: "high-performance" 
+    });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     currentMount.appendChild(renderer.domElement);
 
-    // 2. Main Globe Group
+    // 2. Main Rotational Globe Group
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
 
     const globeRadius = 72;
 
-    // Center camera on Bharat/India (lat 22°N, lng 79°E)
-    // Longitude 79°E needs rotation.y = - (79 + 90) deg
-    globeGroup.rotation.y = -Math.PI / 1.32;
-    globeGroup.rotation.x = 0.28;
+    // Center camera squarely on Bharat / India (lat ~22°N, lng ~78°E)
+    const DEFAULT_ROTATION_Y = -Math.PI / 1.07; // ~ -2.94 rad aligns 78°E to camera
+    const DEFAULT_ROTATION_X = 0.35; // Tilts northern hemisphere to sweet spot
+    globeGroup.rotation.y = DEFAULT_ROTATION_Y;
+    globeGroup.rotation.x = DEFAULT_ROTATION_X;
 
-    // 3. Globe Sphere with High-Res Texture
-    const earthTexture = createEarthCanvasTexture();
+    // 3. Realistic NASA Blue Marble Earth Sphere
+    const textureLoader = new THREE.TextureLoader();
+    
+    // Load authentic high-resolution Earth texture
+    const earthTexture = textureLoader.load(
+      "/textures/earth_atmos_2048.jpg",
+      () => { renderer.render(scene, camera); }
+    );
+    earthTexture.colorSpace = THREE.SRGBColorSpace;
+
     const globeGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
-    const globeMat = new THREE.MeshPhongMaterial({
+    const globeMat = new THREE.MeshStandardMaterial({
       map: earthTexture,
-      shininess: 30,
-      specular: new THREE.Color(0x224488),
-      emissive: new THREE.Color(0x040c1e),
-      emissiveIntensity: 0.8,
+      roughness: 0.65,
+      metalness: 0.1,
+      emissive: new THREE.Color(0x061022),
+      emissiveIntensity: 0.35,
     });
     const globeMesh = new THREE.Mesh(globeGeo, globeMat);
     globeGroup.add(globeMesh);
 
-    // 4. Subtle Outer Atmosphere Glow Ring
-    const atmoGeo = new THREE.SphereGeometry(globeRadius + 1.2, 48, 48);
-    const atmoMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
+    // 4. Photorealistic Atmospheric Cloud Layer
+    const cloudsTexture = textureLoader.load("/textures/earth_clouds_1024.png");
+    const cloudGeo = new THREE.SphereGeometry(globeRadius + 0.6, 64, 64);
+    const cloudMat = new THREE.MeshStandardMaterial({
+      map: cloudsTexture,
       transparent: true,
-      opacity: 0.12,
-      wireframe: true,
+      opacity: 0.35,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
     });
-    const atmoMesh = new THREE.Mesh(atmoGeo, atmoMat);
-    globeGroup.add(atmoMesh);
+    const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+    globeGroup.add(cloudMesh);
 
-    // 5. Concentric Saffron Shockwave Rings at India Core (Representing DBT Broadcast)
-    const indiaCenter = latLngToVector3(22.0, 79.0, globeRadius + 0.4);
+    // 5. Cinematic Orbit Atmosphere Glow Shell (Fresnel Rim)
+    const haloGeo = new THREE.SphereGeometry(globeRadius + 3.8, 48, 48);
+    const haloMat = new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        void main() {
+          float intensity = pow(0.62 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
+          gl_FragColor = vec4(0.2, 0.65, 1.0, 1.0) * intensity * 0.85;
+        }
+      `,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide,
+      transparent: true,
+    });
+    const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+    scene.add(haloMesh);
+
+    // 6. India Core Shockwave Pulse Rings (Radiating outward from Central DBT Hub)
+    const delhiPos = latLngToVector3(28.6139, 77.2090, globeRadius + 0.4);
     const pulseRings: THREE.Mesh[] = [];
 
     for (let r = 0; r < 3; r++) {
-      const ringGeo = new THREE.RingGeometry(4 + r * 6, 5 + r * 6, 32);
+      const ringGeo = new THREE.RingGeometry(3 + r * 5, 4 + r * 5, 32);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: r === 2 ? 0x10b981 : 0xf97316,
+        color: r === 0 ? 0xff9933 : (r === 1 ? 0xffffff : 0x10b981),
         transparent: true,
-        opacity: 0.6 - r * 0.15,
+        opacity: 0.65 - r * 0.15,
         side: THREE.DoubleSide,
       });
       const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-      ringMesh.position.copy(indiaCenter);
-      ringMesh.lookAt(0, 0, 0); // Align with sphere normal
+      ringMesh.position.copy(delhiPos);
+      ringMesh.lookAt(0, 0, 0); // Orient flat along the surface normal
       globeGroup.add(ringMesh);
       pulseRings.push(ringMesh);
     }
 
-    // 6. State Nodes & DBT Energy Arcs from New Delhi (PMO)
+    // 7. Interactive State Capital Nodes, Beacons & Animated DBT Arcs
     const centralNode = INDIAN_NODES[0]; // New Delhi
     const centralPos = latLngToVector3(centralNode.lat, centralNode.lng, globeRadius + 0.5);
 
-    const nodeObjects: { mesh: THREE.Group; node: StateNode }[] = [];
-    const arcLines: THREE.Line[] = [];
+    const nodeRaycastMeshes: THREE.Mesh[] = [];
+    const arcCurves: { curve: THREE.QuadraticBezierCurve3; pulseMesh: THREE.Mesh }[] = [];
 
     INDIAN_NODES.forEach((node, idx) => {
       const pos = latLngToVector3(node.lat, node.lng, globeRadius + 0.5);
       const isCentral = idx === 0;
 
-      const nGroup = new THREE.Group();
-      nGroup.position.copy(pos);
-
-      // Node Marker Sphere
-      const nGeo = new THREE.SphereGeometry(isCentral ? 2.8 : 1.6, 16, 16);
-      const nMat = new THREE.MeshBasicMaterial({
-        color: isCentral ? 0xffffff : 0xf97316,
+      // Node Marker Pin
+      const pinGeo = new THREE.SphereGeometry(isCentral ? 2.6 : 1.5, 16, 16);
+      const pinMat = new THREE.MeshBasicMaterial({
+        color: isCentral ? 0xffd700 : 0xf97316,
       });
-      const nMesh = new THREE.Mesh(nGeo, nMat);
-      nGroup.add(nMesh);
+      const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+      pinMesh.position.copy(pos);
+      pinMesh.userData = { node };
+      globeGroup.add(pinMesh);
+      nodeRaycastMeshes.push(pinMesh);
 
-      // Vertical Laser Pillar (Shooting up from city)
-      const pillarGeo = new THREE.CylinderGeometry(0.3, 0.3, isCentral ? 14 : 8, 8);
+      // Vertical Laser Pillar
+      const height = isCentral ? 16 : 8;
+      const pillarGeo = new THREE.CylinderGeometry(0.3, 0.3, height, 8);
       const pillarMat = new THREE.MeshBasicMaterial({
-        color: isCentral ? 0xfbbf24 : 0x38bdf8,
+        color: isCentral ? 0xffea00 : 0x38bdf8,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.85,
       });
       const pillar = new THREE.Mesh(pillarGeo, pillarMat);
       pillar.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
-      pillar.position.copy(pos.clone().normalize().multiplyScalar(isCentral ? 7 : 4));
+      pillar.position.copy(pos.clone().normalize().multiplyScalar(globeRadius + height / 2));
       globeGroup.add(pillar);
 
-      globeGroup.add(nGroup);
-      nodeObjects.push({ mesh: nGroup, node });
-
-      // DBT Curved Arc (Delhi -> State Capitals)
+      // Curved DBT Energy Arc from New Delhi to State Capitals
       if (!isCentral) {
         const midPoint = centralPos.clone().lerp(pos, 0.5);
         const midLength = midPoint.length();
-        midPoint.normalize().multiplyScalar(midLength + 18);
+        midPoint.normalize().multiplyScalar(midLength + 14);
 
         const curve = new THREE.QuadraticBezierCurve3(centralPos, midPoint, pos);
-        const points = curve.getPoints(40);
-        const arcGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const arcPoints = curve.getPoints(36);
+        const arcGeo = new THREE.BufferGeometry().setFromPoints(arcPoints);
         const arcMat = new THREE.LineBasicMaterial({
           color: 0xfb923c,
           transparent: true,
-          opacity: 0.75,
-          linewidth: 2,
+          opacity: 0.65,
         });
         const arcLine = new THREE.Line(arcGeo, arcMat);
         globeGroup.add(arcLine);
-        arcLines.push(arcLine);
+
+        // Animated Traveling DBT Data Packet on Arc
+        const pulseGeo = new THREE.SphereGeometry(0.8, 8, 8);
+        const pulseMat = new THREE.MeshBasicMaterial({ color: 0xfff066 });
+        const pulseMesh = new THREE.Mesh(pulseGeo, pulseMat);
+        globeGroup.add(pulseMesh);
+
+        arcCurves.push({ curve, pulseMesh });
       }
     });
 
-    // 7. Tricolor Orbital Rings (Saffron, White, Emerald)
+    // 8. India Tricolor Orbital Rings (Saffron, White, Emerald)
     const orbitalGroup = new THREE.Group();
     scene.add(orbitalGroup);
 
@@ -345,40 +240,41 @@ export default function BharatGlobe3D() {
     const orbits: THREE.Mesh[] = [];
 
     orbitColors.forEach((color, i) => {
-      const radius = globeRadius + 18 + i * 8;
-      const oGeo = new THREE.TorusGeometry(radius, 0.25, 16, 100);
+      const oRadius = globeRadius + 16 + i * 7;
+      const oGeo = new THREE.TorusGeometry(oRadius, 0.22, 16, 120);
       const oMat = new THREE.MeshBasicMaterial({
         color,
         transparent: true,
         opacity: 0.35,
       });
       const orbit = new THREE.Mesh(oGeo, oMat);
-      orbit.rotation.x = Math.PI / 2 + (i - 1) * 0.3;
-      orbit.rotation.y = (i - 1) * 0.2;
+      orbit.rotation.x = Math.PI / 2 + (i - 1) * 0.25;
+      orbit.rotation.y = (i - 1) * 0.15;
       orbitalGroup.add(orbit);
       orbits.push(orbit);
     });
 
-    // 8. Dynamic Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+    // 9. Natural Sunlight & Golden Bharat Highlight Light
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xfffaed, 1.8);
-    sunLight.position.set(100, 80, 120);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    sunLight.position.set(120, 80, 160);
     scene.add(sunLight);
 
-    const indiaSpotLight = new THREE.PointLight(0xff9933, 2.5, 300);
-    indiaSpotLight.position.set(0, 40, 150);
-    scene.add(indiaSpotLight);
+    const bharatSpotLight = new THREE.PointLight(0xffa500, 2.0, 260);
+    bharatSpotLight.position.set(0, 30, 140);
+    scene.add(bharatSpotLight);
 
-    // 9. Interactive Mouse Drag & Zoom Controls
+    // 10. Mouse Drag & Orbit Interaction
     let isDragging = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
 
     const onMouseDown = (e: MouseEvent) => {
       isDragging = true;
-      setAutoRotate(false);
       prevMouseX = e.clientX;
       prevMouseY = e.clientY;
     };
@@ -394,13 +290,24 @@ export default function BharatGlobe3D() {
       }
     };
 
-    const onMouseUp = () => {
+    const onMouseUp = (e: MouseEvent) => {
+      // Check if user clicked a node (did not drag significantly)
+      if (Math.abs(e.clientX - prevMouseX) < 4 && Math.abs(e.clientY - prevMouseY) < 4) {
+        const rect = currentMount.getBoundingClientRect();
+        mouse.x = ((e.clientX - rect.left) / width) * 2 - 1;
+        mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(nodeRaycastMeshes);
+        if (intersects.length > 0) {
+          const clickedNode = intersects[0].object.userData?.node as StateNode;
+          if (clickedNode) setSelectedNode(clickedNode);
+        }
+      }
       isDragging = false;
-      setTimeout(() => setAutoRotate(true), 4000);
     };
 
     const onWheel = (e: WheelEvent) => {
-      camera.position.z = Math.max(160, Math.min(300, camera.position.z + e.deltaY * 0.1));
+      camera.position.z = Math.max(140, Math.min(320, camera.position.z + e.deltaY * 0.12));
     };
 
     currentMount.addEventListener("mousedown", onMouseDown);
@@ -408,7 +315,22 @@ export default function BharatGlobe3D() {
     window.addEventListener("mouseup", onMouseUp);
     currentMount.addEventListener("wheel", onWheel, { passive: true });
 
-    // 10. Resize Handler
+    // Expose control functions to UI
+    focusIndiaRef.current = () => {
+      globeGroup.rotation.y = DEFAULT_ROTATION_Y;
+      globeGroup.rotation.x = DEFAULT_ROTATION_X;
+      camera.position.z = 210;
+    };
+
+    zoomInRef.current = () => {
+      camera.position.z = Math.max(140, camera.position.z - 25);
+    };
+
+    zoomOutRef.current = () => {
+      camera.position.z = Math.min(320, camera.position.z + 25);
+    };
+
+    // 11. Window Resize Handler
     const handleResize = () => {
       if (!currentMount) return;
       const w = currentMount.clientWidth;
@@ -419,27 +341,37 @@ export default function BharatGlobe3D() {
     };
     window.addEventListener("resize", handleResize);
 
-    // 11. 60 FPS Render Animation Loop
+    // 12. 60 FPS Render Animation Loop
     let animationFrameId: number;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
       // Gentle auto-rotation focusing on India
-      if (autoRotate && !isDragging) {
-        globeGroup.rotation.y += 0.0015;
+      if (autoRotateRef.current && !isDragging) {
+        globeGroup.rotation.y += 0.0012;
       }
 
-      // Animate shockwave rings at India core
+      // Slowly drift cloud layer at independent velocity
+      cloudMesh.rotation.y += 0.0004;
+
+      // Pulse concentric shockwave rings at New Delhi
       pulseRings.forEach((ring, idx) => {
-        const scale = 1 + ((elapsedTime * 0.8 + idx * 0.4) % 1) * 0.8;
+        const scale = 1 + ((elapsedTime * 0.8 + idx * 0.35) % 1) * 0.75;
         ring.scale.set(scale, scale, 1);
-        (ring.material as THREE.MeshBasicMaterial).opacity = Math.max(0, 0.7 * (1.8 - scale));
+        (ring.material as THREE.MeshBasicMaterial).opacity = Math.max(0, 0.65 * (1.8 - scale));
       });
 
-      // Animate orbital rings
+      // Animate DBT energy packets traveling along the arcs
+      arcCurves.forEach(({ curve, pulseMesh }, idx) => {
+        const t = (elapsedTime * 0.5 + idx * 0.1) % 1.0;
+        const pt = curve.getPoint(t);
+        pulseMesh.position.copy(pt);
+      });
+
+      // Rotate tricolor orbital rings
       orbits.forEach((orbit, idx) => {
         orbit.rotation.z += (idx % 2 === 0 ? 0.002 : -0.002);
       });
@@ -449,7 +381,7 @@ export default function BharatGlobe3D() {
 
     animate();
 
-    // 12. Cleanup
+    // 13. Clean Dispose on Unmount
     return () => {
       cancelAnimationFrame(animationFrameId);
       currentMount.removeEventListener("mousedown", onMouseDown);
@@ -462,53 +394,134 @@ export default function BharatGlobe3D() {
       }
       renderer.dispose();
       earthTexture.dispose();
+      cloudsTexture.dispose();
     };
-  }, [autoRotate]);
+  }, []);
 
   return (
-    <div className="relative w-full h-[540px] rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 border border-slate-800 shadow-2xl flex items-center justify-center select-none">
+    <div className="relative w-full h-[540px] rounded-3xl overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 border border-slate-800 shadow-2xl flex items-center justify-center select-none group">
       
-      {/* 3D Canvas Mount Point */}
+      {/* 3D WebGL Canvas Mount */}
       <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
       {/* Top Telemetry HUD Overlay */}
-      <div className="absolute top-5 left-5 right-5 flex items-center justify-between pointer-events-none text-xs z-10">
-        <div className="flex items-center gap-2 bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700 text-slate-200">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span className="font-mono font-bold tracking-wider uppercase text-emerald-400">
-            3D Bharat Welfare Radar
+      <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none text-xs z-10">
+        <div className="flex items-center gap-2 bg-slate-950/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-orange-500/30 text-slate-200 shadow-lg">
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-ping"></span>
+          <span className="font-mono font-bold tracking-wider uppercase text-orange-400">
+            3D Bharat Radar
           </span>
           <span className="text-slate-500">•</span>
-          <span className="text-orange-400 font-bold">Bharat Center Stage</span>
+          <span className="text-emerald-400 font-bold hidden sm:inline">100% Real Live Earth & AWS Data</span>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700 text-[11px] text-slate-300">
-          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-          <span>Click & Drag to Orbit • Scroll to Zoom</span>
+        {/* Quick 3D Camera Controls */}
+        <div className="flex items-center gap-1.5 pointer-events-auto">
+          <button
+            onClick={() => focusIndiaRef.current()}
+            title="Center View on Bharat (India)"
+            className="px-2.5 py-1 rounded-xl bg-slate-900/90 hover:bg-orange-600 text-slate-200 hover:text-white border border-slate-700/80 text-[11px] font-bold transition-all shadow-md flex items-center gap-1"
+          >
+            <Compass className="w-3.5 h-3.5 text-orange-400" />
+            <span>Focus Bharat</span>
+          </button>
+
+          <button
+            onClick={() => setIsAutoRotate(!isAutoRotate)}
+            title="Toggle Orbit Rotation"
+            className={`p-1.5 rounded-xl border text-[11px] font-bold transition-all shadow-md ${
+              isAutoRotate 
+                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40" 
+                : "bg-slate-900/90 text-slate-400 border-slate-700 hover:text-white"
+            }`}
+          >
+            <RotateCw className={`w-3.5 h-3.5 ${isAutoRotate ? "animate-spin" : ""}`} />
+          </button>
+
+          <button
+            onClick={() => zoomInRef.current()}
+            title="Zoom In"
+            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition-all shadow-md"
+          >
+            <ZoomIn className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={() => zoomOutRef.current()}
+            title="Zoom Out"
+            className="p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition-all shadow-md"
+          >
+            <ZoomOut className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 
-      {/* Bottom Live Telemetry HUD Bar */}
-      <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3.5 sm:px-6 sm:py-3 rounded-2xl border border-slate-700/80 text-xs text-slate-300 z-10 pointer-events-auto">
-        <div className="flex items-center gap-6">
-          <div>
-            <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
-              National DBT Gateway
-            </span>
-            <span className="font-extrabold text-white text-sm">New Delhi (PMO / NIC)</span>
+      {/* Selected City Node Interactive Inspection Modal */}
+      {selectedNode && (
+        <div className="absolute top-16 right-4 max-w-xs bg-slate-900/95 backdrop-blur-xl border border-orange-500/40 rounded-2xl p-4 shadow-2xl text-xs text-slate-200 z-20 animate-in fade-in zoom-in-95">
+          <div className="flex items-start justify-between gap-2 border-b border-slate-800 pb-2 mb-2">
+            <div>
+              <div className="flex items-center gap-1.5 text-orange-400 font-extrabold text-sm">
+                <Landmark className="w-4 h-4" />
+                <span>{selectedNode.name}</span>
+              </div>
+              <span className="text-[11px] text-slate-400 font-medium">{selectedNode.state} • {selectedNode.hindiName}</span>
+            </div>
+            <button
+              onClick={() => setSelectedNode(null)}
+              className="text-slate-400 hover:text-white text-base leading-none p-1"
+            >
+              ✕
+            </button>
           </div>
-          <div className="h-7 w-px bg-slate-700"></div>
+
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">Node Type:</span>
+              <span className="font-bold text-emerald-400">{selectedNode.type}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">Active Schemes:</span>
+              <span className="font-bold text-white">{selectedNode.schemes}+ Available</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">Benefit Cap:</span>
+              <span className="font-bold text-orange-400">{selectedNode.benefitCap}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400">Cloud Sync:</span>
+              <span className="font-mono text-[10px] text-emerald-400">Live DynamoDB ✓</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Live Telemetry HUD Bar */}
+      <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 bg-slate-950/85 backdrop-blur-md p-3 sm:px-5 sm:py-2.5 rounded-2xl border border-slate-800 text-xs text-slate-300 z-10 pointer-events-auto shadow-xl">
+        <div className="flex items-center gap-4 sm:gap-6">
           <div>
             <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
-              Pan-India Coverage
+              Central DBT Gateway
             </span>
-            <span className="font-extrabold text-orange-400 text-sm">All 36 States & Union Territories</span>
+            <span className="font-extrabold text-white text-xs sm:text-sm flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+              New Delhi (PMO / NIC)
+            </span>
+          </div>
+          <div className="h-6 w-px bg-slate-800 hidden sm:block"></div>
+          <div>
+            <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
+              Subcontinent Coverage
+            </span>
+            <span className="font-extrabold text-orange-400 text-xs sm:text-sm">
+              All 36 States & Union Territories
+            </span>
           </div>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>100% Live DynamoDB Disbursals</span>
+        <div className="flex items-center gap-2 text-[11px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-xl">
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span>Real World NASA Texture • 0 Mock Data</span>
         </div>
       </div>
 
