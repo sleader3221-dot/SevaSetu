@@ -103,7 +103,7 @@ export default function SevaMitraChat() {
 
       {/* Chat Drawer / Modal */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[92vw] sm:w-[420px] h-[580px] bg-white rounded-3xl shadow-2xl border border-orange-100 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300">
+        <div className="fixed bottom-6 right-6 z-50 w-[92vw] sm:w-[420px] h-[580px] bg-slate-900 rounded-3xl shadow-2xl border border-slate-800 flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-300 text-slate-100">
           {/* Header */}
           <div className="bg-gradient-to-r from-primary to-orange-600 p-4 text-white flex items-center justify-between shadow-md">
             <div className="flex items-center gap-3">
@@ -129,36 +129,36 @@ export default function SevaMitraChat() {
           </div>
 
           {/* Quick Starter Chips */}
-          <div className="p-2.5 bg-orange-50/50 border-b border-orange-100 flex gap-2 overflow-x-auto text-xs no-scrollbar">
+          <div className="p-2.5 bg-slate-950/80 border-b border-slate-800 flex gap-2 overflow-x-auto text-xs no-scrollbar">
             <button
               onClick={() => handleSend("Scholarships for female students")}
-              className="whitespace-nowrap px-3 py-1 rounded-full bg-white border border-orange-200 text-orange-800 hover:bg-orange-100 transition-colors"
+              className="whitespace-nowrap px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-orange-300 hover:bg-slate-800 transition-colors"
             >
               🎓 Student Scholarships
             </button>
             <button
               onClick={() => handleSend("Farmer subsidy and financial benefits")}
-              className="whitespace-nowrap px-3 py-1 rounded-full bg-white border border-orange-200 text-orange-800 hover:bg-orange-100 transition-colors"
+              className="whitespace-nowrap px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-orange-300 hover:bg-slate-800 transition-colors"
             >
               🌾 Farmer Benefits
             </button>
             <button
               onClick={() => handleSend("Free hospital and medical coverage")}
-              className="whitespace-nowrap px-3 py-1 rounded-full bg-white border border-orange-200 text-orange-800 hover:bg-orange-100 transition-colors"
+              className="whitespace-nowrap px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-orange-300 hover:bg-slate-800 transition-colors"
             >
               🏥 Health Coverage
             </button>
           </div>
 
           {/* Message Stream */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50/50">
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-950/60">
             {messages.map((m, idx) => (
               <div
                 key={idx}
                 className={`flex gap-3 ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 {m.role === "assistant" && (
-                  <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-full bg-primary/20 text-primary flex items-center justify-center flex-shrink-0 mt-0.5 border border-orange-500/30">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -168,7 +168,7 @@ export default function SevaMitraChat() {
                     className={`p-3.5 rounded-2xl text-sm leading-relaxed ${
                       m.role === "user"
                         ? "bg-primary text-white rounded-tr-sm shadow-md"
-                        : "bg-white text-gray-800 border border-gray-100 shadow-sm rounded-tl-sm whitespace-pre-line"
+                        : "bg-slate-900 text-slate-200 border border-slate-800 shadow-sm rounded-tl-sm whitespace-pre-line"
                     }`}
                   >
                     {m.text}
@@ -178,19 +178,19 @@ export default function SevaMitraChat() {
                   {m.schemes && m.schemes.length > 0 && (
                     <div className="space-y-1.5 pt-1">
                       {m.schemes.map((s, sIdx) => (
-                        <Card key={sIdx} className="p-2.5 bg-white border-orange-100 shadow-xs hover:border-primary/50 transition-colors">
+                        <Card key={sIdx} className="p-2.5 bg-slate-900 border-slate-800 shadow-md hover:border-slate-700 transition-colors">
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-xs text-gray-900 truncate max-w-[180px]">{s.name}</span>
-                            <span className="text-[10px] font-bold text-primary bg-orange-50 px-1.5 py-0.5 rounded">{s.benefit_value}</span>
+                            <span className="font-bold text-xs text-white truncate max-w-[180px]">{s.name}</span>
+                            <span className="text-[10px] font-bold text-orange-400 bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/30">{s.benefit_value}</span>
                           </div>
                           <div className="flex justify-between items-center mt-1.5 text-[11px]">
-                            <span className="text-gray-500 truncate max-w-[120px]">{s.ministry}</span>
+                            <span className="text-slate-400 truncate max-w-[120px]">{s.ministry}</span>
                             <div className="flex items-center gap-2">
                               <a 
                                 href={s.registration_url || s.portal_url} 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
-                                className="text-emerald-700 hover:underline font-bold flex items-center gap-0.5"
+                                className="text-emerald-400 hover:underline font-bold flex items-center gap-0.5"
                               >
                                 Apply <ExternalLink className="w-2.5 h-2.5" />
                               </a>
@@ -199,12 +199,12 @@ export default function SevaMitraChat() {
                                   href={s.youtube_guide_url} 
                                   target="_blank" 
                                   rel="noopener noreferrer" 
-                                  className="text-red-600 hover:underline font-bold"
+                                  className="text-red-400 hover:underline font-bold"
                                 >
                                   Video
                                 </a>
                               )}
-                              <Link href={`/scheme/${s.id}`} className="text-primary hover:underline font-semibold flex items-center gap-0.5">
+                              <Link href={`/scheme/${s.id}`} prefetch={false} className="text-primary hover:text-orange-400 hover:underline font-semibold flex items-center gap-0.5">
                                 Details <ArrowRight className="w-3 h-3" />
                               </Link>
                             </div>
@@ -219,7 +219,7 @@ export default function SevaMitraChat() {
                     <button
                       onClick={() => handleSpeak(m.text)}
                       disabled={isPlayingAudio}
-                      className="inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-primary transition-colors font-medium px-2 py-0.5 rounded"
+                      className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-orange-400 transition-colors font-medium px-2 py-0.5 rounded"
                     >
                       <Volume2 className="w-3 h-3" /> Listen via Amazon Polly
                     </button>
@@ -227,7 +227,7 @@ export default function SevaMitraChat() {
                 </div>
 
                 {m.role === "user" && (
-                  <div className="w-7 h-7 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-full bg-slate-800 text-slate-200 flex items-center justify-center flex-shrink-0 mt-0.5 border border-slate-700">
                     <User className="w-4 h-4" />
                   </div>
                 )}
@@ -235,7 +235,7 @@ export default function SevaMitraChat() {
             ))}
 
             {isLoading && (
-              <div className="flex gap-3 justify-start items-center text-gray-500 text-xs pl-2">
+              <div className="flex gap-3 justify-start items-center text-slate-400 text-xs pl-2">
                 <Bot className="w-5 h-5 text-primary animate-spin" />
                 <span>SevaMitra is analyzing government schemes...</span>
               </div>
@@ -244,7 +244,7 @@ export default function SevaMitraChat() {
           </div>
 
           {/* Input Footer */}
-          <div className="p-3 border-t border-gray-100 bg-white">
+          <div className="p-3 border-t border-slate-800 bg-slate-900">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -257,7 +257,7 @@ export default function SevaMitraChat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about any scheme or need..."
-                className="flex-1 px-4 py-2.5 text-sm rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/40 bg-gray-50"
+                className="flex-1 px-4 py-2.5 text-sm rounded-2xl border border-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/40 bg-slate-950 text-white placeholder-slate-500"
               />
               <Button
                 type="submit"

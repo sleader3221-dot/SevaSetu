@@ -343,11 +343,11 @@ export default function BharatGlobe3D() {
 
     // 12. 60 FPS Render Animation Loop
     let animationFrameId: number;
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const elapsedTime = (performance.now() - startTime) / 1000;
 
       // Gentle auto-rotation focusing on India
       if (autoRotateRef.current && !isDragging) {

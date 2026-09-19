@@ -33,7 +33,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-95 transition-opacity">
+            <Link href="/" prefetch={false} className="flex items-center gap-3 hover:opacity-95 transition-opacity">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-orange-600 flex items-center justify-center text-white shadow-xs">
                 <Landmark className="w-5 h-5" />
               </div>
@@ -49,16 +49,16 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-7">
-            <Link href="/" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
+            <Link href="/" prefetch={false} className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
               Home
             </Link>
-            <Link href="/profile" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
+            <Link href="/profile" prefetch={false} className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
               Find Schemes
             </Link>
-            <Link href="/dashboard" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
+            <Link href="/dashboard" prefetch={false} className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
               My Assessment & Pipeline
             </Link>
-            <Link href="/verify" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors flex items-center gap-1.5">
+            <Link href="/verify" prefetch={false} className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               Document OCR Vault
             </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
 
           <div className="md:hidden flex items-center gap-3">
             <LanguageSelector />
-            <Link href="/profile">
+            <Link href="/profile" prefetch={false}>
               <Button size="sm" className="bg-primary text-white text-xs font-bold px-3">
                 Find Schemes
               </Button>

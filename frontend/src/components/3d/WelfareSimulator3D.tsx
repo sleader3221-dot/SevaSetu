@@ -67,14 +67,14 @@ export default function WelfareSimulator3D() {
   return (
     <div className="w-full max-w-6xl mx-auto my-12">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-primary font-bold text-xs uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 font-bold text-xs uppercase tracking-wider mb-3">
           <Calculator className="w-3.5 h-3.5" />
           Interactive 3D Benefit Simulator
         </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
+        <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
           Calculate Your Direct Statutory Welfare Entitlement
         </h2>
-        <p className="text-sm text-gray-600 mt-2 max-w-xl mx-auto">
+        <p className="text-sm text-slate-400 mt-2 max-w-xl mx-auto">
           Adjust the socioeconomic parameters below to dynamically simulate your family's annual central benefit potential.
         </p>
       </div>
@@ -82,17 +82,17 @@ export default function WelfareSimulator3D() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Left Interactive Control Console (5 Cols) */}
-        <div className="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-sm flex flex-col justify-between space-y-6">
+        <div className="lg:col-span-5 bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl flex flex-col justify-between space-y-6 backdrop-blur-sm">
           <div className="space-y-6">
-            <h3 className="text-sm font-extrabold uppercase tracking-wider text-gray-500 border-b border-gray-100 pb-3">
+            <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-3">
               Parameter Controls
             </h3>
 
             {/* Income Slider */}
             <div>
               <div className="flex justify-between items-center mb-2 text-xs">
-                <span className="font-bold text-gray-700">Annual Household Income:</span>
-                <span className="font-mono font-extrabold text-primary text-sm bg-orange-50 px-2.5 py-0.5 rounded-lg border border-orange-200">
+                <span className="font-bold text-slate-300">Annual Household Income:</span>
+                <span className="font-mono font-extrabold text-orange-400 text-sm bg-orange-500/10 px-2.5 py-0.5 rounded-lg border border-orange-500/30">
                   ₹{income.toLocaleString('en-IN')}
                 </span>
               </div>
@@ -103,9 +103,9 @@ export default function WelfareSimulator3D() {
                 step={25000}
                 value={income}
                 onChange={(e) => setIncome(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
               />
-              <div className="flex justify-between text-[10px] text-gray-400 mt-1 font-mono">
+              <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
                 <span>₹50K (EWS)</span>
                 <span>₹5L</span>
                 <span>₹10L+</span>
@@ -115,8 +115,8 @@ export default function WelfareSimulator3D() {
             {/* Age Slider */}
             <div>
               <div className="flex justify-between items-center mb-2 text-xs">
-                <span className="font-bold text-gray-700">Beneficiary Age:</span>
-                <span className="font-mono font-extrabold text-gray-900 text-sm bg-gray-100 px-2.5 py-0.5 rounded-lg">
+                <span className="font-bold text-slate-300">Beneficiary Age:</span>
+                <span className="font-mono font-extrabold text-white text-sm bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-700">
                   {age} Years
                 </span>
               </div>
@@ -127,13 +127,13 @@ export default function WelfareSimulator3D() {
                 step={1}
                 value={age}
                 onChange={(e) => setAge(Number(e.target.value))}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
               />
             </div>
 
             {/* Occupation Selector */}
             <div>
-              <span className="block text-xs font-bold text-gray-700 mb-2">Primary Occupation:</span>
+              <span className="block text-xs font-bold text-slate-300 mb-2">Primary Occupation:</span>
               <div className="grid grid-cols-3 gap-2 text-xs">
                 {["Student", "Farmer", "Self-employed", "Salaried", "Daily Wage", "Senior Citizen"].map((occ) => (
                   <button
@@ -145,7 +145,7 @@ export default function WelfareSimulator3D() {
                     className={`py-2 px-2.5 rounded-xl font-semibold border text-center transition-all ${
                       occupation === occ
                         ? "bg-primary text-white border-primary shadow-xs"
-                        : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                        : "bg-slate-800/60 text-slate-300 border-slate-700 hover:bg-slate-800"
                     }`}
                   >
                     {occ}
@@ -155,12 +155,12 @@ export default function WelfareSimulator3D() {
             </div>
 
             {/* Gender Toggle */}
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border border-gray-200">
-              <span className="text-xs font-bold text-gray-700">Include Women Empowerment Schemes:</span>
+            <div className="flex items-center justify-between p-3 bg-slate-950/80 rounded-2xl border border-slate-800">
+              <span className="text-xs font-bold text-slate-300">Include Women Empowerment Schemes:</span>
               <button
                 onClick={() => setIsFemale(!isFemale)}
                 className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors ${
-                  isFemale ? "bg-emerald-500" : "bg-gray-300"
+                  isFemale ? "bg-emerald-500" : "bg-slate-800"
                 }`}
               >
                 <div
@@ -172,7 +172,7 @@ export default function WelfareSimulator3D() {
             </div>
           </div>
 
-          <Link href="/profile" className="block w-full pt-2">
+          <Link href="/profile" prefetch={false} className="block w-full pt-2">
             <Button className="w-full bg-primary hover:bg-orange-600 text-white font-bold h-12 rounded-xl text-sm shadow-md">
               Run Full 7-Step Verified Assessment <ArrowRight className="w-4 h-4 ml-1.5" />
             </Button>
@@ -241,7 +241,7 @@ export default function WelfareSimulator3D() {
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   <span>Verified with Ministry Entitlement Ceilings</span>
                 </div>
-                <Link href="/profile" className="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1">
+                <Link href="/profile" prefetch={false} className="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1">
                   Lock in this Benefit Passbook <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

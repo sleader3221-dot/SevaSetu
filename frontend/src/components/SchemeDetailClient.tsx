@@ -98,37 +98,37 @@ export default function SchemeDetailClient({ id }: { id: string }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <span className="ml-4 text-xl text-gray-500 font-medium">Loading scheme details from AWS Cloud...</span>
+        <span className="ml-4 text-xl text-slate-400 font-medium">Loading scheme details from AWS Cloud...</span>
       </div>
     );
   }
 
   if (error || !scheme) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
-        <p className="text-gray-600 mb-6">{error || "Scheme not found"}</p>
-        <Button onClick={() => router.back()}>Go Back</Button>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-slate-100 p-6">
+        <h2 className="text-2xl font-bold text-red-500 mb-4">Error</h2>
+        <p className="text-slate-400 mb-6">{error || "Scheme not found"}</p>
+        <Button onClick={() => router.back()} className="bg-primary hover:bg-orange-600 text-white font-bold">Go Back</Button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <Button variant="ghost" onClick={() => router.back()} className="mb-6 -ml-4 text-gray-600 hover:text-primary">
+        <Button variant="ghost" onClick={() => router.back()} className="mb-6 -ml-4 text-slate-400 hover:text-white hover:bg-slate-900">
           <ArrowLeft className="w-5 h-5 mr-2" /> Back to Results
         </Button>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-orange-50 to-orange-100/50 p-8 border-b border-orange-100">
+        <div className="bg-slate-900/90 rounded-3xl shadow-2xl border border-slate-800 overflow-hidden mb-8 backdrop-blur-sm">
+          <div className="bg-gradient-to-r from-orange-950/40 via-slate-900 to-emerald-950/40 p-8 border-b border-slate-800">
             <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
               <div className="flex flex-wrap gap-2">
                 <Badge className={getCategoryColor(scheme.category)}>{scheme.category}</Badge>
-                <Badge variant="outline" className="bg-white"><Building2 className="w-3 h-3 mr-1" />{scheme.ministry}</Badge>
-                {scheme.deadline && <Badge variant="destructive" className="bg-red-50 text-red-600 border-red-200"><Calendar className="w-3 h-3 mr-1" /> Deadline: {scheme.deadline}</Badge>}
+                <Badge variant="outline" className="bg-slate-800/80 border-slate-700 text-slate-300"><Building2 className="w-3 h-3 mr-1" />{scheme.ministry}</Badge>
+                {scheme.deadline && <Badge variant="destructive" className="bg-red-500/10 text-red-400 border border-red-500/30"><Calendar className="w-3 h-3 mr-1" /> Deadline: {scheme.deadline}</Badge>}
               </div>
 
               {/* Amazon Polly Voice Player */}
@@ -136,7 +136,7 @@ export default function SchemeDetailClient({ id }: { id: string }) {
                 onClick={handlePlayVoice} 
                 disabled={isPlayingAudio}
                 variant="outline"
-                className="bg-white border-orange-200 text-orange-700 hover:bg-orange-50 hover:text-orange-800 shadow-sm font-semibold flex items-center gap-2"
+                className="bg-slate-800/80 border-slate-700 text-orange-400 hover:bg-slate-800 hover:text-orange-300 shadow-sm font-semibold flex items-center gap-2"
               >
                 {isPlayingAudio ? (
                   <>
@@ -152,13 +152,13 @@ export default function SchemeDetailClient({ id }: { id: string }) {
               </Button>
             </div>
             
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">{scheme.name}</h1>
-            <p className="text-xl text-gray-500 mb-6">{scheme.nameHindi}</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">{scheme.name}</h1>
+            <p className="text-xl text-slate-400 mb-6">{scheme.nameHindi}</p>
             
-            <div className="flex items-center gap-3 bg-white w-fit px-5 py-3 rounded-xl shadow-sm border border-orange-100">
+            <div className="flex items-center gap-3 bg-slate-950/80 w-fit px-5 py-3 rounded-xl shadow-sm border border-slate-800">
               <IndianRupee className="w-6 h-6 text-primary" />
               <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">Financial Benefit</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">Financial Benefit</p>
                 <p className="text-xl font-black text-primary">{scheme.benefitValue}</p>
               </div>
             </div>
@@ -166,17 +166,17 @@ export default function SchemeDetailClient({ id }: { id: string }) {
 
           <div className="p-8">
             <div className="mb-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">About the Scheme</h2>
-              <p className="text-gray-700 text-lg leading-relaxed">{scheme.description}</p>
-              <p className="text-gray-700 text-lg leading-relaxed mt-4 font-semibold text-emerald-700 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+              <h2 className="text-2xl font-bold text-white mb-4">About the Scheme</h2>
+              <p className="text-slate-300 text-lg leading-relaxed">{scheme.description}</p>
+              <p className="text-emerald-300 text-base leading-relaxed mt-4 font-semibold bg-emerald-950/40 p-4 rounded-xl border border-emerald-800/60">
                 Key Benefits: {scheme.benefits}
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mb-10">
-              <Card className="border-gray-100 shadow-sm">
-                <CardHeader className="bg-gray-50/50 pb-4 border-b border-gray-50">
-                  <h3 className="font-bold text-lg flex items-center"><CheckCircle2 className="w-5 h-5 mr-2 text-primary" /> Eligibility Checker</h3>
+              <Card className="border-slate-800 bg-slate-900/90 shadow-xl">
+                <CardHeader className="bg-slate-950/60 pb-4 border-b border-slate-800">
+                  <h3 className="font-bold text-lg text-white flex items-center"><CheckCircle2 className="w-5 h-5 mr-2 text-primary" /> Eligibility Checker</h3>
                 </CardHeader>
                 <CardContent className="pt-6">
                   <ul className="space-y-3">
@@ -184,8 +184,8 @@ export default function SchemeDetailClient({ id }: { id: string }) {
                       if (!value) return null;
                       return (
                         <li key={key} className="flex items-start">
-                          <CheckCircle2 className="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-700 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}: <span className="font-semibold">{Array.isArray(value) ? value.join(', ') : value}</span></span>
+                          <CheckCircle2 className="w-5 h-5 mr-3 text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <span className="text-slate-300 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}: <span className="font-semibold text-white">{Array.isArray(value) ? value.join(', ') : value}</span></span>
                         </li>
                       );
                     })}
@@ -193,14 +193,14 @@ export default function SchemeDetailClient({ id }: { id: string }) {
                 </CardContent>
               </Card>
 
-              <Card className="border-gray-100 shadow-sm">
-                <CardHeader className="bg-gray-50/50 pb-4 border-b border-gray-50">
-                  <h3 className="font-bold text-lg flex items-center"><FileText className="w-5 h-5 mr-2 text-primary" /> Required Documents</h3>
+              <Card className="border-slate-800 bg-slate-900/90 shadow-xl">
+                <CardHeader className="bg-slate-950/60 pb-4 border-b border-slate-800">
+                  <h3 className="font-bold text-lg text-white flex items-center"><FileText className="w-5 h-5 mr-2 text-primary" /> Required Documents</h3>
                 </CardHeader>
                 <CardContent className="pt-6">
                   <ul className="space-y-3">
                     {scheme.requiredDocuments?.map((doc, idx) => (
-                      <li key={idx} className="flex items-center text-gray-700">
+                      <li key={idx} className="flex items-center text-slate-300">
                         <div className="w-2 h-2 rounded-full bg-orange-400 mr-3"></div>
                         {doc}
                       </li>
@@ -212,36 +212,36 @@ export default function SchemeDetailClient({ id }: { id: string }) {
 
             <div className="mb-10">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Application Process</h2>
-                <Button onClick={handleGetGuide} disabled={isGuideLoading} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                <h2 className="text-2xl font-bold text-white">Application Process</h2>
+                <Button onClick={handleGetGuide} disabled={isGuideLoading} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
                   {isGuideLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
                   Get AI Guide
                 </Button>
               </div>
 
               {guide && (
-                <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-6 mb-8 text-indigo-900">
-                  <h3 className="font-bold text-lg mb-4 flex items-center">
-                    <Sparkles className="w-5 h-5 mr-2 text-indigo-600" /> AI Personalized Guide
+                <div className="bg-indigo-950/40 border border-indigo-800/60 rounded-xl p-6 mb-8 text-indigo-200">
+                  <h3 className="font-bold text-lg mb-4 flex items-center text-indigo-300">
+                    <Sparkles className="w-5 h-5 mr-2 text-indigo-400" /> AI Personalized Guide
                   </h3>
                   {guide.steps ? (
                     <div className="space-y-3">
                       {guide.steps.map((st: string, idx: number) => (
-                        <div key={idx} className="p-3 bg-white/80 rounded-lg text-sm text-gray-800 border border-indigo-100">
+                        <div key={idx} className="p-3 bg-slate-900/90 rounded-lg text-sm text-slate-200 border border-indigo-900/50">
                           {st}
                         </div>
                       ))}
                       {guide.pro_tips && (
-                        <div className="mt-4 pt-4 border-t border-indigo-200/50 space-y-2">
-                          <p className="font-bold text-xs uppercase tracking-wider text-indigo-700">Pro Tips from AI Agent:</p>
+                        <div className="mt-4 pt-4 border-t border-indigo-800/50 space-y-2">
+                          <p className="font-bold text-xs uppercase tracking-wider text-indigo-400">Pro Tips from AI Agent:</p>
                           {guide.pro_tips.map((tip: string, idx: number) => (
-                            <p key={idx} className="text-xs text-indigo-800">{tip}</p>
+                            <p key={idx} className="text-xs text-slate-300">{tip}</p>
                           ))}
                         </div>
                       )}
                     </div>
                   ) : (
-                    <p className="text-sm">{typeof guide === 'string' ? guide : JSON.stringify(guide)}</p>
+                    <p className="text-sm text-slate-300">{typeof guide === 'string' ? guide : JSON.stringify(guide)}</p>
                   )}
                 </div>
               )}
@@ -249,28 +249,28 @@ export default function SchemeDetailClient({ id }: { id: string }) {
               <div className="space-y-4">
                 {scheme.applicationSteps?.map((step, idx) => (
                   <div key={idx} className="flex gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-100 text-primary flex items-center justify-center font-bold">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center font-bold">
                       {idx + 1}
                     </div>
-                    <div className="pt-1 text-gray-700">{step}</div>
+                    <div className="pt-1 text-slate-300">{step}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Amazon SNS Scheme Alert Notification Card */}
-            <div className="mb-10 p-6 bg-gradient-to-r from-orange-50/70 via-amber-50/50 to-orange-50/70 border border-orange-200/80 rounded-2xl">
-              <div className="flex items-center gap-2 mb-2 text-orange-800">
+            <div className="mb-10 p-6 bg-gradient-to-r from-orange-950/30 via-slate-900 to-amber-950/30 border border-slate-800 rounded-2xl">
+              <div className="flex items-center gap-2 mb-2 text-orange-400">
                 <Bell className="w-5 h-5 text-primary" />
-                <h3 className="font-bold text-lg">Never Miss a Deadline: Get Free Alerts</h3>
+                <h3 className="font-bold text-lg text-white">Never Miss a Deadline: Get Free Alerts</h3>
               </div>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-slate-400 mb-4">
                 Subscribe to receive SMS or Email reminders about application deadlines and fund disbursement status via Amazon SNS.
               </p>
 
               {alertSuccess ? (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm font-medium flex items-center gap-2">
-                  <Check className="w-4 h-4 text-emerald-600" />
+                <div className="p-4 bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 rounded-xl text-sm font-medium flex items-center gap-2">
+                  <Check className="w-4 h-4 text-emerald-400" />
                   {alertSuccess}
                 </div>
               ) : (
@@ -281,12 +281,12 @@ export default function SchemeDetailClient({ id }: { id: string }) {
                     placeholder="Enter email or mobile (+91...)"
                     value={alertDestination}
                     onChange={(e) => setAlertDestination(e.target.value)}
-                    className="flex-1 px-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 bg-white"
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 bg-slate-950 text-white placeholder-slate-500"
                   />
                   <Button 
                     type="submit" 
                     disabled={isSubscribing || !alertDestination}
-                    className="bg-primary hover:bg-orange-600 text-white font-semibold"
+                    className="bg-primary hover:bg-orange-600 text-white font-semibold shadow-md"
                   >
                     {isSubscribing ? (
                       <>
@@ -306,10 +306,10 @@ export default function SchemeDetailClient({ id }: { id: string }) {
 
             {/* Official Helpline Bar if available */}
             {scheme.helpline && (
-              <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-                <div className="flex items-center gap-2.5 text-emerald-900 font-medium">
-                  <Phone className="w-5 h-5 text-emerald-600 shrink-0" />
-                  <span>Official Toll-Free Scheme Helpline: <strong className="font-bold">{scheme.helpline}</strong></span>
+              <div className="mb-6 p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+                <div className="flex items-center gap-2.5 text-emerald-300 font-medium">
+                  <Phone className="w-5 h-5 text-emerald-400 shrink-0" />
+                  <span>Official Toll-Free Scheme Helpline: <strong className="font-bold text-white">{scheme.helpline}</strong></span>
                 </div>
                 <a 
                   href={`tel:${scheme.helpline.split('/')[0].trim()}`}
@@ -320,7 +320,7 @@ export default function SchemeDetailClient({ id }: { id: string }) {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-100">
+            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-800">
               {/* Direct Official Registration Portal */}
               <a 
                 href={scheme.registrationUrl || scheme.portalUrl} 
@@ -342,14 +342,14 @@ export default function SchemeDetailClient({ id }: { id: string }) {
                   rel="noopener noreferrer" 
                   className="flex-1"
                 >
-                  <Button size="lg" variant="outline" className="w-full h-14 text-base font-bold border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 flex items-center justify-center gap-2">
-                    <Video className="w-5 h-5 text-red-600" />
+                  <Button size="lg" variant="outline" className="w-full h-14 text-base font-bold border-red-500/30 bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:border-red-500/50 flex items-center justify-center gap-2">
+                    <Video className="w-5 h-5 text-red-400" />
                     <span>Watch How to Apply Video</span>
                   </Button>
                 </a>
               )}
 
-              <Button size="lg" variant="outline" className="h-14 text-base border-gray-200 hover:bg-gray-50" onClick={() => {
+              <Button size="lg" variant="outline" className="h-14 text-base border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white" onClick={() => {
                 if (navigator.share) {
                   navigator.share({ title: scheme.name, url: window.location.href });
                 } else {

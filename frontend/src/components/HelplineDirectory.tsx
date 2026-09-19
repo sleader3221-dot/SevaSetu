@@ -79,24 +79,24 @@ export default function HelplineDirectory() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 backdrop-blur-sm">
         <div>
-          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
             <PhoneCall className="w-5 h-5 text-primary" />
             National Citizen Welfare Helplines & Grievance Redressal
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-slate-400 mt-1">
             Direct government contact numbers, toll-free portals, and official CPGRAMS dispute resolution channels.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>Verified Government Channels</span>
         </div>
       </div>
 
       {/* CPGRAMS Hero Callout */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white p-6 rounded-2xl shadow-md border border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white p-6 rounded-2xl shadow-xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold text-orange-300">
             <MessageSquareWarning className="w-3.5 h-3.5 text-orange-400" />
@@ -115,7 +115,7 @@ export default function HelplineDirectory() {
           rel="noopener noreferrer"
           className="whitespace-nowrap"
         >
-          <Button className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-5 py-5 rounded-xl shadow-lg">
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-5 py-5 rounded-xl shadow-lg shadow-orange-500/20">
             Lodge Grievance on CPGRAMS <ExternalLink className="w-3.5 h-3.5 ml-2" />
           </Button>
         </a>
@@ -124,42 +124,42 @@ export default function HelplineDirectory() {
       {/* Helplines Directory Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {helplines.map((hl, idx) => (
-          <Card key={idx} className="p-5 border border-gray-200 bg-white hover:border-gray-300 flex flex-col justify-between">
+          <Card key={idx} className="p-5 border border-slate-800 bg-slate-900/90 hover:border-slate-700 transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-start justify-between gap-2">
-                <Badge variant="secondary" className="text-[10px] font-bold">
+                <Badge variant="secondary" className="text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
                   {hl.category}
                 </Badge>
                 {hl.isTollFree && (
-                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
                     Toll-Free
                   </span>
                 )}
               </div>
 
               <div>
-                <h4 className="font-bold text-sm text-gray-900 leading-snug">{hl.name}</h4>
-                <p className="text-[11px] text-gray-500 mt-0.5">{hl.scheme}</p>
+                <h4 className="font-bold text-sm text-white leading-snug">{hl.name}</h4>
+                <p className="text-[11px] text-slate-400 mt-0.5">{hl.scheme}</p>
               </div>
 
               {/* Number Pill */}
-              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between">
-                <span className="text-xs text-gray-500">Call:</span>
-                <span className="font-mono font-bold text-base text-gray-900 tracking-wide">{hl.number}</span>
+              <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-xs text-slate-400">Call:</span>
+                <span className="font-mono font-bold text-base text-orange-400 tracking-wide">{hl.number}</span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
-                <Clock className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                <Clock className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
                 <span>{hl.timings}</span>
               </div>
             </div>
 
-            <div className="pt-3 mt-3 border-t border-gray-100 flex justify-end">
+            <div className="pt-3 mt-3 border-t border-slate-800 flex justify-end">
               <a
                 href={hl.officialLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-primary hover:text-orange-400 hover:underline flex items-center gap-1"
               >
                 Official Portal <ExternalLink className="w-3 h-3" />
               </a>

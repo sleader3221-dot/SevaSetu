@@ -101,27 +101,27 @@ export default function DocumentReadiness() {
   return (
     <div className="space-y-6">
       {/* Overview Card */}
-      <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+      <div className="bg-slate-900/90 p-6 rounded-2xl border border-slate-800 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6 backdrop-blur-sm">
         <div>
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-primary" />
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-white">
               Citizen Document Readiness & Deficiency Audit
             </h2>
           </div>
-          <p className="text-sm text-gray-600 mt-1 max-w-2xl">
+          <p className="text-sm text-slate-400 mt-1 max-w-2xl">
             Most welfare applications are delayed or rejected due to missing or mismatched documents. 
             Ensure your statutory identity and economic records are ready for 1-click filing.
           </p>
         </div>
 
-        <div className="flex flex-col sm:items-end bg-gray-50 p-4 rounded-xl border border-gray-100 min-w-[200px]">
-          <span className="text-xs font-semibold text-gray-500 uppercase">Application Readiness</span>
+        <div className="flex flex-col sm:items-end bg-slate-950/80 p-4 rounded-xl border border-slate-800 min-w-[200px]">
+          <span className="text-xs font-semibold text-slate-400 uppercase">Application Readiness</span>
           <div className="flex items-baseline gap-2 mt-1">
-            <span className="text-2xl font-black text-gray-900">{readinessPercent}%</span>
-            <span className="text-xs text-gray-500 font-medium">({readyCount}/{documents.length} verified)</span>
+            <span className="text-2xl font-black text-white">{readinessPercent}%</span>
+            <span className="text-xs text-slate-400 font-medium">({readyCount}/{documents.length} verified)</span>
           </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full mt-2 overflow-hidden">
+          <div className="w-full h-2 bg-slate-800 rounded-full mt-2 overflow-hidden">
             <div 
               className={`h-full transition-all duration-500 ${readinessPercent >= 70 ? "bg-emerald-500" : readinessPercent >= 40 ? "bg-amber-500" : "bg-red-500"}`}
               style={{ width: `${readinessPercent}%` }}
@@ -131,14 +131,14 @@ export default function DocumentReadiness() {
       </div>
 
       {/* Action Prompt */}
-      <div className="p-4 bg-blue-50/70 border border-blue-100 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2 text-blue-900">
-          <HelpCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
+      <div className="p-4 bg-blue-950/40 border border-blue-800/60 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-blue-200">
+          <HelpCircle className="w-4 h-4 text-blue-400 flex-shrink-0" />
           <span>
             Need automated document validation? Test your certificates against Amazon Textract OCR in our live verification vault.
           </span>
         </div>
-        <Link href="/verify">
+        <Link href="/verify" prefetch={false}>
           <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-xs">
             Open OCR Vault <ArrowRight className="w-3.5 h-3.5 ml-1" />
           </Button>
@@ -148,58 +148,58 @@ export default function DocumentReadiness() {
       {/* Document Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {documents.map((doc) => (
-          <Card key={doc.id} className="p-5 border border-gray-200 bg-white hover:border-gray-300 transition-all flex flex-col justify-between">
+          <Card key={doc.id} className="p-5 border border-slate-800 bg-slate-900/90 hover:border-slate-700 transition-all flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-bold text-sm text-gray-900 leading-snug">{doc.name}</h3>
-                  <p className="text-[11px] text-gray-500">{doc.authority}</p>
+                  <h3 className="font-bold text-sm text-white leading-snug">{doc.name}</h3>
+                  <p className="text-[11px] text-slate-400">{doc.authority}</p>
                 </div>
                 <Badge
                   variant="outline"
                   className={`text-[10px] uppercase font-bold tracking-wider ${
                     doc.importance === "Mandatory" 
-                      ? "border-red-200 bg-red-50 text-red-700" 
+                      ? "border-red-500/30 bg-red-500/10 text-red-400" 
                       : doc.importance === "Conditional"
-                      ? "border-amber-200 bg-amber-50 text-amber-700"
-                      : "border-gray-200 bg-gray-50 text-gray-600"
+                      ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
+                      : "border-slate-700 bg-slate-800 text-slate-400"
                   }`}
                 >
                   {doc.importance}
                 </Badge>
               </div>
 
-              <p className="text-xs text-gray-600 leading-relaxed bg-gray-50/80 p-2.5 rounded-lg border border-gray-100">
+              <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/80 p-2.5 rounded-lg border border-slate-800">
                 {doc.purpose}
               </p>
 
               {/* Status Switcher */}
               <div className="flex items-center justify-between pt-1">
-                <span className="text-xs text-gray-500">Citizen Readiness:</span>
+                <span className="text-xs text-slate-400">Citizen Readiness:</span>
                 <button
                   onClick={() => toggleStatus(doc.id)}
                   className={`px-3 py-1 rounded-full text-xs font-bold border transition-colors flex items-center gap-1.5 ${
                     doc.status === "Verified via OCR"
-                      ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                       : doc.status === "Ready"
-                      ? "bg-blue-50 text-blue-800 border-blue-200"
-                      : "bg-red-50 text-red-700 border-red-200"
+                      ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                      : "bg-red-500/10 text-red-400 border-red-500/30"
                   }`}
                   title="Click to cycle status"
                 >
                   {doc.status === "Verified via OCR" ? (
                     <>
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                       Verified via OCR
                     </>
                   ) : doc.status === "Ready" ? (
                     <>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
                       Document Ready
                     </>
                   ) : (
                     <>
-                      <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
+                      <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
                       Missing / Required
                     </>
                   )}
@@ -208,13 +208,13 @@ export default function DocumentReadiness() {
             </div>
 
             {/* Official Portal Link */}
-            <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-[11px]">
-              <span className="text-gray-400">Official Issuance:</span>
+            <div className="pt-3 mt-3 border-t border-slate-800 flex items-center justify-between text-[11px]">
+              <span className="text-slate-500">Official Issuance:</span>
               <a
                 href={doc.officialPortal}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-primary hover:underline flex items-center gap-1"
+                className="font-semibold text-primary hover:text-orange-400 hover:underline flex items-center gap-1"
               >
                 {doc.portalName} <ExternalLink className="w-3 h-3" />
               </a>
@@ -224,7 +224,7 @@ export default function DocumentReadiness() {
       </div>
 
       {/* DigiLocker Callout */}
-      <div className="p-4 rounded-2xl bg-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center font-bold text-lg text-primary">
             DL

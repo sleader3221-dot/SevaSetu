@@ -29,17 +29,19 @@ export default function SchemeCard({
       transition={{ duration: 0.2 }}
       className="h-full"
     >
-      <Card className={`h-full flex flex-col hover:shadow-lg transition-all bg-white overflow-hidden ${
-        isSelectedForCompare ? "border-2 border-primary ring-2 ring-primary/20" : "border-orange-100"
+      <Card className={`h-full flex flex-col transition-all rounded-3xl overflow-hidden bg-slate-900/90 backdrop-blur-xl border ${
+        isSelectedForCompare 
+          ? "border-primary ring-2 ring-primary/40 shadow-xl shadow-orange-500/10" 
+          : "border-slate-800 hover:border-orange-500/50 hover:shadow-2xl hover:shadow-orange-500/10"
       }`}>
-        <CardHeader className="pb-3 border-b border-gray-50 bg-orange-50/30">
+        <CardHeader className="pb-3.5 border-b border-slate-800/80 bg-slate-950/60">
           <div className="flex justify-between items-start gap-4">
             <div>
-              <h3 className="font-bold text-lg text-gray-900 leading-tight mb-1">{scheme.name}</h3>
-              <p className="text-sm text-gray-500 mb-3">{scheme.nameHindi}</p>
+              <h3 className="font-bold text-lg text-white leading-tight mb-1">{scheme.name}</h3>
+              <p className="text-xs sm:text-sm text-orange-400 font-medium mb-3">{scheme.nameHindi}</p>
               <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="bg-white border-gray-200 text-gray-600 flex items-center gap-1">
-                  <Landmark className="w-3 h-3" />
+                <Badge variant="outline" className="bg-slate-800/80 border-slate-700 text-slate-300 flex items-center gap-1 text-[11px]">
+                  <Landmark className="w-3 h-3 text-orange-400" />
                   {scheme.ministry}
                 </Badge>
                 <Badge className={getCategoryColor(scheme.category)} variant="secondary">
@@ -47,50 +49,52 @@ export default function SchemeCard({
                 </Badge>
               </div>
             </div>
-            <div className="flex-shrink-0 bg-white rounded-full shadow-sm p-1">
+            <div className="flex-shrink-0 bg-slate-950 rounded-full border border-slate-800 p-1 shadow-inner">
               <EligibilityRing score={eligibilityScore} size={54} strokeWidth={5} />
             </div>
           </div>
         </CardHeader>
         
-        <CardContent className="pt-4 flex-grow space-y-3">
+        <CardContent className="pt-4 flex-grow space-y-3.5">
           <div className="flex items-center justify-between">
             <div>
-              <span className="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Financial Benefit</span>
-              <span className="text-xl font-black text-primary">{scheme.benefitValue}</span>
+              <span className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5">Financial Benefit</span>
+              <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-emerald-400">
+                {scheme.benefitValue}
+              </span>
             </div>
             {scheme.helpline && (
               <a 
                 href={`tel:${scheme.helpline.split('/')[0].trim()}`}
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 transition-colors"
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30 transition-colors"
                 title="Official Helpline"
               >
-                <Phone className="w-3 h-3 text-emerald-600" />
+                <Phone className="w-3 h-3 text-emerald-400" />
                 <span>{scheme.helpline.split('/')[0].trim()}</span>
               </a>
             )}
           </div>
-          <p className="text-gray-600 text-xs sm:text-sm line-clamp-2 leading-relaxed">{scheme.description}</p>
+          <p className="text-slate-300 text-xs sm:text-sm line-clamp-2 leading-relaxed">{scheme.description}</p>
 
           {/* Quick Help Strip: YouTube Guide & Direct Portal Notice */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 text-[11px]">
+          <div className="pt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-slate-800/80 text-[11px]">
             {scheme.youtubeGuideUrl ? (
               <a 
                 href={scheme.youtubeGuideUrl} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md transition-colors"
+                className="inline-flex items-center gap-1.5 font-bold text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-2 py-1 rounded-md border border-red-500/30 transition-colors"
               >
-                <Video className="w-3.5 h-3.5 text-red-600" />
+                <Video className="w-3.5 h-3.5 text-red-400" />
                 <span>How to Apply (Video)</span>
               </a>
             ) : <span />}
             
-            <span className="text-slate-400 text-[10px] font-medium">Official Govt Source</span>
+            <span className="text-slate-500 text-[10px] font-medium">Official Government Source</span>
           </div>
         </CardContent>
 
-        <CardFooter className="pt-2 pb-4 flex flex-col gap-2 bg-slate-50/50 border-t border-gray-100">
+        <CardFooter className="pt-3 pb-4 flex flex-col gap-2 bg-slate-950/80 border-t border-slate-800/80">
           <div className="flex flex-col sm:flex-row items-center gap-2 w-full">
             {/* Direct Official Registration Portal Button */}
             <a 
@@ -99,15 +103,15 @@ export default function SchemeCard({
               rel="noopener noreferrer" 
               className="w-full sm:flex-1"
             >
-              <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm flex items-center justify-center gap-1.5">
+              <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-900/30 flex items-center justify-center gap-1.5 rounded-xl cursor-pointer">
                 <span>Apply / Register</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </Button>
             </a>
 
             <div className="flex items-center gap-1.5 w-full sm:w-auto">
-              <Link href={`/scheme/${scheme.id}`} className="flex-1 sm:flex-initial">
-                <Button variant="outline" size="sm" className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-colors text-xs font-bold px-3">
+              <Link href={`/scheme/${scheme.id}`} prefetch={false} className="flex-1 sm:flex-initial">
+                <Button variant="outline" size="sm" className="w-full border-slate-700 text-slate-200 hover:bg-slate-800 hover:text-white transition-colors text-xs font-bold px-3 rounded-xl cursor-pointer">
                   Details
                   <ArrowRight className="w-3 h-3 ml-1" />
                 </Button>
@@ -117,10 +121,10 @@ export default function SchemeCard({
                   variant={isSelectedForCompare ? "default" : "secondary"}
                   size="sm"
                   onClick={() => onToggleCompare(scheme.id)}
-                  className={`text-xs font-medium px-2.5 ${
+                  className={`text-xs font-medium px-2.5 rounded-xl cursor-pointer ${
                     isSelectedForCompare 
                       ? "bg-primary text-white hover:bg-orange-600" 
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700"
                   }`}
                 >
                   {isSelectedForCompare ? "✓" : "+"}

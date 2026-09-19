@@ -71,7 +71,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Statue of Unity & Sabarmati",
     landmarkHindi: "स्टैच्यू ऑफ यूनिटी",
     landmarkCity: "Kevadia",
-    bgUrl: "https://images.unsplash.com/photo-1609743522653-52354461cf27?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
   },
   "Rajasthan": {
@@ -89,7 +89,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Vidhana Soudha & Mysore Palace",
     landmarkHindi: "विधान सौध",
     landmarkCity: "Bengaluru",
-    bgUrl: "https://images.unsplash.com/photo-1600100397608-f010f445b9b4?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-indigo-950/90 via-slate-950/85 to-black/95"
   },
   "Tamil Nadu": {
@@ -116,7 +116,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Sri Harmandir Sahib (Golden Temple)",
     landmarkHindi: "स्वर्ण मंदिर",
     landmarkCity: "Amritsar",
-    bgUrl: "https://images.unsplash.com/photo-1588096344356-9b5a882a201c?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-yellow-950/90 via-slate-950/85 to-black/95"
   },
   "Kerala": {
@@ -134,7 +134,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Great Stupa of Sanchi & Khajuraho",
     landmarkHindi: "सांची स्तूप",
     landmarkCity: "Sanchi",
-    bgUrl: "https://images.unsplash.com/photo-1628172909886-f6d2f928f6f5?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
   },
   "Bihar": {
@@ -179,7 +179,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Kaziranga National Park & Brahmaputra",
     landmarkHindi: "काजीरंगा",
     landmarkCity: "Guwahati",
-    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
   },
   "Himachal Pradesh": {
@@ -188,7 +188,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Rohtang Pass & Himalayan Snowfields",
     landmarkHindi: "रोहतांग दर्रा",
     landmarkCity: "Manali",
-    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-sky-950/90 via-slate-950/85 to-black/95"
   },
   "Uttarakhand": {
@@ -242,7 +242,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Chitrakote Waterfalls & Bastar Heritage",
     landmarkHindi: "चित्रकूट जलप्रपात",
     landmarkCity: "Bastar",
-    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
   },
   "Ladakh": {
@@ -260,7 +260,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Rumtek Monastery & Kanchenjunga",
     landmarkHindi: "रुमटेक मठ",
     landmarkCity: "Gangtok",
-    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-teal-950/90 via-slate-950/85 to-black/95"
   },
   "Meghalaya": {
@@ -278,7 +278,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Loktak Floating Lake & Kangla Fort",
     landmarkHindi: "लोकटक झील",
     landmarkCity: "Imphal",
-    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-blue-950/90 via-slate-950/85 to-black/95"
   },
   "Tripura": {
@@ -287,7 +287,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Ujjayanta Palace & Neermahal",
     landmarkHindi: "उज्जयंत पैलेस",
     landmarkCity: "Agartala",
-    bgUrl: "https://images.unsplash.com/photo-1600100397608-f010f445b9b4?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
   },
   "Mizoram": {
@@ -296,7 +296,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Vantawng Falls & Blue Mountains",
     landmarkHindi: "वानतावांग जलप्रपात",
     landmarkCity: "Aizawl",
-    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
   },
   "Nagaland": {
@@ -305,7 +305,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Dzukou Valley & Hornbill Heritage",
     landmarkHindi: "द्ज़ुको घाटी",
     landmarkCity: "Kohima",
-    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-green-950/90 via-slate-950/85 to-black/95"
   },
   "Arunachal Pradesh": {
@@ -323,7 +323,7 @@ const STATE_LANDMARKS: Record<string, StateLandmark> = {
     landmark: "Rock Garden & Capitol Complex",
     landmarkHindi: "रॉक गार्डन",
     landmarkCity: "Chandigarh",
-    bgUrl: "https://images.unsplash.com/photo-1588096344356-9b5a882a201c?q=80&w=1600&auto=format&fit=crop",
+    bgUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop",
     themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
   },
   "Puducherry": {
@@ -472,13 +472,17 @@ export default function ProfileWizard() {
     <div className="relative w-full">
       {/* 🌆 FULL-SCREEN DYNAMIC STATE LANDMARK BACKGROUND - Vivid and Visible */}
       <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none">
-        <div 
+        <img 
           key={activeLandmark.name}
-          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-out transform scale-105"
-          style={{ backgroundImage: `url(${activeLandmark.bgUrl})` }}
+          src={activeLandmark.bgUrl}
+          alt={activeLandmark.landmark}
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out transform scale-105"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = DEFAULT_LANDMARK.bgUrl;
+          }}
         />
         {/* Crystal clear translucent dark scrim so the landmark architecture is unmistakably visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/25 via-slate-950/35 to-slate-950/65" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/35 to-slate-950/65" />
       </div>
 
       {/* Content Layer with z-10 */}
@@ -486,12 +490,15 @@ export default function ProfileWizard() {
         {/* 🏛️ Prominent Global Landmark Status Banner with Photo Preview */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:px-5 rounded-2xl bg-black/75 backdrop-blur-md border border-white/25 mb-6 shadow-2xl">
           <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
-            {/* Landmark Photo Thumbnail */}
+            {/* Landmark Photo Thumbnail with onError recovery */}
             <div className="w-10 h-10 rounded-xl overflow-hidden border border-orange-400/50 shadow-md shrink-0 bg-slate-800">
               <img 
                 src={activeLandmark.bgUrl} 
                 alt={activeLandmark.landmark} 
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = DEFAULT_LANDMARK.bgUrl;
+                }}
               />
             </div>
             <div>

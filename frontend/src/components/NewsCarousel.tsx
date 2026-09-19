@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Newspaper, ChevronLeft, ChevronRight, ExternalLink, 
-  Sparkles, Wheat, HeartPulse, GraduationCap, Users, Home, Hammer, ShieldCheck 
+  Sparkles, Clock
 } from "lucide-react";
 
 interface NewsItem {
@@ -124,41 +124,68 @@ export default function NewsCarousel() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [itemsPerView, setItemsPerView] = useState(3);
+  const [progressKey, setProgressKey] = useState(0);
 
   const filteredItems = selectedCategory === "All" 
     ? NEWS_ITEMS 
     : NEWS_ITEMS.filter(item => item.category === selectedCategory);
 
-  // Auto-swipe interval
+  // Responsive items per view detector
   useEffect(() => {
-    if (isPaused || filteredItems.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % filteredItems.length);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, [isPaused, filteredItems.length]);
+    const updateView = () => {
+      if (window.innerWidth < 640) setItemsPerView(1);
+      else if (window.innerWidth < 1024) setItemsPerView(2);
+      else setItemsPerView(3);
+    };
+    updateView();
+    window.addEventListener("resize", updateView);
+    return () => window.removeEventListener("resize", updateView);
+  }, []);
 
-  // Reset index on category change
+  const maxIndex = Math.max(0, filteredItems.length - itemsPerView);
+
+  // Auto-scroll every exactly 5 seconds (5000ms)
+  useEffect(() => {
+    if (isPaused || filteredItems.length <= itemsPerView) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => {
+        const next = prev >= maxIndex ? 0 : prev + 1;
+        return next;
+      });
+      setProgressKey(prev => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, filteredItems.length, itemsPerView, maxIndex]);
+
+  // Reset index when category changes
   useEffect(() => {
     setCurrentIndex(0);
+    setProgressKey(prev => prev + 1);
   }, [selectedCategory]);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % filteredItems.length);
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    setProgressKey(prev => prev + 1);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + filteredItems.length) % filteredItems.length);
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+    setProgressKey(prev => prev + 1);
   };
+
+  const stepPercent = 100 / itemsPerView;
 
   return (
     <div className="w-full">
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] font-bold uppercase tracking-wider mb-2">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-            Live Press Information Bureau & Official Portals
+            Official Government Portals • Auto Updates (5s)
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
             <Newspaper className="w-6 h-6 text-primary" />
@@ -169,7 +196,7 @@ export default function NewsCarousel() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end md:self-auto">
           <button 
             onClick={prevSlide}
             aria-label="Previous Announcement"
@@ -188,7 +215,7 @@ export default function NewsCarousel() {
       </div>
 
       {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-2 no-scrollbar">
+      <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 no-scrollbar">
         {CATEGORIES.map((cat) => (
           <button
             key={cat}
@@ -204,20 +231,33 @@ export default function NewsCarousel() {
         ))}
       </div>
 
-      {/* Swiping Carousel Card Deck */}
+      {/* 5-Second Animated Progress Bar Indicator */}
+      <div className="w-full h-1 bg-slate-800/80 rounded-full overflow-hidden mb-4">
+        <div 
+          key={progressKey}
+          className="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-emerald-400 rounded-full transition-all duration-[5000ms] ease-linear"
+          style={{ width: isPaused ? "0%" : "100%" }}
+        />
+      </div>
+
+      {/* Smooth Carousel Track with 1-card precision steps */}
       <div 
         className="relative overflow-hidden rounded-3xl"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
         <div 
-          className="flex transition-transform duration-700 ease-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          className="flex transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1)"
+          style={{ transform: `translateX(-${currentIndex * stepPercent}%)` }}
         >
           {filteredItems.map((item) => (
-            <div key={item.id} className="min-w-full md:min-w-[50%] lg:min-w-[33.333%] p-2.5 shrink-0">
+            <div 
+              key={item.id} 
+              style={{ width: `${stepPercent}%` }}
+              className="p-2.5 shrink-0"
+            >
               <div className="h-full rounded-3xl p-[1px] bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 hover:from-orange-500 hover:via-amber-500 hover:to-emerald-500 transition-all duration-300 group shadow-xl">
-                <div className={`h-full bg-slate-950 rounded-[23px] p-6 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br ${item.gradient}`}>
+                <div className={`h-full min-h-[260px] bg-slate-950 rounded-[23px] p-6 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br ${item.gradient}`}>
                   
                   {/* Top Badges */}
                   <div>
@@ -237,7 +277,7 @@ export default function NewsCarousel() {
                       {item.hindiTitle}
                     </p>
 
-                    <p className="text-xs sm:text-sm text-slate-300 line-clamp-3 leading-relaxed mb-6">
+                    <p className="text-xs sm:text-sm text-slate-300 line-clamp-3 leading-relaxed mb-4">
                       {item.description}
                     </p>
                   </div>
@@ -266,12 +306,15 @@ export default function NewsCarousel() {
         </div>
       </div>
 
-      {/* Pagination Dots */}
+      {/* Dot Indicators */}
       <div className="flex items-center justify-center gap-2 mt-4">
-        {filteredItems.map((_, i) => (
+        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentIndex(i)}
+            onClick={() => {
+              setCurrentIndex(i);
+              setProgressKey(prev => prev + 1);
+            }}
             aria-label={`Go to slide ${i + 1}`}
             className={`h-1.5 rounded-full transition-all cursor-pointer ${
               currentIndex === i 

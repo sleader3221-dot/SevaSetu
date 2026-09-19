@@ -9,7 +9,7 @@ import DocumentReadiness from "@/components/DocumentReadiness";
 import HelplineDirectory from "@/components/HelplineDirectory";
 import { 
   Loader2, Award, FileText, CheckCircle, ShieldCheck, 
-  ArrowRight, Landmark, Layers, PhoneCall, CheckCircle2 
+  ArrowRight, Landmark, Layers, PhoneCall, CheckCircle2, Sparkles 
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { findSchemes, generatePassbook } from "@/lib/api-client";
@@ -79,23 +79,25 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-        <h2 className="text-xl font-bold text-gray-800">Processing Statutory Welfare Assessment...</h2>
-        <p className="text-gray-500 text-sm mt-1">Cross-referencing citizen profile with 30+ central and state scheme guidelines</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-slate-100">
+        <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center mb-4">
+          <Loader2 className="w-7 h-7 text-primary animate-spin" />
+        </div>
+        <h2 className="text-xl sm:text-2xl font-black text-white">Processing Statutory Welfare Assessment...</h2>
+        <p className="text-slate-400 text-xs sm:text-sm mt-1">Cross-referencing citizen profile with 30+ central and state scheme guidelines</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
-        <div className="bg-white p-8 rounded-2xl border border-red-200 max-w-md w-full text-center shadow-sm">
-          <h2 className="text-xl font-bold text-red-600 mb-2">Assessment Unavailable</h2>
-          <p className="text-gray-600 text-sm mb-6">{error}</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 text-slate-100 p-4">
+        <div className="bg-slate-900 p-8 rounded-3xl border border-red-500/30 max-w-md w-full text-center shadow-2xl">
+          <h2 className="text-xl font-bold text-red-400 mb-2">Assessment Unavailable</h2>
+          <p className="text-slate-400 text-sm mb-6">{error}</p>
           <Button 
             onClick={() => window.location.reload()} 
-            className="w-full bg-primary hover:bg-orange-600 text-white"
+            className="w-full bg-primary hover:bg-orange-600 text-white rounded-xl h-11 font-bold cursor-pointer"
           >
             Retry Connection
           </Button>
@@ -105,27 +107,34 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Ambient Glows */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-20 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
         
         {/* Executive Government Header & Summary Card */}
-        <div className="bg-white rounded-2xl border border-gray-200/90 shadow-sm p-6 sm:p-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-gray-100">
+        <div className="bg-slate-900/90 rounded-3xl border border-slate-800 shadow-2xl p-6 sm:p-8 backdrop-blur-xl">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-slate-800">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-primary bg-orange-50 px-2.5 py-1 rounded border border-orange-200">
+                <span className="text-[11px] font-black uppercase tracking-widest text-orange-400 bg-orange-500/10 px-3 py-1 rounded-lg border border-orange-500/30">
                   Government of India • SevaSetu
                 </span>
-                <span className="text-xs text-gray-400">•</span>
-                <span className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
+                <span className="text-xs text-slate-600">•</span>
+                <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" /> Direct Benefit Verification
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
                 Statutory Welfare Entitlement Assessment
               </h1>
-              <p className="text-sm text-gray-600 mt-1">
-                Verified eligibility across <strong className="text-gray-900">{totalSchemes} welfare programs</strong> with estimated entitlement ceilings of <strong className="text-primary font-bold">{formatCurrency(totalValue)}/year</strong>.
+              <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
+                Verified eligibility across <strong className="text-white">{totalSchemes} welfare programs</strong> with estimated entitlement ceilings of{" "}
+                <strong className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-emerald-400 font-extrabold text-base sm:text-lg">
+                  {formatCurrency(totalValue)}/year
+                </strong>.
               </p>
             </div>
 
@@ -133,17 +142,17 @@ export default function Dashboard() {
             <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
               <Button
                 onClick={handleOpenPassbook}
-                className="bg-primary hover:bg-orange-600 text-white font-bold text-xs h-11 px-5 rounded-xl shadow-sm flex items-center gap-2"
+                className="bg-primary hover:bg-orange-600 text-white font-bold text-xs h-11 px-5 rounded-xl shadow-lg shadow-orange-500/20 flex items-center gap-2 cursor-pointer"
               >
                 <Award className="w-4 h-4 text-white" />
                 <span>View Citizen Passbook</span>
               </Button>
-              <Link href="/verify">
+              <Link href="/verify" prefetch={false}>
                 <Button
                   variant="outline"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 text-xs h-11 px-4 rounded-xl flex items-center gap-1.5"
+                  className="border-slate-700 bg-slate-800/80 text-slate-200 hover:bg-slate-700 hover:text-white text-xs h-11 px-4 rounded-xl flex items-center gap-1.5 cursor-pointer"
                 >
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   <span>OCR Document Vault</span>
                 </Button>
               </Link>
@@ -153,37 +162,37 @@ export default function Dashboard() {
           {/* Citizen Demographics Strip */}
           {profile && (
             <div className="pt-5 flex flex-wrap items-center justify-between gap-4 text-xs">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-gray-400 font-semibold uppercase tracking-wider">Citizen Profile:</span>
-                <span className="bg-gray-100 text-gray-800 font-semibold px-2.5 py-1 rounded-md">
-                  State: {profile.state}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-slate-400 font-bold uppercase tracking-wider text-[11px]">Citizen Profile:</span>
+                <span className="bg-slate-800/90 border border-slate-700 text-slate-200 font-semibold px-3 py-1 rounded-xl">
+                  State: <strong className="text-white">{profile.state}</strong>
                 </span>
-                <span className="bg-gray-100 text-gray-800 font-semibold px-2.5 py-1 rounded-md">
-                  Occupation: {profile.occupation}
+                <span className="bg-slate-800/90 border border-slate-700 text-slate-200 font-semibold px-3 py-1 rounded-xl">
+                  Occupation: <strong className="text-white">{profile.occupation}</strong>
                 </span>
-                <span className="bg-gray-100 text-gray-800 font-semibold px-2.5 py-1 rounded-md">
-                  Category: {profile.category}
+                <span className="bg-slate-800/90 border border-slate-700 text-slate-200 font-semibold px-3 py-1 rounded-xl">
+                  Category: <strong className="text-white">{profile.category}</strong>
                 </span>
-                <span className="bg-gray-100 text-gray-800 font-semibold px-2.5 py-1 rounded-md">
-                  Income: ₹{profile.annualIncome.toLocaleString('en-IN')}/yr
+                <span className="bg-slate-800/90 border border-slate-700 text-slate-200 font-semibold px-3 py-1 rounded-xl">
+                  Income: <strong className="text-emerald-400">₹{profile.annualIncome ? profile.annualIncome.toLocaleString('en-IN') : 0}/yr</strong>
                 </span>
               </div>
-              <Link href="/profile" className="text-primary hover:underline font-semibold text-xs">
-                Modify Profile Parameters
+              <Link href="/profile" prefetch={false} className="text-orange-400 hover:text-orange-300 hover:underline font-bold text-xs flex items-center gap-1">
+                Modify Profile Parameters <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
           )}
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-slate-800">
           <nav className="flex space-x-2 sm:space-x-8 overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab("schemes")}
-              className={`py-3 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === "schemes"
                   ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
               }`}
             >
               <Landmark className="w-4 h-4" />
@@ -191,10 +200,10 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => setActiveTab("tracker")}
-              className={`py-3 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === "tracker"
                   ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
               }`}
             >
               <Layers className="w-4 h-4" />
@@ -202,10 +211,10 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => setActiveTab("documents")}
-              className={`py-3 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === "documents"
                   ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
               }`}
             >
               <FileText className="w-4 h-4" />
@@ -213,10 +222,10 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => setActiveTab("helplines")}
-              className={`py-3 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === "helplines"
                   ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
               }`}
             >
               <PhoneCall className="w-4 h-4" />
@@ -228,10 +237,10 @@ export default function Dashboard() {
         {/* Tab Content Display */}
         {activeTab === "schemes" && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center justify-between text-xs text-slate-400">
               <span>Showing all government schemes matching verified demographic parameters</span>
               <span className="flex items-center gap-1.5 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 Amazon DynamoDB Live Catalog (30 Schemes)
               </span>
             </div>

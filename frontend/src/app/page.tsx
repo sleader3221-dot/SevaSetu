@@ -46,13 +46,13 @@ export default function Home() {
               
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Link href="/profile">
+                <Link href="/profile" prefetch={false}>
                   <Button size="lg" className="w-full sm:w-auto h-13 px-8 text-base font-bold bg-gradient-to-r from-primary to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-2xl shadow-xl shadow-orange-500/20 transition-all hover:scale-105">
                     Initiate Eligibility Assessment <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
 
-                <Link href="/verify">
+                <Link href="/verify" prefetch={false}>
                   <Button size="lg" variant="outline" className="w-full sm:w-auto h-13 px-7 text-base font-semibold border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 rounded-2xl backdrop-blur-md">
                     <ShieldCheck className="mr-2 w-5 h-5 text-emerald-400" />
                     OCR Document Vault
@@ -231,9 +231,9 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-wrap gap-5 text-xs font-semibold text-slate-300">
-              <Link href="/profile" className="hover:text-white">Scheme Finder</Link>
-              <Link href="/dashboard" className="hover:text-white">Citizen Dashboard</Link>
-              <Link href="/verify" className="hover:text-white">OCR Vault</Link>
+              <Link href="/profile" prefetch={false} className="hover:text-white">Scheme Finder</Link>
+              <Link href="/dashboard" prefetch={false} className="hover:text-white">Citizen Dashboard</Link>
+              <Link href="/verify" prefetch={false} className="hover:text-white">OCR Vault</Link>
               <a href="https://pgportal.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white">CPGRAMS Grievance</a>
             </div>
           </div>

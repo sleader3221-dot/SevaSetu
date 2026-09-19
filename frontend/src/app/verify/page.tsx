@@ -58,45 +58,45 @@ export default function VerifyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-semibold mb-4">
             <ShieldCheck className="w-4 h-4" /> Powered by Amazon Textract & Amazon S3
           </div>
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">AI Document Verification Vault</h1>
-          <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-extrabold text-white tracking-tight">AI Document Verification Vault</h1>
+          <p className="mt-3 text-lg text-slate-400 max-w-2xl mx-auto">
             Upload your Aadhaar, Income, or Caste certificate. Our AWS Textract OCR extracts key details securely and verifies your welfare eligibility automatically.
           </p>
         </div>
 
         {/* Quick Sample Selector */}
-        <div className="mb-6 p-4 bg-white rounded-2xl border border-gray-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-sm font-medium text-gray-600">Quick Test (Try a sample without uploading personal files):</span>
+        <div className="mb-6 p-4 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span className="text-sm font-medium text-slate-300">Quick Test (Try a sample without uploading personal files):</span>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("income")} className="border-orange-200 hover:bg-orange-50 text-orange-700">
+            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("income")} className="border-orange-500/30 bg-orange-500/10 text-orange-400 hover:bg-orange-500/20 font-semibold">
               Sample Income Cert
             </Button>
-            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("aadhaar")} className="border-blue-200 hover:bg-blue-50 text-blue-700">
+            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("aadhaar")} className="border-blue-500/30 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 font-semibold">
               Sample Aadhaar
             </Button>
-            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("caste")} className="border-purple-200 hover:bg-purple-50 text-purple-700">
+            <Button variant="outline" size="sm" onClick={() => loadSampleDocument("caste")} className="border-purple-500/30 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 font-semibold">
               Sample Caste Cert
             </Button>
           </div>
         </div>
 
         {/* Upload Card */}
-        <Card className="border-2 border-dashed border-gray-200 shadow-sm hover:border-primary/50 transition-colors bg-white mb-8">
+        <Card className="border-2 border-dashed border-slate-800 shadow-2xl hover:border-primary/50 transition-colors bg-slate-900/90 mb-8">
           <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-orange-50 text-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-orange-500/10 text-primary rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/20">
               <Upload className="w-8 h-8" />
             </div>
             
-            <h3 className="text-lg font-bold text-gray-900 mb-1">
+            <h3 className="text-lg font-bold text-white mb-1">
               {file ? file.name : "Select or drag & drop a document"}
             </h3>
-            <p className="text-sm text-gray-500 mb-6">Supports PDF, PNG, JPG, or TXT documents (Max 10MB)</p>
+            <p className="text-sm text-slate-400 mb-6">Supports PDF, PNG, JPG, or TXT documents (Max 10MB)</p>
 
             <input 
               type="file" 
@@ -107,14 +107,14 @@ export default function VerifyPage() {
             />
 
             <div className="flex justify-center gap-4">
-              <label htmlFor="doc-upload" className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium border border-gray-300 bg-white hover:bg-gray-50 h-10 px-4 py-2 text-gray-700 shadow-sm transition-colors">
+              <label htmlFor="doc-upload" className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium border border-slate-700 bg-slate-800 hover:bg-slate-700 h-10 px-4 py-2 text-slate-200 shadow-sm transition-colors">
                 Choose File
               </label>
 
               <Button 
                 onClick={handleUpload} 
                 disabled={!file || isUploading}
-                className="bg-primary hover:bg-orange-600 text-white font-semibold"
+                className="bg-primary hover:bg-orange-600 text-white font-semibold shadow-md"
               >
                 {isUploading ? (
                   <>
@@ -133,7 +133,7 @@ export default function VerifyPage() {
         </Card>
 
         {error && (
-          <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl mb-8 flex items-center gap-3">
+          <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl mb-8 flex items-center gap-3">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <span>{error}</span>
           </div>
@@ -141,19 +141,19 @@ export default function VerifyPage() {
 
         {/* Result Card */}
         {result && (
-          <Card className="border-emerald-100 shadow-md bg-white overflow-hidden mb-8">
-            <CardHeader className="bg-emerald-50/50 border-b border-emerald-100 pb-4">
+          <Card className="border-emerald-800/60 shadow-2xl bg-slate-900/90 overflow-hidden mb-8">
+            <CardHeader className="bg-slate-950/60 border-b border-slate-800 pb-4">
               <div className="flex items-center justify-between">
                 <div>
                   <Badge className="bg-emerald-600 text-white mb-2">
                     <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
                     Verified by Amazon Textract
                   </Badge>
-                  <CardTitle className="text-2xl font-bold text-gray-900">
+                  <CardTitle className="text-2xl font-bold text-white">
                     {result.document_type || "Government Document"}
                   </CardTitle>
                 </div>
-                <Badge variant="outline" className="bg-white border-emerald-200 text-emerald-800">
+                <Badge variant="outline" className="bg-slate-800 border-emerald-500/30 text-emerald-400">
                   Status: {result.verification_status}
                 </Badge>
               </div>
@@ -161,53 +161,53 @@ export default function VerifyPage() {
 
             <CardContent className="p-6 space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Document Category</p>
-                  <p className="text-lg font-bold text-gray-800">{result.document_type}</p>
+                <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Document Category</p>
+                  <p className="text-lg font-bold text-white">{result.document_type}</p>
                 </div>
 
                 {result.detected_income && (
-                  <div className="p-4 rounded-xl bg-green-50 border border-green-100">
-                    <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">Verified Annual Income</p>
-                    <p className="text-lg font-black text-green-700">₹{result.detected_income}</p>
+                  <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60">
+                    <p className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">Verified Annual Income</p>
+                    <p className="text-lg font-black text-emerald-300">₹{result.detected_income}</p>
                   </div>
                 )}
 
                 {result.detected_dob && (
-                  <div className="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                    <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Date of Birth</p>
-                    <p className="text-lg font-bold text-blue-700">{result.detected_dob}</p>
+                  <div className="p-4 rounded-xl bg-blue-950/40 border border-blue-800/60">
+                    <p className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">Date of Birth</p>
+                    <p className="text-lg font-bold text-blue-300">{result.detected_dob}</p>
                   </div>
                 )}
 
                 {result.detected_aadhaar && (
-                  <div className="p-4 rounded-xl bg-orange-50 border border-orange-100">
-                    <p className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-1">Masked Aadhaar Number</p>
-                    <p className="text-lg font-mono font-bold text-orange-800">{result.detected_aadhaar}</p>
+                  <div className="p-4 rounded-xl bg-orange-950/40 border border-orange-800/60">
+                    <p className="text-xs font-bold text-orange-400 uppercase tracking-wider mb-1">Masked Aadhaar Number</p>
+                    <p className="text-lg font-mono font-bold text-orange-300">{result.detected_aadhaar}</p>
                   </div>
                 )}
 
                 {result.detected_pan && (
-                  <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-100">
-                    <p className="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">PAN Card Number</p>
-                    <p className="text-lg font-mono font-bold text-indigo-800">{result.detected_pan}</p>
+                  <div className="p-4 rounded-xl bg-indigo-950/40 border border-indigo-800/60">
+                    <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">PAN Card Number</p>
+                    <p className="text-lg font-mono font-bold text-indigo-300">{result.detected_pan}</p>
                   </div>
                 )}
 
-                <div className="p-4 rounded-xl bg-gray-50 border border-gray-100 sm:col-span-2">
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 sm:col-span-2">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
                     <Database className="w-3.5 h-3.5 text-primary" /> AWS S3 Storage Vault Path
                   </p>
-                  <p className="text-xs font-mono text-gray-600 truncate">{result.s3_location}</p>
+                  <p className="text-xs font-mono text-slate-400 truncate">{result.s3_location}</p>
                 </div>
               </div>
 
               {result.raw_text_preview && result.raw_text_preview.length > 0 && (
                 <div>
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1">
-                    <FileText className="w-3.5 h-3.5 text-gray-500" /> OCR Text Lines Extracted ({result.total_lines_extracted} lines)
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                    <FileText className="w-3.5 h-3.5 text-slate-500" /> OCR Text Lines Extracted ({result.total_lines_extracted} lines)
                   </p>
-                  <div className="p-4 rounded-xl bg-gray-900 text-gray-200 text-xs font-mono space-y-1">
+                  <div className="p-4 rounded-xl bg-slate-950 text-slate-300 text-xs font-mono space-y-1 border border-slate-800">
                     {result.raw_text_preview.map((line: string, i: number) => (
                       <p key={i}>&gt; {line}</p>
                     ))}
@@ -215,12 +215,12 @@ export default function VerifyPage() {
                 </div>
               )}
 
-              <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="text-sm text-gray-600">
+              <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="text-sm text-emerald-400">
                   ✅ Document verified successfully against official guidelines.
                 </div>
-                <Link href="/profile">
-                  <Button className="bg-primary hover:bg-orange-600 text-white font-bold">
+                <Link href="/profile" prefetch={false}>
+                  <Button className="bg-primary hover:bg-orange-600 text-white font-bold shadow-md">
                     Check Eligible Schemes <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
