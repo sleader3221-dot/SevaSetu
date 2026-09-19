@@ -286,6 +286,25 @@ def generate_passbook(request: PassbookRequest):
         'verified_by': 'National Citizen Welfare AI Gateway (SevaSetu)'
     }
 
-
-
-
+@app.get('/api/schemes/by-state/{state_name}')
+@app.get('/schemes/by-state/{state_name}')
+def get_schemes_by_state(state_name: str):
+    """Get all schemes available for a specific Indian state."""
+    schemes = get_all_schemes()
+    state_schemes = []
+    for s in schemes:
+        eligibility = s.get('eligibility', {})
+        if isinstance(eligibility, str):
+            try:
+                eligibility = json.loads(eligibility)
+            except Exception:
+                eligibility = {}
+        states_field = eligibility.get('states', 'ALL')
+        if states_field == 'ALL' or state_name in (states_field if isinstance(states_field, list) else []):
+            state_schemes.append(s)
+    return {
+        'state': state_name,
+        'schemes': state_schemes,
+        'total_count': len(state_schemes),
+        'total_benefit_potential': sum(s.get('benefit_amount', 0) for s in state_schemes)
+    }

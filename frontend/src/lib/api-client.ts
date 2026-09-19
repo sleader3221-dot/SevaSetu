@@ -145,4 +145,8 @@ export async function generatePassbook(profile: any, matchedSchemeIds: string[] 
   return res.json();
 }
 
-
+export async function getSchemesByState(stateName: string): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/schemes/by-state/${encodeURIComponent(stateName)}`);
+  if (!res.ok) throw new Error(`API error: ${res.status}`);
+  return res.json();
+}
