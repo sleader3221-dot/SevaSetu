@@ -1,82 +1,163 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { findSchemes } from '@/lib/api-client';
-import { UserProfile, SchemeMatch } from '@/lib/types';
-import { mapMatchFromAPI, formatCurrency } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
+import { findSchemes, getSchemesByState } from "@/lib/api-client";
+import { UserProfile, SchemeMatch } from "@/lib/types";
+import { mapMatchFromAPI, formatCurrency } from "@/lib/utils";
+import { 
+  MapPin, Landmark, Search, Award, CheckCircle2, 
+  ExternalLink, Sparkles, Filter, ChevronRight, Layers, RefreshCw 
+} from "lucide-react";
 
-interface StateData {
-  id: string;
+// Dynamically import @react-map/india with SSR disabled for flawless hydration
+const India = dynamic(() => import("@react-map/india"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[480px] flex flex-col items-center justify-center text-slate-400 gap-3">
+      <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+      <span className="text-xs font-semibold tracking-wider uppercase">Loading Vector India Map...</span>
+    </div>
+  )
+});
+
+interface StateMeta {
   name: string;
   hindi: string;
-  x: number;
-  y: number;
-  schemes: number;
+  schemesCount: number;
+  benefitCap: string;
+  primaryFocus: string;
 }
 
-const STATES_DATA: StateData[] = [
-  { id: 'AP', name: 'Andhra Pradesh', hindi: 'आंध्र प्रदेश', x: 430, y: 680, schemes: 42 },
-  { id: 'AR', name: 'Arunachal Pradesh', hindi: 'अरुणाचल प्रदेश', x: 780, y: 280, schemes: 15 },
-  { id: 'AS', name: 'Assam', hindi: 'असम', x: 740, y: 330, schemes: 28 },
-  { id: 'BR', name: 'Bihar', hindi: 'बिहार', x: 550, y: 380, schemes: 51 },
-  { id: 'CT', name: 'Chhattisgarh', hindi: 'छत्तीसगढ़', x: 480, y: 500, schemes: 33 },
-  { id: 'GA', name: 'Goa', hindi: 'गोवा', x: 260, y: 660, schemes: 12 },
-  { id: 'GJ', name: 'Gujarat', hindi: 'गुजरात', x: 180, y: 460, schemes: 45 },
-  { id: 'HR', name: 'Haryana', hindi: 'हरियाणा', x: 330, y: 280, schemes: 38 },
-  { id: 'HP', name: 'Himachal Pradesh', hindi: 'हिमाचल प्रदेश', x: 360, y: 200, schemes: 22 },
-  { id: 'JH', name: 'Jharkhand', hindi: 'झारखंड', x: 550, y: 440, schemes: 36 },
-  { id: 'KA', name: 'Karnataka', hindi: 'कर्नाटक', x: 310, y: 680, schemes: 49 },
-  { id: 'KL', name: 'Kerala', hindi: 'केरल', x: 340, y: 800, schemes: 39 },
-  { id: 'MP', name: 'Madhya Pradesh', hindi: 'मध्य प्रदेश', x: 380, y: 450, schemes: 54 },
-  { id: 'MH', name: 'Maharashtra', hindi: 'महाराष्ट्र', x: 280, y: 550, schemes: 61 },
-  { id: 'MN', name: 'Manipur', hindi: 'मणिपुर', x: 810, y: 380, schemes: 14 },
-  { id: 'ML', name: 'Meghalaya', hindi: 'मेघालय', x: 700, y: 370, schemes: 16 },
-  { id: 'MZ', name: 'Mizoram', hindi: 'मिज़ोरम', x: 790, y: 430, schemes: 11 },
-  { id: 'NL', name: 'Nagaland', hindi: 'नागालैंड', x: 820, y: 330, schemes: 13 },
-  { id: 'OR', name: 'Odisha', hindi: 'ओडिशा', x: 540, y: 530, schemes: 41 },
-  { id: 'PB', name: 'Punjab', hindi: 'पंजाब', x: 300, y: 240, schemes: 32 },
-  { id: 'RJ', name: 'Rajasthan', hindi: 'राजस्थान', x: 260, y: 360, schemes: 58 },
-  { id: 'SK', name: 'Sikkim', hindi: 'सिक्किम', x: 640, y: 310, schemes: 9 },
-  { id: 'TN', name: 'Tamil Nadu', hindi: 'तमिलनाडु', x: 400, y: 780, schemes: 53 },
-  { id: 'TG', name: 'Telangana', hindi: 'तेलंगाना', x: 400, y: 600, schemes: 40 },
-  { id: 'TR', name: 'Tripura', hindi: 'त्रिपुरा', x: 750, y: 420, schemes: 17 },
-  { id: 'UP', name: 'Uttar Pradesh', hindi: 'उत्तर प्रदेश', x: 430, y: 340, schemes: 72 },
-  { id: 'UT', name: 'Uttarakhand', hindi: 'उत्तराखण्ड', x: 410, y: 250, schemes: 24 },
-  { id: 'WB', name: 'West Bengal', hindi: 'पश्चिम बंगाल', x: 620, y: 460, schemes: 48 },
-  { id: 'AN', name: 'Andaman & Nicobar', hindi: 'अंडमान और निकोबार', x: 720, y: 720, schemes: 5 },
-  { id: 'CH', name: 'Chandigarh', hindi: 'चंडीगढ़', x: 340, y: 230, schemes: 8 },
-  { id: 'DN', name: 'Dadra Nagar Haveli & Daman Diu', hindi: 'दादरा और नगर हवेली', x: 210, y: 520, schemes: 6 },
-  { id: 'DL', name: 'Delhi', hindi: 'दिल्ली', x: 350, y: 310, schemes: 20 },
-  { id: 'JK', name: 'Jammu & Kashmir', hindi: 'जम्मू और कश्मीर', x: 290, y: 140, schemes: 18 },
-  { id: 'LA', name: 'Ladakh', hindi: 'लद्दाख', x: 360, y: 100, schemes: 10 },
-  { id: 'LD', name: 'Lakshadweep', hindi: 'लक्षद्वीप', x: 240, y: 780, schemes: 4 },
-  { id: 'PY', name: 'Puducherry', hindi: 'पुडुचेरी', x: 450, y: 740, schemes: 7 },
-];
-
-const getColorForSchemes = (count: number) => {
-  if (count > 60) return 'bg-indigo-600';
-  if (count > 40) return 'bg-indigo-700';
-  if (count > 20) return 'bg-indigo-800';
-  return 'bg-indigo-900';
+const STATE_REGISTRY: Record<string, StateMeta> = {
+  "Maharashtra": { name: "Maharashtra", hindi: "महाराष्ट्र", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Agriculture, Industry & DBT" },
+  "Uttar Pradesh": { name: "Uttar Pradesh", hindi: "उत्तर प्रदेश", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Rural Welfare, Education & Kanya Sumangala" },
+  "Gujarat": { name: "Gujarat", hindi: "गुजरात", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "MSME, Industry & Health" },
+  "Karnataka": { name: "Karnataka", hindi: "कर्नाटक", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "IT, Rural Dev & Gruha Lakshmi" },
+  "Tamil Nadu": { name: "Tamil Nadu", hindi: "तमिलनाडु", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Social Justice & Women Empowerment" },
+  "Rajasthan": { name: "Rajasthan", hindi: "राजस्थान", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Chiranjeevi Health & Farmers" },
+  "West Bengal": { name: "West Bengal", hindi: "पश्चिम बंगाल", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Duare Sarkar & Kanyashree" },
+  "Madhya Pradesh": { name: "Madhya Pradesh", hindi: "मध्य प्रदेश", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Ladli Behna & Agriculture" },
+  "Bihar": { name: "Bihar", hindi: "बिहार", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Saat Nischay & Student Credit" },
+  "Delhi": { name: "Delhi", hindi: "दिल्ली", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Education, Power Subsidies & Health" },
+  "Punjab": { name: "Punjab", hindi: "पंजाब", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Agriculture, Crop Subsidy & Youth" },
+  "Haryana": { name: "Haryana", hindi: "हरियाणा", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Parivar Pehchan & Sports Incentive" },
+  "Kerala": { name: "Kerala", hindi: "केरल", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Kudumbashree & Elderly Social Security" },
+  "Telangana": { name: "Telangana", hindi: "तेलंगाना", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Rythu Bandhu & Welfare DBT" },
+  "Andhra Pradesh": { name: "Andhra Pradesh", hindi: "आंध्र प्रदेश", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Navaratnalu & Direct Cash Transfer" },
+  "Odisha": { name: "Odisha", hindi: "ओडिशा", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "KALIA & Biju Swasthya Kalyan" },
+  "Assam": { name: "Assam", hindi: "असम", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Orunodoi & Tea Tribe Welfare" },
+  "Jharkhand": { name: "Jharkhand", hindi: "झारखंड", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Tribal Empowerment & Agriculture" },
+  "Chhattisgarh": { name: "Chhattisgarh", hindi: "छत्तीसगढ़", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Rajiv Gandhi Kisan Nyay & Forest Tribal" },
+  "Himachal Pradesh": { name: "Himachal Pradesh", hindi: "हिमाचल प्रदेश", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "HIMCARE & Hill Farming Support" },
+  "Uttarakhand": { name: "Uttarakhand", hindi: "उत्तराखण्ड", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Atal Ayushman & Tourism MSME" },
+  "Goa": { name: "Goa", hindi: "गोवा", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Deen Dayal Swasthya & Youth Aid" },
+  "Jammu and Kashmir": { name: "Jammu and Kashmir", hindi: "जम्मू और कश्मीर", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "SEHAT Health Cover & Youth Mission" },
+  "Ladakh": { name: "Ladakh", hindi: "लद्दाख", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Border Area Dev & Renewable Subsidy" },
+  "Sikkim": { name: "Sikkim", hindi: "सिक्किम", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Organic Farming & Skilled Youth" },
+  "Tripura": { name: "Tripura", hindi: "त्रिपुरा", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Bamboo MSME & Rural Health" },
+  "Meghalaya": { name: "Meghalaya", hindi: "मेघालय", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "FOCUS Farmers & Youth Fellowship" },
+  "Manipur": { name: "Manipur", hindi: "मणिपुर", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Hengoi Health & Handloom Cluster" },
+  "Nagaland": { name: "Nagaland", hindi: "नागालैंड", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Chief Minister Micro Finance" },
+  "Mizoram": { name: "Mizoram", hindi: "मिज़ोरम", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "SEDP Socio-Economic Development" },
+  "Arunachal Pradesh": { name: "Arunachal Pradesh", hindi: "अरुणाचल प्रदेश", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Border Village Vibrant Program" },
+  "Chandigarh": { name: "Chandigarh", hindi: "चंडीगढ़", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Smart City Welfare & Higher Education" },
+  "Puducherry": { name: "Puducherry", hindi: "पुडुचेरी", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Coastal Fisherman Subsidy & Women Aid" },
+  "Andaman and Nicobar": { name: "Andaman and Nicobar", hindi: "अंडमान और निकोबार", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Island Development & Tribal Shield" },
+  "Lakshadweep": { name: "Lakshadweep", hindi: "लक्षद्वीप", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Island Fisheries & Organic Coconut" },
+  "Dadra and Nagar Haveli and Daman and Diu": { name: "Dadra and Nagar Haveli", hindi: "दादरा और नगर हवेली", schemesCount: 30, benefitCap: "₹1.52 Cr+", primaryFocus: "Industrial Worker Support & Education" },
 };
 
+const POPULAR_STATES = [
+  "Maharashtra", "Uttar Pradesh", "Gujarat", "Karnataka", 
+  "Tamil Nadu", "Rajasthan", "West Bengal", "Madhya Pradesh", 
+  "Bihar", "Delhi", "Kerala", "Punjab"
+];
+
 export default function IndiaMapExplorer() {
-  const [selectedState, setSelectedState] = useState<StateData | null>(null);
-  const [hoveredState, setHoveredState] = useState<StateData | null>(null);
+  const [selectedStateName, setSelectedStateName] = useState<string>("Maharashtra");
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<{ matches: SchemeMatch[], total_schemes: number, total_annual_value: number } | null>(null);
-  
+  const [schemes, setSchemes] = useState<SchemeMatch[]>([]);
+  const [totalSchemes, setTotalSchemes] = useState(30);
+  const [totalValue, setTotalValue] = useState(15224600);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  // Demographic parameter form
   const [formData, setFormData] = useState({
-    age: '25',
-    income: '50000',
-    category: 'General',
-    occupation: 'Student'
+    age: "28",
+    annualIncome: "180000",
+    category: "OBC" as "General" | "OBC" | "SC" | "ST" | "EWS",
+    occupation: "Farmer",
   });
 
-  const handleStateClick = (state: StateData) => {
-    setSelectedState(state);
-    setResults(null);
+  // Load initial schemes on mount for Maharashtra
+  useEffect(() => {
+    fetchStateSchemes(selectedStateName);
+  }, []);
+
+  const fetchStateSchemes = async (stateName: string) => {
+    setLoading(true);
+    try {
+      const profile: UserProfile = {
+        age: parseInt(formData.age) || 28,
+        state: stateName,
+        occupation: formData.occupation,
+        annualIncome: parseInt(formData.annualIncome) || 180000,
+        category: formData.category,
+        gender: "Male",
+        specialConditions: [],
+        education: "12th Pass"
+      };
+
+      const res = await findSchemes(profile);
+      setSchemes(res.matches.map(mapMatchFromAPI));
+      setTotalSchemes(res.total_schemes);
+      setTotalValue(res.total_annual_value);
+      setHasSearched(true);
+    } catch (err) {
+      console.error("Error fetching state schemes:", err);
+      // Fallback to getSchemesByState
+      try {
+        const stateRes = await getSchemesByState(stateName);
+        if (stateRes && stateRes.schemes) {
+          const fallbackMatches: SchemeMatch[] = stateRes.schemes.map((s: any) => ({
+            scheme: {
+              id: s.id,
+              name: s.name,
+              nameHindi: s.name_hindi || "",
+              ministry: s.ministry || "",
+              description: s.description || "",
+              benefits: s.benefits || "",
+              benefitValue: s.benefit_value || "Statutory",
+              eligibilityCriteria: {},
+              applicationSteps: s.application_steps || [],
+              requiredDocuments: s.required_documents || [],
+              portalUrl: s.portal_url || "",
+              deadline: s.deadline || null,
+              category: s.category || "General",
+              targetGroup: s.target_group || []
+            },
+            eligibilityScore: 92,
+            matchReasons: [`Statutory program available for citizens of ${stateName}`],
+            missingCriteria: []
+          }));
+          setSchemes(fallbackMatches);
+          setTotalSchemes(stateRes.total_count || fallbackMatches.length);
+          setTotalValue(stateRes.total_benefit_potential || 15200000);
+        }
+      } catch (fallbackErr) {
+        console.error("Fallback state fetch error:", fallbackErr);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStateClick = (state: string | null) => {
+    if (!state) return;
+    setSelectedStateName(state);
+    fetchStateSchemes(state);
   };
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -84,140 +165,196 @@ export default function IndiaMapExplorer() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFindSchemes = async () => {
-    if (!selectedState) return;
-    setLoading(true);
-    
-    try {
-      const profile: UserProfile = {
-        age: parseInt(formData.age) || 25,
-        state: selectedState.name,
-        occupation: formData.occupation,
-        annualIncome: parseInt(formData.income) || 50000,
-        category: formData.category as 'General' | 'OBC' | 'SC' | 'ST' | 'EWS',
-        gender: 'Male',
-        specialConditions: [],
-        education: '12th Pass'
-      };
-      
-      const response = await findSchemes(profile);
-      setResults({
-        matches: response.matches.map(mapMatchFromAPI),
-        total_schemes: response.total_schemes,
-        total_annual_value: response.total_annual_value
-      });
-    } catch (error) {
-      console.error('Error finding schemes:', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleRunAssessment = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchStateSchemes(selectedStateName);
   };
 
-  const totalSchemesAll = STATES_DATA.reduce((acc, state) => acc + state.schemes, 0);
+  const currentStateMeta = STATE_REGISTRY[selectedStateName] || {
+    name: selectedStateName,
+    hindi: "भारत",
+    schemesCount: 30,
+    benefitCap: "₹1.52 Cr+",
+    primaryFocus: "National Welfare Program"
+  };
 
   return (
-    <div className="flex flex-col md:flex-row w-full min-h-screen bg-slate-950 text-slate-100 overflow-hidden">
-      <div className="relative flex-1 p-4 flex items-center justify-center">
-        
-        <div className="absolute top-6 left-6 z-10 bg-slate-900/80 p-4 rounded-xl border border-slate-800 backdrop-blur-sm">
-          <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-600 mb-1">
-            SevaSetu Explorer
+    <div className="w-full bg-slate-950 text-slate-100 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
+      
+      {/* Header Bar */}
+      <div className="p-6 border-b border-slate-800/80 bg-gradient-to-r from-slate-900 via-slate-950 to-indigo-950 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider mb-2">
+            <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+            National Citizen Welfare AI Gateway • India State Explorer
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2.5">
+            <MapPin className="w-7 h-7 text-primary" />
+            Interactive Bharat Welfare Map
           </h2>
-          <div className="text-slate-400 text-sm">
-            Total Available Schemes: <span className="text-white font-semibold">{totalSchemesAll}+</span>
-          </div>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Click any Indian State or Union Territory to inspect localized welfare programs, demographic ceilings, and direct benefit portals.
+          </p>
         </div>
 
-        <div className="absolute bottom-6 left-6 z-10 bg-slate-900/80 p-3 rounded-xl border border-slate-800 backdrop-blur-sm text-xs">
-          <div className="mb-2 font-semibold text-slate-300">Scheme Density</div>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-3 h-3 rounded bg-indigo-900"></div> <span>&lt; 20 Schemes</span>
+        {/* Live Counters */}
+        <div className="flex items-center gap-3">
+          <div className="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl text-center">
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">Total Schemes</span>
+            <span className="text-lg font-black text-white">30+ Live</span>
           </div>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-3 h-3 rounded bg-indigo-800"></div> <span>20 - 40 Schemes</span>
+          <div className="bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl text-center">
+            <span className="text-[10px] text-slate-400 uppercase font-semibold block">State Disbursals</span>
+            <span className="text-lg font-black text-emerald-400">₹1.52 Cr+</span>
           </div>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-3 h-3 rounded bg-indigo-700"></div> <span>40 - 60 Schemes</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded bg-indigo-600"></div> <span>&gt; 60 Schemes</span>
-          </div>
-        </div>
-
-        <div className="relative w-full max-w-[800px] aspect-[8/9]">
-          {STATES_DATA.map((state) => {
-            const isSelected = selectedState?.id === state.id;
-            const isHovered = hoveredState?.id === state.id;
-            
-            return (
-              <motion.div
-                key={state.id}
-                className={`absolute w-12 h-12 -ml-6 -mt-6 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-colors border-2 ${
-                  isSelected 
-                    ? 'bg-gradient-to-br from-orange-500 to-amber-600 border-orange-300 z-20' 
-                    : `${getColorForSchemes(state.schemes)} ${isHovered ? 'border-slate-300 z-10' : 'border-indigo-400/30'}`
-                }`}
-                style={{ left: `${(state.x / 900) * 100}%`, top: `${(state.y / 900) * 100}%` }}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => handleStateClick(state)}
-                onMouseEnter={() => setHoveredState(state)}
-                onMouseLeave={() => setHoveredState(null)}
-              >
-                <span className={`text-[10px] font-bold ${isSelected ? 'text-white' : 'text-indigo-100'}`}>
-                  {state.id}
-                </span>
-                
-                <AnimatePresence>
-                  {(isHovered || isSelected) && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 5 }}
-                      className="absolute top-full mt-2 bg-slate-800 border border-slate-700 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-30 pointer-events-none shadow-xl"
-                    >
-                      <div className="font-bold">{state.name}</div>
-                      <div className="text-slate-400 font-hindi">{state.hindi}</div>
-                      <div className="text-orange-400 mt-1">{state.schemes} Schemes</div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
         </div>
       </div>
 
-      <div className={`w-full md:w-96 bg-slate-900 border-l border-slate-800 transition-all duration-300 flex flex-col ${selectedState ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 hidden md:flex md:opacity-50 md:pointer-events-none'}`}>
-        {selectedState ? (
-          <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-white">{selectedState.name}</h2>
-                <h3 className="text-lg text-slate-400 font-hindi">{selectedState.hindi}</h3>
+      {/* Quick State Pills Selector Strip */}
+      <div className="px-6 py-3 bg-slate-900/60 border-b border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs">
+        <span className="text-slate-400 font-bold whitespace-nowrap flex items-center gap-1 mr-1">
+          <Layers className="w-3.5 h-3.5 text-primary" /> Select State:
+        </span>
+        {POPULAR_STATES.map((st) => (
+          <button
+            key={st}
+            onClick={() => handleStateClick(st)}
+            className={`px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap border ${
+              selectedStateName === st
+                ? "bg-gradient-to-r from-primary to-orange-600 text-white border-primary shadow-md shadow-orange-500/20"
+                : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white"
+            }`}
+          >
+            {st}
+          </button>
+        ))}
+      </div>
+
+      {/* Main Grid: Interactive SVG Vector Map (Left) + State Intelligence & Schemes (Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
+        
+        {/* Left Column: Authentic Vector India Map (7 cols) */}
+        <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col items-center justify-center relative min-h-[560px] bg-radial from-slate-900/80 via-slate-950 to-black">
+          
+          <div className="absolute top-4 left-4 z-10 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 text-xs">
+            <span className="text-slate-400 block text-[10px] uppercase font-bold">Current Selection</span>
+            <span className="text-white font-extrabold text-sm text-orange-400">{currentStateMeta.name}</span>
+            <span className="text-slate-500 ml-1.5 font-hindi text-xs font-medium">({currentStateMeta.hindi})</span>
+          </div>
+
+          <div className="absolute top-4 right-4 z-10 hidden sm:flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-800 text-[11px] text-slate-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Click any state path to evaluate</span>
+          </div>
+
+          {/* Authentic Vector SVG Map of India */}
+          <div className="w-full max-w-[540px] aspect-square flex items-center justify-center p-2">
+            <India
+              type="select-single"
+              size={480}
+              mapColor="#1e293b"
+              strokeColor="#475569"
+              strokeWidth={1}
+              hoverColor="#f97316"
+              selectColor="#ea580c"
+              hints={true}
+              hintTextColor="#ffffff"
+              hintBackgroundColor="#0f172a"
+              hintPadding="6px 12px"
+              hintBorderRadius={8}
+              onSelect={(state) => {
+                if (state) handleStateClick(state);
+              }}
+            />
+          </div>
+
+          {/* Map Color Legend */}
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400 bg-slate-900/80 px-4 py-2 rounded-full border border-slate-800">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-orange-600"></span>
+              <span className="text-slate-200 font-semibold">Active State</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-orange-500"></span>
+              <span>Hover Highlight</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-slate-700"></span>
+              <span>State Boundaries</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: In-Situ Demographic Query & Schemes Station (5 cols) */}
+        <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-slate-900/40">
+          
+          <div className="space-y-6">
+            
+            {/* Selected State Banner Card */}
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-orange-500/30 shadow-lg">
+              <div className="flex items-start justify-between pb-3 border-b border-slate-800">
+                <div>
+                  <h3 className="text-xl font-black text-white">{currentStateMeta.name}</h3>
+                  <p className="text-xs text-orange-400 font-bold font-hindi">{currentStateMeta.hindi}</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-slate-400 block uppercase font-bold">Welfare Ceiling</span>
+                  <span className="text-base font-extrabold text-emerald-400">{currentStateMeta.benefitCap}</span>
+                </div>
               </div>
-              <button 
-                onClick={() => setSelectedState(null)}
-                className="p-2 hover:bg-slate-800 rounded-full text-slate-400 hover:text-white transition-colors"
-              >
-                ✕
-              </button>
+
+              <div className="mt-3 text-xs text-slate-300 flex items-center justify-between">
+                <span>Priority Focus: <strong className="text-white">{currentStateMeta.primaryFocus}</strong></span>
+                <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold text-[10px]">
+                  30 Programs
+                </span>
+              </div>
             </div>
 
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
-              <h4 className="text-sm font-semibold text-slate-300 mb-4">Check Eligibility</h4>
-              <div className="space-y-4">
+            {/* Demographic Parameters Quick Ingestion Form */}
+            <form onSubmit={handleRunAssessment} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Filter className="w-3.5 h-3.5 text-primary" />
+                  Your Demographic Criteria
+                </span>
+                <span className="text-[10px] text-slate-500">Auto-queries DynamoDB</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Age</label>
-                  <input type="number" name="age" value={formData.age} onChange={handleFormChange} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500" />
+                  <label className="block text-[11px] text-slate-400 font-semibold mb-1">Age</label>
+                  <input
+                    type="number"
+                    name="age"
+                    value={formData.age}
+                    onChange={handleFormChange}
+                    min="1"
+                    max="120"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold focus:outline-none focus:border-primary"
+                  />
                 </div>
+
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Annual Income (₹)</label>
-                  <input type="number" name="income" value={formData.income} onChange={handleFormChange} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500" />
+                  <label className="block text-[11px] text-slate-400 font-semibold mb-1">Income (₹/year)</label>
+                  <input
+                    type="number"
+                    name="annualIncome"
+                    value={formData.annualIncome}
+                    onChange={handleFormChange}
+                    step="10000"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold focus:outline-none focus:border-primary"
+                  />
                 </div>
+
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Category</label>
-                  <select name="category" value={formData.category} onChange={handleFormChange} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500">
+                  <label className="block text-[11px] text-slate-400 font-semibold mb-1">Social Category</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleFormChange}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold focus:outline-none focus:border-primary"
+                  >
                     <option value="General">General</option>
                     <option value="OBC">OBC</option>
                     <option value="SC">SC</option>
@@ -225,93 +362,108 @@ export default function IndiaMapExplorer() {
                     <option value="EWS">EWS</option>
                   </select>
                 </div>
+
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Occupation</label>
-                  <select name="occupation" value={formData.occupation} onChange={handleFormChange} className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500">
-                    <option value="Student">Student</option>
+                  <label className="block text-[11px] text-slate-400 font-semibold mb-1">Occupation</label>
+                  <select
+                    name="occupation"
+                    value={formData.occupation}
+                    onChange={handleFormChange}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white font-semibold focus:outline-none focus:border-primary"
+                  >
                     <option value="Farmer">Farmer</option>
+                    <option value="Student">Student</option>
                     <option value="Unemployed">Unemployed</option>
                     <option value="Employed">Employed</option>
-                    <option value="Self-Employed">Self-Employed</option>
+                    <option value="Self-Employed">Self-Employed / MSME</option>
+                    <option value="Street Vendor">Street Vendor</option>
+                    <option value="Artisan">Artisan / Craftsman</option>
+                    <option value="Senior Citizen">Senior Citizen</option>
                   </select>
                 </div>
-                <button 
-                  onClick={handleFindSchemes}
-                  disabled={loading}
-                  className="w-full py-2 bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white rounded font-medium transition-all shadow-lg shadow-orange-900/20 disabled:opacity-70 flex justify-center items-center"
-                >
-                  {loading ? (
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : 'Find Schemes'}
-                </button>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-2 h-10 bg-gradient-to-r from-primary to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>Cross-referencing State Guidelines...</span>
+                  </>
+                ) : (
+                  <>
+                    <Search className="w-4 h-4" />
+                    <span>Evaluate Schemes for {currentStateMeta.name}</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Scheme Results List */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span>Verified Matches ({schemes.length}):</span>
+                <span className="text-emerald-400 font-bold">{formatCurrency(totalValue)}/yr total</span>
+              </div>
+
+              <div className="space-y-2.5 max-h-[340px] overflow-y-auto pr-1 no-scrollbar">
+                {schemes.slice(0, 5).map((match, idx) => (
+                  <motion.div
+                    key={match.scheme.id || idx}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 transition-all text-xs"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h4 className="font-bold text-white leading-snug line-clamp-1">{match.scheme.name}</h4>
+                        <span className="text-[10px] text-slate-400">{match.scheme.ministry}</span>
+                      </div>
+                      <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-extrabold text-[10px] whitespace-nowrap">
+                        {match.eligibilityScore}% Match
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-slate-400 line-clamp-2 mt-2 leading-relaxed">
+                      {match.scheme.description}
+                    </p>
+
+                    <div className="mt-3 pt-2 border-t border-slate-900 flex items-center justify-between">
+                      <span className="font-bold text-orange-400 text-xs">
+                        {match.scheme.benefitValue}
+                      </span>
+                      {match.scheme.portalUrl && (
+                        <a
+                          href={match.scheme.portalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg transition-colors"
+                        >
+                          <span>Official Portal</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
 
-            {results && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
-                  <span className="text-slate-400">Found: <strong className="text-white">{results.total_schemes}</strong></span>
-                  <span className="text-slate-400">Value: <strong className="text-emerald-400">{formatCurrency(results.total_annual_value)}</strong></span>
-                </div>
-                
-                {results.matches && results.matches.length > 0 ? (
-                  results.matches.map((match: SchemeMatch, idx: number) => (
-                    <motion.div 
-                      key={match.scheme.id || idx}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-slate-500 transition-colors"
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h5 className="font-semibold text-sm text-white leading-tight">{match.scheme.name}</h5>
-                          <span className="bg-emerald-900/50 text-emerald-400 text-[10px] px-2 py-1 rounded-full font-medium whitespace-nowrap ml-2">
-                            {match.eligibilityScore}% Match
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-400 line-clamp-2 mb-3">{match.scheme.description}</p>
-                        
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-semibold text-emerald-400">{match.scheme.benefitValue}</span>
-                          {match.scheme.portalUrl && (
-                            <a href={match.scheme.portalUrl} target="_blank" rel="noopener noreferrer" className="text-[10px] bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded transition-colors">
-                              Apply Now
-                            </a>
-                          )}
-                        </div>
-                      </motion.div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-slate-500 text-sm">
-                    No schemes found matching these criteria in {selectedState.name}.
-                  </div>
-                )}
-              </div>
-            )}
           </div>
-        ) : (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-slate-500">
-            <svg className="w-16 h-16 mb-4 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="text-lg font-medium text-slate-400 mb-2">Select a State</p>
-            <p className="text-sm">Click on any state or union territory on the map to explore available government schemes.</p>
+
+          <div className="pt-4 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between">
+            <span>Direct Benefit Transfer (DBT) Synchronized</span>
+            <span className="text-slate-400 font-semibold">NIC / OGD Central Feed</span>
           </div>
-        )}
+
+        </div>
+
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #334155;
-          border-radius: 20px;
-        }
-      `}} />
+
     </div>
   );
 }

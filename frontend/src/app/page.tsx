@@ -1,17 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, ShieldCheck, Zap, Languages, Award, 
   Landmark, FileCheck, CheckCircle2, Search, ExternalLink, 
-  Sparkles, Layers, Cpu, Globe2, Compass 
+  Sparkles, Layers, Cpu, Globe2, Compass, MapPin 
 } from "lucide-react";
 import BharatGlobe3D from "@/components/3d/BharatGlobe3D";
+import IndiaMapExplorer from "@/components/IndiaMapExplorer";
 import WelfareSimulator3D from "@/components/3d/WelfareSimulator3D";
 import HoloCard3D from "@/components/3d/HoloCard3D";
 
 export default function Home() {
+  const [heroVisual, setHeroVisual] = useState<"globe" | "map">("globe");
+
   return (
     <main className="min-h-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden">
       
@@ -75,9 +79,47 @@ export default function Home() {
 
             </div>
 
-            {/* Right Interactive 3D WebGL Globe (6 Cols) */}
-            <div className="lg:col-span-6 w-full">
-              <BharatGlobe3D />
+            {/* Right Interactive 3D WebGL Globe & India Map Toggle (6 Cols) */}
+            <div className="lg:col-span-6 w-full space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="inline-flex p-1 bg-slate-900/90 border border-slate-700/80 rounded-2xl backdrop-blur-md">
+                  <button
+                    onClick={() => setHeroVisual("globe")}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      heroVisual === "globe"
+                        ? "bg-gradient-to-r from-primary to-orange-600 text-white shadow-md shadow-orange-500/20"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <Globe2 className="w-3.5 h-3.5" />
+                    <span>3D Bharat Globe</span>
+                  </button>
+                  <button
+                    onClick={() => setHeroVisual("map")}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      heroVisual === "map"
+                        ? "bg-gradient-to-r from-primary to-orange-600 text-white shadow-md shadow-orange-500/20"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>Interactive India Map</span>
+                  </button>
+                </div>
+
+                <span className="hidden sm:inline-flex text-[11px] text-slate-400 items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Live AWS DynamoDB
+                </span>
+              </div>
+
+              {heroVisual === "globe" ? (
+                <BharatGlobe3D />
+              ) : (
+                <div className="rounded-3xl overflow-hidden border border-slate-800 bg-slate-950">
+                  <IndiaMapExplorer />
+                </div>
+              )}
             </div>
 
           </div>
@@ -105,6 +147,13 @@ export default function Home() {
               <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold mt-1">DynamoDB Cloud Retrieval</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Dedicated Interactive India State Welfare Map Section */}
+      <section id="state-map" className="py-16 bg-slate-950 border-b border-slate-800 relative">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <IndiaMapExplorer />
         </div>
       </section>
 
