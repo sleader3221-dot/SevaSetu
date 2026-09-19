@@ -1,67 +1,331 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserProfile } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Check, ChevronRight, ChevronLeft, Search } from "lucide-react";
+import { 
+  Check, ChevronRight, ChevronLeft, Search, MapPin, 
+  Sparkles, Landmark, Building2, User, Wallet, Users, 
+  ShieldCheck, ArrowRight, RefreshCw 
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
-const STATES = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", 
-  "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", 
-  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", 
-  "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands", "Chandigarh", 
-  "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry"
+// Dynamically import @react-map/india with SSR disabled
+const India = dynamic(() => import("@react-map/india"), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[380px] flex flex-col items-center justify-center text-slate-400 gap-3">
+      <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+      <span className="text-xs font-semibold uppercase tracking-wider">Loading Interactive India Map...</span>
+    </div>
+  )
+});
+
+// Comprehensive Registry of State Iconic Landmarks & Atmospheric Backgrounds
+interface StateLandmark {
+  name: string;
+  hindi: string;
+  landmark: string;
+  landmarkHindi: string;
+  landmarkCity: string;
+  bgUrl: string;
+  themeGradient: string;
+}
+
+const STATE_LANDMARKS: Record<string, StateLandmark> = {
+  "Maharashtra": {
+    name: "Maharashtra",
+    hindi: "महाराष्ट्र",
+    landmark: "Gateway of India",
+    landmarkHindi: "गेटवे ऑफ इंडिया",
+    landmarkCity: "Mumbai",
+    bgUrl: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  },
+  "Delhi": {
+    name: "Delhi",
+    hindi: "दिल्ली",
+    landmark: "India Gate & Rashtrapati Bhavan",
+    landmarkHindi: "इंडिया गेट",
+    landmarkCity: "New Delhi",
+    bgUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
+  },
+  "Uttar Pradesh": {
+    name: "Uttar Pradesh",
+    hindi: "उत्तर प्रदेश",
+    landmark: "Kashi Vishwanath Ghats & Taj Mahal",
+    landmarkHindi: "काशी विश्वनाथ घाट",
+    landmarkCity: "Varanasi",
+    bgUrl: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  },
+  "Gujarat": {
+    name: "Gujarat",
+    hindi: "गुजरात",
+    landmark: "Statue of Unity & Sabarmati",
+    landmarkHindi: "स्टैच्यू ऑफ यूनिटी",
+    landmarkCity: "Kevadia",
+    bgUrl: "https://images.unsplash.com/photo-1609743522653-52354461cf27?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Rajasthan": {
+    name: "Rajasthan",
+    hindi: "राजस्थान",
+    landmark: "Hawa Mahal & Amer Fort",
+    landmarkHindi: "हवा महल",
+    landmarkCity: "Jaipur",
+    bgUrl: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-rose-950/90 via-slate-950/85 to-black/95"
+  },
+  "Karnataka": {
+    name: "Karnataka",
+    hindi: "कर्नाटक",
+    landmark: "Vidhana Soudha & Mysore Palace",
+    landmarkHindi: "विधान सौध",
+    landmarkCity: "Bengaluru",
+    bgUrl: "https://images.unsplash.com/photo-1600100397608-f010f445b9b4?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-indigo-950/90 via-slate-950/85 to-black/95"
+  },
+  "Tamil Nadu": {
+    name: "Tamil Nadu",
+    hindi: "तमिलनाडु",
+    landmark: "Meenakshi Amman Temple",
+    landmarkHindi: "मीनाक्षी अम्मन मंदिर",
+    landmarkCity: "Madurai",
+    bgUrl: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
+  },
+  "West Bengal": {
+    name: "West Bengal",
+    hindi: "पश्चिम बंगाल",
+    landmark: "Howrah Bridge & Victoria Memorial",
+    landmarkHindi: "हावड़ा ब्रिज",
+    landmarkCity: "Kolkata",
+    bgUrl: "https://images.unsplash.com/photo-1558431382-27e303142255?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-cyan-950/90 via-slate-950/85 to-black/95"
+  },
+  "Punjab": {
+    name: "Punjab",
+    hindi: "पंजाब",
+    landmark: "Sri Harmandir Sahib (Golden Temple)",
+    landmarkHindi: "स्वर्ण मंदिर",
+    landmarkCity: "Amritsar",
+    bgUrl: "https://images.unsplash.com/photo-1588096344356-9b5a882a201c?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-yellow-950/90 via-slate-950/85 to-black/95"
+  },
+  "Kerala": {
+    name: "Kerala",
+    hindi: "केरल",
+    landmark: "Alleppey Backwaters & Munnar Peaks",
+    landmarkHindi: "अलेप्पी बैकवाटर्स",
+    landmarkCity: "Alappuzha",
+    bgUrl: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Madhya Pradesh": {
+    name: "Madhya Pradesh",
+    hindi: "मध्य प्रदेश",
+    landmark: "Great Stupa of Sanchi & Khajuraho",
+    landmarkHindi: "सांची स्तूप",
+    landmarkCity: "Sanchi",
+    bgUrl: "https://images.unsplash.com/photo-1628172909886-f6d2f928f6f5?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+  },
+  "Bihar": {
+    name: "Bihar",
+    hindi: "बिहार",
+    landmark: "Nalanda Mahavihara & Mahabodhi Temple",
+    landmarkHindi: "नालंदा महाविहार",
+    landmarkCity: "Nalanda",
+    bgUrl: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-amber-950/90 via-slate-950/85 to-black/95"
+  },
+  "Telangana": {
+    name: "Telangana",
+    hindi: "तेलंगाना",
+    landmark: "Charminar & Golconda Fort",
+    landmarkHindi: "चारमीनार",
+    landmarkCity: "Hyderabad",
+    bgUrl: "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-purple-950/90 via-slate-950/85 to-black/95"
+  },
+  "Andhra Pradesh": {
+    name: "Andhra Pradesh",
+    hindi: "आंध्र प्रदेश",
+    landmark: "Tirumala Venkateswara Temple",
+    landmarkHindi: "तिरुपति बालाजी",
+    landmarkCity: "Tirupati",
+    bgUrl: "https://images.unsplash.com/photo-1627894483216-2138af692e32?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-yellow-950/90 via-slate-950/85 to-black/95"
+  },
+  "Odisha": {
+    name: "Odisha",
+    hindi: "ओडिशा",
+    landmark: "Konark Sun Temple & Puri Jagannath",
+    landmarkHindi: "कोणार्क सूर्य मंदिर",
+    landmarkCity: "Konark",
+    bgUrl: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-blue-950/90 via-slate-950/85 to-black/95"
+  },
+  "Assam": {
+    name: "Assam",
+    hindi: "असम",
+    landmark: "Kaziranga National Park & Brahmaputra",
+    landmarkHindi: "काजीरंगा",
+    landmarkCity: "Guwahati",
+    bgUrl: "https://images.unsplash.com/photo-1620025219213-909244081c74?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-emerald-950/90 via-slate-950/85 to-black/95"
+  },
+  "Himachal Pradesh": {
+    name: "Himachal Pradesh",
+    hindi: "हिमाचल प्रदेश",
+    landmark: "Rohtang Pass & Himalayan Snowfields",
+    landmarkHindi: "रोहतांग दर्रा",
+    landmarkCity: "Manali",
+    bgUrl: "https://images.unsplash.com/photo-1579618218290-24a26f6345e8?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-sky-950/90 via-slate-950/85 to-black/95"
+  },
+  "Uttarakhand": {
+    name: "Uttarakhand",
+    hindi: "उत्तराखण्ड",
+    landmark: "Kedarnath Temple & Rishikesh Ghats",
+    landmarkHindi: "केदारनाथ मंदिर",
+    landmarkCity: "Kedarnath",
+    bgUrl: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-blue-950/90 via-slate-950/85 to-black/95"
+  },
+  "Jammu and Kashmir": {
+    name: "Jammu and Kashmir",
+    hindi: "जम्मू और कश्मीर",
+    landmark: "Dal Lake Shikaras & Gulmarg",
+    landmarkHindi: "डल झील",
+    landmarkCity: "Srinagar",
+    bgUrl: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-cyan-950/90 via-slate-950/85 to-black/95"
+  },
+  "Goa": {
+    name: "Goa",
+    hindi: "गोवा",
+    landmark: "Basilica of Bom Jesus & Coastal Heritage",
+    landmarkHindi: "बेसिलिका ऑफ बॉम जीसस",
+    landmarkCity: "Old Goa",
+    bgUrl: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=1600&auto=format&fit=crop",
+    themeGradient: "from-teal-950/90 via-slate-950/85 to-black/95"
+  }
+};
+
+const DEFAULT_LANDMARK: StateLandmark = {
+  name: "National Capital",
+  hindi: "भारत",
+  landmark: "India Gate & Rashtrapati Bhavan",
+  landmarkHindi: "इंडिया गेट",
+  landmarkCity: "New Delhi",
+  bgUrl: "https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=1600&auto=format&fit=crop",
+  themeGradient: "from-orange-950/90 via-slate-950/85 to-black/95"
+};
+
+const POPULAR_STATES = [
+  "Maharashtra", "Uttar Pradesh", "Gujarat", "Karnataka", 
+  "Tamil Nadu", "Rajasthan", "West Bengal", "Madhya Pradesh", 
+  "Bihar", "Delhi", "Kerala", "Punjab"
 ];
 
-const OCCUPATIONS = ["Student", "Farmer", "Self-employed", "Salaried", "Daily Wage", "Unemployed", "Retired"];
-const INCOMES = ["Below ₹1L", "₹1-2.5L", "₹2.5-5L", "₹5-8L", "₹8L+"];
+const OCCUPATIONS = [
+  "Farmer", "Student", "Self-Employed", "Salaried Employee", 
+  "Street Vendor", "Artisan / Craftsman", "Unemployed", "Retired Senior"
+];
+
+const INCOMES = [
+  { label: "Below ₹1,00,000", value: 80000, desc: "BPL / Antyodaya Category" },
+  { label: "₹1,00,000 – ₹2,50,000", value: 180000, desc: "EWS / Low Income Bracket" },
+  { label: "₹2,50,000 – ₹5,00,000", value: 350000, desc: "Middle Income Group I" },
+  { label: "₹5,00,000 – ₹8,00,000", value: 650000, desc: "Middle Income Group II" },
+  { label: "Above ₹8,00,000", value: 1000000, desc: "General Taxpayer Bracket" }
+];
+
 const CATEGORIES = ["General", "OBC", "SC", "ST", "EWS"];
 const GENDERS = ["Male", "Female", "Other"];
-const SPECIAL_CONDITIONS = ["BPL", "Disability", "Widow", "Senior Citizen", "Minority", "None"];
+const SPECIAL_CONDITIONS = [
+  "BPL Family Card Holder",
+  "Divyangjan (Person with Disability)",
+  "Single Mother / Widow",
+  "Senior Citizen (Age 60+)",
+  "Minority Community",
+  "None of the Above"
+];
 
 export default function ProfileWizard() {
   const router = useRouter();
+  
+  // Step 1: State Selection (India Map appears)
+  // Steps 2-7: Further Questions with State Landmark Background
   const [step, setStep] = useState(1);
   const totalSteps = 7;
-  const [profile, setProfile] = useState<Partial<UserProfile>>({ specialConditions: [] });
-  const [searchState, setSearchState] = useState("");
+  
+  const [profile, setProfile] = useState<Partial<UserProfile>>({
+    age: 28,
+    state: "",
+    occupation: "Farmer",
+    annualIncome: 180000,
+    category: "OBC",
+    gender: "Male",
+    specialConditions: ["None of the Above"]
+  });
+
+  const [stateConfirmedNotice, setStateConfirmedNotice] = useState(false);
+
+  const selectedLandmark = profile.state ? (STATE_LANDMARKS[profile.state] || DEFAULT_LANDMARK) : null;
 
   const updateProfile = (key: keyof UserProfile, value: any) => {
     setProfile((prev) => ({ ...prev, [key]: value }));
   };
 
+  const handleSelectStateOnMap = (stateName: string | null) => {
+    if (!stateName) return;
+    updateProfile("state", stateName);
+    setStateConfirmedNotice(true);
+
+    // Smoothly auto-advance to Step 2 so further questions appear immediately
+    setTimeout(() => {
+      setStateConfirmedNotice(false);
+      setStep(2);
+    }, 700);
+  };
+
   const toggleSpecialCondition = (condition: string) => {
-    if (condition === "None") {
-      updateProfile("specialConditions", ["None"]);
+    if (condition === "None of the Above") {
+      updateProfile("specialConditions", ["None of the Above"]);
       return;
     }
     const current = profile.specialConditions || [];
     let updated = current.includes(condition)
       ? current.filter((c) => c !== condition)
-      : [...current.filter(c => c !== "None"), condition];
+      : [...current.filter(c => c !== "None of the Above"), condition];
+    
+    if (updated.length === 0) updated = ["None of the Above"];
     updateProfile("specialConditions", updated);
   };
 
   const nextStep = () => { if (step < totalSteps) setStep(step + 1); };
   const prevStep = () => { if (step > 1) setStep(step - 1); };
 
-  const submit = () => {
-    localStorage.setItem('userProfile', JSON.stringify(profile));
-    router.push('/dashboard');
+  const submitAssessment = () => {
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+    router.push("/dashboard");
   };
 
   const isStepValid = () => {
     switch (step) {
-      case 1: return !!profile.age;
-      case 2: return !!profile.state;
+      case 1: return !!profile.state;
+      case 2: return !!profile.age;
       case 3: return !!profile.occupation;
-      case 4: return !!profile.annualIncome;
+      case 4: return profile.annualIncome !== undefined;
       case 5: return !!profile.category;
       case 6: return !!profile.gender;
       case 7: return (profile.specialConditions?.length || 0) > 0;
@@ -70,204 +334,408 @@ export default function ProfileWizard() {
   };
 
   const slideVariants = {
-    hidden: { x: 50, opacity: 0 },
-    visible: { x: 0, opacity: 1 },
-    exit: { x: -50, opacity: 0 }
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 },
+    exit: { y: -20, opacity: 0 }
   };
 
-  const filteredStates = STATES.filter(s => s.toLowerCase().includes(searchState.toLowerCase()));
-
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      <div className="mb-8">
-        <Progress value={(step / totalSteps) * 100} className="h-2 mb-2 bg-orange-100 [&>div]:bg-primary" />
-        <p className="text-sm text-center text-gray-500 font-medium">Step {step} of {totalSteps}</p>
-      </div>
-
-      <div className="min-h-[400px] relative">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            variants={slideVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.3 }}
-            className="w-full"
-          >
-            {step === 1 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">What is your age?</h2>
-                <div className="flex flex-col items-center justify-center py-8">
-                  <div className="text-6xl font-bold text-primary mb-6">{profile.age || 18}</div>
-                  <input 
-                    type="range" 
-                    min="1" max="100" 
-                    value={profile.age || 18} 
-                    onChange={(e) => updateProfile("age", parseInt(e.target.value))}
-                    className="w-full max-w-md h-2 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-primary"
-                  />
-                </div>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">Which state do you live in?</h2>
-                <div className="relative mb-4">
-                  <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <Input 
-                    placeholder="Search state..." 
-                    className="pl-10 py-6 text-lg rounded-xl border-gray-300"
-                    value={searchState}
-                    onChange={(e) => setSearchState(e.target.value)}
-                  />
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto p-1">
-                  {filteredStates.map(state => (
-                    <Card 
-                      key={state}
-                      className={`p-4 cursor-pointer transition-all border-2 flex items-center justify-center text-center ${profile.state === state ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200 hover:bg-gray-50'}`}
-                      onClick={() => updateProfile("state", state)}
-                    >
-                      <span className={`font-medium ${profile.state === state ? 'text-primary' : 'text-gray-700'}`}>{state}</span>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">What is your occupation?</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {OCCUPATIONS.map(occ => (
-                    <Card 
-                      key={occ}
-                      className={`p-6 cursor-pointer transition-all border-2 text-center ${profile.occupation === occ ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200'}`}
-                      onClick={() => updateProfile("occupation", occ)}
-                    >
-                      <span className={`font-semibold text-lg ${profile.occupation === occ ? 'text-primary' : 'text-gray-700'}`}>{occ}</span>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 4 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">Annual Family Income</h2>
-                <p className="text-center text-gray-500 mb-6">This helps us find income-specific schemes for you.</p>
-                <div className="flex flex-col gap-3">
-                  {INCOMES.map((inc, i) => {
-                    const value = i === 0 ? 50000 : i === 1 ? 200000 : i === 2 ? 400000 : i === 3 ? 600000 : 1000000;
-                    return (
-                      <Card 
-                        key={inc}
-                        className={`p-5 cursor-pointer transition-all border-2 flex justify-between items-center ${profile.annualIncome === value ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200'}`}
-                        onClick={() => updateProfile("annualIncome", value)}
-                      >
-                        <span className={`font-semibold text-lg ${profile.annualIncome === value ? 'text-primary' : 'text-gray-700'}`}>{inc}</span>
-                        {profile.annualIncome === value && <Check className="text-primary w-6 h-6" />}
-                      </Card>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {step === 5 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">Social Category</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {CATEGORIES.map(cat => (
-                    <Card 
-                      key={cat}
-                      className={`p-6 cursor-pointer transition-all border-2 text-center ${profile.category === cat ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200'}`}
-                      onClick={() => updateProfile("category", cat)}
-                    >
-                      <span className={`font-semibold text-lg ${profile.category === cat ? 'text-primary' : 'text-gray-700'}`}>{cat}</span>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 6 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">Gender</h2>
-                <div className="flex flex-col gap-4">
-                  {GENDERS.map(gen => (
-                    <Card 
-                      key={gen}
-                      className={`p-6 cursor-pointer transition-all border-2 text-center ${profile.gender === gen ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200'}`}
-                      onClick={() => updateProfile("gender", gen)}
-                    >
-                      <span className={`font-semibold text-lg ${profile.gender === gen ? 'text-primary' : 'text-gray-700'}`}>{gen}</span>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 7 && (
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-center text-secondary">Any Special Conditions?</h2>
-                <p className="text-center text-gray-500 mb-4">Select all that apply.</p>
-                <div className="grid grid-cols-2 gap-4">
-                  {SPECIAL_CONDITIONS.map(cond => {
-                    const isSelected = (profile.specialConditions || []).includes(cond);
-                    return (
-                      <Card 
-                        key={cond}
-                        className={`p-5 cursor-pointer transition-all border-2 flex items-center gap-3 ${isSelected ? 'border-primary bg-orange-50 shadow-md' : 'border-gray-100 hover:border-orange-200'}`}
-                        onClick={() => toggleSpecialCondition(cond)}
-                      >
-                        <div className={`w-6 h-6 rounded-md border flex items-center justify-center ${isSelected ? 'bg-primary border-primary' : 'border-gray-300'}`}>
-                          {isSelected && <Check className="w-4 h-4 text-white" />}
-                        </div>
-                        <span className={`font-semibold ${isSelected ? 'text-primary' : 'text-gray-700'}`}>{cond}</span>
-                      </Card>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="flex justify-between mt-10">
-        <Button 
-          variant="outline" 
-          size="lg"
-          onClick={prevStep} 
-          disabled={step === 1}
-          className="w-32 border-gray-300 text-gray-600 hover:bg-gray-50"
+    <div className="relative w-full min-h-[640px] rounded-3xl overflow-hidden shadow-2xl transition-all duration-700">
+      
+      {/* 🌆 DYNAMIC STATE LANDMARK BACKGROUND (Activates after selecting state) */}
+      {selectedLandmark && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-all duration-1000 z-0 scale-105"
+          style={{ backgroundImage: `url(${selectedLandmark.bgUrl})` }}
         >
-          <ChevronLeft className="w-5 h-5 mr-1" /> Back
-        </Button>
+          {/* Deep GovTech Scrim to keep questions 100% crisp & readable */}
+          <div className={`absolute inset-0 bg-gradient-to-b ${selectedLandmark.themeGradient} backdrop-blur-xs`} />
+          
+          {/* Watermarked Landmark Identification Badge at bottom */}
+          <div className="absolute bottom-4 right-6 hidden md:flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-[11px] text-slate-300 pointer-events-none z-10">
+            <Landmark className="w-3.5 h-3.5 text-orange-400" />
+            <span>Landmark: <strong className="text-white">{selectedLandmark.landmark}</strong> ({selectedLandmark.landmarkCity}, {selectedLandmark.name})</span>
+          </div>
+        </div>
+      )}
+
+      {/* Fallback dark mesh background for Step 1 before state selection */}
+      {!selectedLandmark && (
+        <div className="absolute inset-0 bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black z-0" />
+      )}
+
+      {/* Foreground Interactive Content Container */}
+      <div className="relative z-10 p-6 sm:p-10 flex flex-col justify-between min-h-[640px]">
         
-        {step < totalSteps ? (
-          <Button 
-            size="lg"
-            onClick={nextStep} 
-            disabled={!isStepValid()}
-            className="w-32 bg-primary hover:bg-orange-600 text-white shadow-md shadow-orange-200"
+        {/* Top Header & Progress */}
+        <div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-[11px] font-bold uppercase tracking-wider mb-1">
+                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                National Welfare Scheme Discovery • 100% Live AWS Data
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                {step === 1 ? "Select Your State on the India Map" : "Complete Your Citizen Assessment"}
+              </h1>
+            </div>
+
+            {/* If state already selected, show persistent state & landmark pill */}
+            {profile.state && (
+              <div className="flex items-center gap-2 bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-orange-500/30 text-xs text-slate-200">
+                <MapPin className="w-4 h-4 text-primary" />
+                <span>
+                  <strong className="text-white">{profile.state}</strong>
+                  {selectedLandmark && <span className="text-slate-400 ml-1">({selectedLandmark.landmark})</span>}
+                </span>
+                <button
+                  onClick={() => setStep(1)}
+                  className="ml-2 text-[10px] text-orange-400 hover:text-orange-300 font-bold underline cursor-pointer"
+                >
+                  Change
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-1 mb-8">
+            <Progress value={(step / totalSteps) * 100} className="h-2 bg-slate-800 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-orange-500" />
+            <div className="flex justify-between text-[11px] text-slate-400 font-semibold pt-1">
+              <span>Step {step} of {totalSteps}</span>
+              <span>{Math.round((step / totalSteps) * 100)}% Completed</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Dynamic Question Steps */}
+        <div className="my-auto py-2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              variants={slideVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.3 }}
+              className="w-full"
+            >
+              
+              {/* ================= STEP 1: INTERACTIVE INDIA MAP ================= */}
+              {step === 1 && (
+                <div className="space-y-4">
+                  <div className="text-center max-w-xl mx-auto mb-3">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                      Which state or union territory do you reside in?
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Click directly on your state in the vector map below. Welfare guidelines vary by state.
+                    </p>
+                  </div>
+
+                  {/* Quick State Pills */}
+                  <div className="flex items-center justify-center gap-1.5 flex-wrap max-w-3xl mx-auto pb-2">
+                    {POPULAR_STATES.slice(0, 8).map((st) => (
+                      <button
+                        key={st}
+                        onClick={() => handleSelectStateOnMap(st)}
+                        className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all border ${
+                          profile.state === st
+                            ? "bg-primary text-white border-primary shadow-md"
+                            : "bg-slate-900/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white"
+                        }`}
+                      >
+                        {st}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* State Selection Confirmation Overlay Notification */}
+                  {stateConfirmedNotice && (
+                    <div className="text-center py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-2xl text-emerald-400 font-bold text-xs animate-in fade-in zoom-in-95">
+                      ✓ State Selected: {profile.state}! Loading questions with {selectedLandmark?.landmark} landmark backdrop...
+                    </div>
+                  )}
+
+                  {/* Vector SVG India Map */}
+                  <div className="w-full max-w-[480px] mx-auto aspect-square flex items-center justify-center p-1 bg-slate-950/60 rounded-3xl border border-slate-800 backdrop-blur-md shadow-inner">
+                    <India
+                      type="select-single"
+                      size={440}
+                      mapColor="#1e293b"
+                      strokeColor="#475569"
+                      strokeWidth={1}
+                      hoverColor="#f97316"
+                      selectColor="#ea580c"
+                      hints={true}
+                      hintTextColor="#ffffff"
+                      hintBackgroundColor="#0f172a"
+                      hintPadding="6px 12px"
+                      hintBorderRadius={8}
+                      onSelect={(st) => {
+                        if (st) handleSelectStateOnMap(st);
+                      }}
+                    />
+                  </div>
+
+                  <p className="text-center text-[11px] text-slate-400">
+                    Click any state path above to automatically advance to further questions.
+                  </p>
+                </div>
+              )}
+
+              {/* ================= STEP 2: AGE ================= */}
+              {step === 2 && (
+                <div className="max-w-xl mx-auto space-y-6 text-center">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">What is your current age?</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Schemes like PM-KISAN, Sukanya Samriddhi, and Old Age Pension use statutory age brackets.
+                    </p>
+                  </div>
+
+                  <div className="py-6 bg-slate-900/80 backdrop-blur-xl border border-slate-700/80 rounded-3xl p-6 shadow-xl">
+                    <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary via-amber-300 to-orange-400 mb-6">
+                      {profile.age} <span className="text-xl text-slate-400 font-bold">Years</span>
+                    </div>
+
+                    <input
+                      type="range"
+                      min="18"
+                      max="90"
+                      value={profile.age || 28}
+                      onChange={(e) => updateProfile("age", parseInt(e.target.value))}
+                      className="w-full max-w-md h-3 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                    />
+
+                    {/* Quick Age Brackets */}
+                    <div className="grid grid-cols-4 gap-2 mt-6 max-w-md mx-auto">
+                      {[18, 25, 35, 60].map((quickAge) => (
+                        <button
+                          key={quickAge}
+                          type="button"
+                          onClick={() => updateProfile("age", quickAge)}
+                          className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                            profile.age === quickAge
+                              ? "bg-primary text-white border-primary"
+                              : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-700"
+                          }`}
+                        >
+                          {quickAge === 60 ? "60+ (Senior)" : `${quickAge} Yrs`}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ================= STEP 3: OCCUPATION ================= */}
+              {step === 3 && (
+                <div className="max-w-2xl mx-auto space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">What is your primary occupation?</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Direct benefits target specific sectors such as Agriculture, Artisans, Students, or Street Vendors.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {OCCUPATIONS.map((occ) => (
+                      <button
+                        key={occ}
+                        type="button"
+                        onClick={() => updateProfile("occupation", occ)}
+                        className={`p-4 rounded-2xl border transition-all text-left flex flex-col justify-between h-28 backdrop-blur-xl ${
+                          profile.occupation === occ
+                            ? "bg-gradient-to-br from-primary/20 to-orange-600/30 border-primary text-white shadow-lg shadow-orange-900/30"
+                            : "bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800/90 hover:border-slate-700"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start">
+                          <User className={`w-5 h-5 ${profile.occupation === occ ? "text-primary" : "text-slate-400"}`} />
+                          {profile.occupation === occ && <Check className="w-4 h-4 text-primary" />}
+                        </div>
+                        <span className="font-bold text-xs sm:text-sm leading-snug">{occ}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ================= STEP 4: ANNUAL INCOME ================= */}
+              {step === 4 && (
+                <div className="max-w-2xl mx-auto space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Annual Household Income</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Official ceiling thresholds qualify you for Ayushman Bharat, PMAY Housing, and scholarships.
+                    </p>
+                  </div>
+
+                  <div className="space-y-3">
+                    {INCOMES.map((inc) => (
+                      <button
+                        key={inc.label}
+                        type="button"
+                        onClick={() => updateProfile("annualIncome", inc.value)}
+                        className={`w-full p-4 rounded-2xl border transition-all flex items-center justify-between backdrop-blur-xl ${
+                          profile.annualIncome === inc.value
+                            ? "bg-gradient-to-r from-primary/20 to-orange-600/20 border-primary text-white shadow-lg"
+                            : "bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800/90 hover:border-slate-700"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${profile.annualIncome === inc.value ? "bg-primary text-white" : "bg-slate-800 text-slate-400"}`}>
+                            <Wallet className="w-4 h-4" />
+                          </div>
+                          <div className="text-left">
+                            <span className="font-bold text-sm block text-white">{inc.label}</span>
+                            <span className="text-xs text-slate-400">{inc.desc}</span>
+                          </div>
+                        </div>
+                        {profile.annualIncome === inc.value && <Check className="w-5 h-5 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ================= STEP 5: SOCIAL CATEGORY ================= */}
+              {step === 5 && (
+                <div className="max-w-xl mx-auto space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Select Social Category</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      As recognized by Central and State Government reservation guidelines.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => updateProfile("category", cat)}
+                        className={`p-4 rounded-2xl border transition-all flex items-center justify-between backdrop-blur-xl ${
+                          profile.category === cat
+                            ? "bg-gradient-to-br from-primary/20 to-orange-600/30 border-primary text-white shadow-lg"
+                            : "bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700"
+                        }`}
+                      >
+                        <span className="font-bold text-base">{cat}</span>
+                        {profile.category === cat && <Check className="w-4 h-4 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ================= STEP 6: GENDER ================= */}
+              {step === 6 && (
+                <div className="max-w-xl mx-auto space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Select Your Gender</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Schemes like PM Matru Vandana, Ladli Behna, and Sukanya Samriddhi target women empowerment.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    {GENDERS.map((gen) => (
+                      <button
+                        key={gen}
+                        type="button"
+                        onClick={() => updateProfile("gender", gen)}
+                        className={`p-6 rounded-2xl border transition-all text-center flex flex-col items-center justify-center gap-2 backdrop-blur-xl ${
+                          profile.gender === gen
+                            ? "bg-gradient-to-br from-primary/20 to-orange-600/30 border-primary text-white shadow-lg"
+                            : "bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700"
+                        }`}
+                      >
+                        <span className="font-bold text-lg">{gen}</span>
+                        {profile.gender === gen && <Check className="w-4 h-4 text-primary" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ================= STEP 7: SPECIAL CONDITIONS ================= */}
+              {step === 7 && (
+                <div className="max-w-2xl mx-auto space-y-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Any Special Eligibility Factors?</h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                      Select all that apply to unlock special priority quotas and subsidies.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {SPECIAL_CONDITIONS.map((cond) => {
+                      const isSelected = profile.specialConditions?.includes(cond);
+                      return (
+                        <button
+                          key={cond}
+                          type="button"
+                          onClick={() => toggleSpecialCondition(cond)}
+                          className={`p-3.5 rounded-2xl border transition-all text-left flex items-center justify-between backdrop-blur-xl ${
+                            isSelected
+                              ? "bg-gradient-to-r from-primary/20 to-orange-600/20 border-primary text-white shadow-lg"
+                              : "bg-slate-900/80 border-slate-800 text-slate-300 hover:bg-slate-800 hover:border-slate-700"
+                          }`}
+                        >
+                          <span className="font-bold text-xs leading-snug">{cond}</span>
+                          <div className={`w-5 h-5 rounded-lg border flex items-center justify-center ${isSelected ? "bg-primary border-primary text-white" : "border-slate-700"}`}>
+                            {isSelected && <Check className="w-3 h-3" />}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Bottom Navigation Buttons */}
+        <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between">
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            disabled={step === 1}
+            className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold"
           >
-            Next <ChevronRight className="w-5 h-5 ml-1" />
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Previous
           </Button>
-        ) : (
-          <Button 
-            size="lg"
-            onClick={submit} 
-            disabled={!isStepValid()}
-            className="w-48 bg-accent hover:bg-emerald-700 text-white shadow-md shadow-emerald-200"
-          >
-            Find My Schemes 🔍
-          </Button>
-        )}
+
+          <div className="flex items-center gap-3">
+            {step < totalSteps ? (
+              <Button
+                onClick={nextStep}
+                disabled={!isStepValid()}
+                className="bg-gradient-to-r from-primary to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl px-6 text-xs font-bold shadow-lg transition-all"
+              >
+                <span>Continue</span>
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            ) : (
+              <Button
+                onClick={submitAssessment}
+                disabled={!isStepValid()}
+                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl px-8 text-xs font-black shadow-xl shadow-emerald-950/40"
+              >
+                <ShieldCheck className="w-4 h-4 mr-1.5" />
+                <span>Unlock Eligible Schemes</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </Button>
+            )}
+          </div>
+        </div>
+
       </div>
+
     </div>
   );
 }

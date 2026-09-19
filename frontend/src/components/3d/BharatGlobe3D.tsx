@@ -206,7 +206,6 @@ function createEarthCanvasTexture(): THREE.CanvasTexture {
 
 export default function BharatGlobe3D() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const [hoveredNode, setHoveredNode] = useState<StateNode | null>(INDIAN_NODES[0]);
   const [autoRotate, setAutoRotate] = useState(true);
 
   useEffect(() => {
@@ -490,8 +489,8 @@ export default function BharatGlobe3D() {
       </div>
 
       {/* Bottom Live Telemetry HUD Bar */}
-      <div className="absolute bottom-5 left-5 right-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3.5 sm:px-5 sm:py-3 rounded-2xl border border-slate-700/80 text-xs text-slate-300 z-10 pointer-events-auto">
-        <div className="flex items-center gap-4">
+      <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3.5 sm:px-6 sm:py-3 rounded-2xl border border-slate-700/80 text-xs text-slate-300 z-10 pointer-events-auto">
+        <div className="flex items-center gap-6">
           <div>
             <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
               National DBT Gateway
@@ -501,62 +500,17 @@ export default function BharatGlobe3D() {
           <div className="h-7 w-px bg-slate-700"></div>
           <div>
             <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
-              Coverage
+              Pan-India Coverage
             </span>
-            <span className="font-extrabold text-orange-400 text-sm">36 States & UTs</span>
+            <span className="font-extrabold text-orange-400 text-sm">All 36 States & Union Territories</span>
           </div>
         </div>
 
-        {/* Quick Node Selector Buttons */}
-        <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar text-[11px]">
-          {INDIAN_NODES.slice(0, 5).map((n) => (
-            <button
-              key={n.name}
-              onClick={() => setHoveredNode(n)}
-              className={`px-3 py-1.5 rounded-xl border font-bold transition-all ${
-                hoveredNode?.name === n.name
-                  ? "bg-gradient-to-r from-primary to-orange-600 text-white border-primary shadow-sm"
-                  : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white"
-              }`}
-            >
-              {n.name}
-            </button>
-          ))}
+        <div className="hidden sm:flex items-center gap-2 text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>100% Live DynamoDB Disbursals</span>
         </div>
       </div>
-
-      {/* Selected Node Details Floating HUD Panel */}
-      {hoveredNode && (
-        <div className="absolute top-20 right-5 z-20 w-72 bg-slate-900/95 backdrop-blur-xl p-4 rounded-2xl border border-orange-500/40 shadow-2xl text-white animate-in fade-in zoom-in-95 duration-200">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-            <div>
-              <h4 className="font-black text-sm text-orange-400">{hoveredNode.name}</h4>
-              <p className="text-xs text-slate-400 font-hindi">{hoveredNode.hindiName}</p>
-            </div>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-              Live DBT
-            </span>
-          </div>
-
-          <div className="mt-3 space-y-2 text-xs">
-            <div className="flex justify-between items-center">
-              <span className="text-slate-400">Node Classification:</span>
-              <span className="font-bold text-slate-200">{hoveredNode.type}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-slate-400">Active Schemes:</span>
-              <span className="font-bold text-emerald-400">{hoveredNode.schemes} Welfare Programs</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-slate-400">Statutory Ceiling:</span>
-              <span className="font-bold text-primary">{hoveredNode.benefitCap}</span>
-            </div>
-            <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
-              Direct DynamoDB & Central Ministry Catalog Feed
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );
