@@ -53,6 +53,8 @@ SevaSetu is an **AI-powered agentic platform** that:
 6. **Side-by-Side Comparison Matrix** — Compare eligibility criteria, benefits, and documents for up to 3 schemes simultaneously
 7. **Document OCR Vault** — Live verification of Aadhaar, PAN, and Income Certificates with Amazon Textract
 8. **Works in 5 Indian languages** — English, Hindi, Tamil, Telugu, Bengali with Amazon Translate
+9. **Interactive India Map Explorer** — Geographic navigation across all 36 States & UTs with in-situ demographic condition entry and real-time state scheme queries
+10. **Holographic 3D Bharat Globe & Simulator** — Sci-Fi Three.js WebGL globe with custom Fresnel atmospheric shader, highlighted Indian subcontinent, state capital laser pillars, and animated DBT energy arcs
 
 ### What Makes This Different? (100% Live Cloud, Zero Mock Data)
 
