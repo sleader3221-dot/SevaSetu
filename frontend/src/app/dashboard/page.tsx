@@ -7,10 +7,9 @@ import PassbookModal from "@/components/PassbookModal";
 import ApplicationTracker from "@/components/ApplicationTracker";
 import DocumentReadiness from "@/components/DocumentReadiness";
 import HelplineDirectory from "@/components/HelplineDirectory";
-import IndiaMapExplorer from "@/components/IndiaMapExplorer";
 import { 
   Loader2, Award, FileText, CheckCircle, ShieldCheck, 
-  ArrowRight, Landmark, Layers, PhoneCall, CheckCircle2, MapPin 
+  ArrowRight, Landmark, Layers, PhoneCall, CheckCircle2 
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { findSchemes, generatePassbook } from "@/lib/api-client";
@@ -28,7 +27,7 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
 
   // Active Tab
-  const [activeTab, setActiveTab] = useState<"schemes" | "tracker" | "documents" | "helplines" | "map">("schemes");
+  const [activeTab, setActiveTab] = useState<"schemes" | "tracker" | "documents" | "helplines">("schemes");
 
   // Passbook state
   const [isPassbookOpen, setIsPassbookOpen] = useState(false);
@@ -223,17 +222,6 @@ export default function Dashboard() {
               <PhoneCall className="w-4 h-4" />
               Helplines & Grievances
             </button>
-            <button
-              onClick={() => setActiveTab("map")}
-              className={`py-3 px-3 border-b-2 font-bold text-xs sm:text-sm flex items-center gap-2 whitespace-nowrap transition-colors ${
-                activeTab === "map"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-            >
-              <MapPin className="w-4 h-4" />
-              State Explorer
-            </button>
           </nav>
         </div>
 
@@ -261,12 +249,6 @@ export default function Dashboard() {
 
         {activeTab === "helplines" && (
           <HelplineDirectory />
-        )}
-
-        {activeTab === "map" && (
-          <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm bg-slate-950">
-            <IndiaMapExplorer />
-          </div>
         )}
 
         {/* Citizen Welfare Passbook Modal */}

@@ -20,6 +20,10 @@ export interface Scheme {
   eligibilityCriteria: EligibilityCriteria;
   applicationSteps: string[];
   requiredDocuments: string[];
+  registrationUrl?: string;
+  youtubeGuideUrl?: string;
+  helpline?: string;
+  benefitAmount?: number;
   portalUrl: string;
   deadline: string | null;
   category: SchemeCategory;

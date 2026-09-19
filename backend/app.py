@@ -278,7 +278,10 @@ def generate_passbook(request: PassbookRequest):
                 'ministry': m['scheme'].get('ministry'),
                 'benefit_value': m['scheme'].get('benefit_value'),
                 'score': m['eligibility_score'],
-                'portal_url': m['scheme'].get('portal_url')
+                'portal_url': m['scheme'].get('portal_url'),
+                'registration_url': m['scheme'].get('registration_url', m['scheme'].get('portal_url')),
+                'youtube_guide_url': m['scheme'].get('youtube_guide_url', ''),
+                'helpline': m['scheme'].get('helpline', '')
             }
             for m in matches[:10]
         ],

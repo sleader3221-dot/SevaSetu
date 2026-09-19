@@ -55,10 +55,6 @@ export default function Navbar() {
             <Link href="/profile" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
               Find Schemes
             </Link>
-            <Link href="/#state-map" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-              India State Map
-            </Link>
             <Link href="/dashboard" className="text-xs uppercase tracking-wider font-bold text-gray-700 hover:text-primary transition-colors">
               My Assessment & Pipeline
             </Link>

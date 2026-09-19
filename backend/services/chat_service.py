@@ -1,10 +1,50 @@
-﻿import json
+import json
 import logging
 import re
-from data.schemes import SCHEMES_DATA
+import boto3
+from decimal import Decimal
 from services.translate_service import translate_text
 
 logger = logging.getLogger(__name__)
+
+dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+table = dynamodb.Table('SevaSetu-Schemes')
+
+def convert_decimals(obj):
+    if isinstance(obj, list):
+        return [convert_decimals(i) for i in obj]
+    elif isinstance(obj, dict):
+        return {k: convert_decimals(v) for k, v in obj.items()}
+    elif isinstance(obj, Decimal):
+        return int(obj) if obj % 1 == 0 else float(obj)
+    return obj
+
+def get_schemes():
+    try:
+        response = table.scan(Limit=100)
+        items = response.get('Items', [])
+        if len(items) >= 5:
+            clean_items = []
+            for item in items:
+                clean = {}
+                for k, v in item.items():
+                    if k in ['pk', 'sk']:
+                        continue
+                    if isinstance(v, str) and (v.startswith('{') or v.startswith('[')):
+                        try:
+                            clean[k] = json.loads(v)
+                            continue
+                        except Exception:
+                            pass
+                    clean[k] = v
+                clean = convert_decimals(clean)
+                clean_items.append(clean)
+            return clean_items
+    except Exception as e:
+        logger.warning(f"DynamoDB fetch in chat failed: {e}")
+    
+    from data.schemes import SCHEMES_DATA
+    return SCHEMES_DATA
 
 def process_chat_message(message: str, profile: dict = None, language: str = 'en') -> dict:
     """
@@ -19,9 +59,9 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
         'agriculture': ['farmer', 'kisan', 'agriculture', 'crop', 'land', 'tractor', 'fertilizer', 'harvest'],
         'women': ['woman', 'women', 'girl', 'female', 'daughter', 'mother', 'widow', 'maternity'],
         'health': ['health', 'hospital', 'medical', 'treatment', 'ayushman', 'disease', 'surgery', 'doctor'],
-        'business': ['loan', 'business', 'startup', 'shop', 'vendor', 'mudra', 'entrepreneur', 'capital'],
+        'business': ['loan', 'business', 'startup', 'shop', 'vendor', 'mudra', 'entrepreneur', 'capital', 'vishwakarma', 'artisan'],
         'housing': ['house', 'housing', 'home', 'awas', 'roof', 'shelter', 'slum', 'construction'],
-        'pension': ['pension', 'old age', 'senior', 'elderly', 'retirement', '60 years', 'atal'],
+        'pension': ['pension', 'old age', 'senior', 'elderly', 'retirement', '60 years', '70 years', 'atal'],
         'skill': ['skill', 'training', 'job', 'employment', 'placement', 'internship', 'apprentice']
     }
     
@@ -38,10 +78,14 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
     user_occupation = profile.get('occupation', '') if profile else ''
 
     # 2. Scheme ranking
-    for scheme in SCHEMES_DATA:
+    schemes = get_schemes()
+    for scheme in schemes:
         scheme_cat = scheme.get('category', '').lower()
         desc = (scheme.get('description', '') + " " + scheme.get('benefits', '')).lower()
-        target = ' '.join(scheme.get('target_group', [])).lower()
+        
+        target_group = scheme.get('target_group', [])
+        target_group = target_group if isinstance(target_group, list) else []
+        target = ' '.join(target_group).lower()
         
         score = 0
         
@@ -56,9 +100,17 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
         # Match profile if provided
         if user_occupation and user_occupation.lower() in target:
             score += 25
-        if user_category and user_category in str(scheme.get('eligibility', {}).get('categories', [])):
+            
+        eligibility = scheme.get('eligibility', {})
+        if isinstance(eligibility, str):
+            try:
+                eligibility = json.loads(eligibility)
+            except:
+                eligibility = {}
+                
+        if user_category and user_category in str(eligibility.get('categories', [])):
             score += 20
-        if user_income and user_income <= scheme.get('eligibility', {}).get('income_limit', 99999999):
+        if user_income and user_income <= eligibility.get('income_limit', 99999999):
             score += 20
 
         # General keyword match
@@ -70,6 +122,10 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
                 score += 10
 
         if score > 20:
+            reg_url = scheme.get('registration_url') or scheme.get('portal_url', '')
+            yt_url = scheme.get('youtube_guide_url', '')
+            helpline = scheme.get('helpline', '')
+
             matched_schemes.append({
                 'id': scheme.get('id'),
                 'name': scheme.get('name'),
@@ -77,6 +133,9 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
                 'ministry': scheme.get('ministry', ''),
                 'benefit_value': scheme.get('benefit_value', ''),
                 'portal_url': scheme.get('portal_url', ''),
+                'registration_url': reg_url,
+                'youtube_guide_url': yt_url,
+                'helpline': helpline,
                 'match_score': min(100, score)
             })
 
@@ -85,22 +144,31 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
 
     # 3. Response Generation
     if top_schemes:
-        scheme_bullets = "\n".join([
-            f"• **{s['name']}** ({s['benefit_value']}) — Direct Link: [Official Portal]({s['portal_url']})"
-            for s in top_schemes
-        ])
+        bullets = []
+        for s in top_schemes:
+            bullet = f"• **{s['name']}** ({s['benefit_value']})\n  → [Official Portal]({s['registration_url']})"
+            if s['youtube_guide_url']:
+                bullet += f" | [Watch Video Guide]({s['youtube_guide_url']})"
+            if s['helpline']:
+                bullet += f" | 📞 Helpline: {s['helpline']}"
+            bullets.append(bullet)
+
+        scheme_bullets = "\n\n".join(bullets)
         
         english_reply = (
-            f"Namaste! 🙏 Based on your query, I analyzed government welfare schemes and found "
-            f"**{len(top_schemes)} high-impact schemes** you may qualify for:\n\n"
+            f"Namaste! 🙏 Based on your live query, I analyzed official government welfare databases and found "
+            f"**{len(top_schemes)} high-impact schemes** matching your request:\n\n"
             f"{scheme_bullets}\n\n"
-            f"💡 **Next Step:** Ensure your Aadhaar is linked to your active bank account for seamless Direct Benefit Transfer (DBT)."
+            f"💡 **Direct Advice:** Ensure your Aadhaar is linked with your bank account for direct statutory DBT disbursement."
         )
     else:
         english_reply = (
-            "Namaste! 🙏 I can help you discover Central and State government welfare schemes. "
-            "Could you tell me a bit more about yourself, such as your **age, state, occupation, and family income**? "
-            "For example: *'I am a 21-year-old female student in Uttar Pradesh with annual income 2 lakhs.'*"
+            "Namaste! 🙏 I can help you find Central and State government welfare schemes directly from our live AWS database.\n\n"
+            "Tell me about yourself (such as **your occupation, age, state, or monthly income**), or ask about specific categories like:\n"
+            "• *'Scholarships for undergraduate students'*\n"
+            "• *'Direct financial support for small farmers'*\n"
+            "• *'Universal healthcare for senior citizens'*\n"
+            "• *'Business loans under Mudra or Vishwakarma'*"
         )
 
     # Translate reply if language is not English
@@ -121,5 +189,5 @@ def process_chat_message(message: str, profile: dict = None, language: str = 'en
         'reply': final_reply,
         'schemes': top_schemes,
         'follow_ups': follow_ups,
-        'provider': 'SevaMitra AI Multi-Agent Engine'
+        'provider': 'SevaMitra AI Multi-Agent Engine • Live DynamoDB'
     }

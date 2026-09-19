@@ -395,13 +395,13 @@ export default function ProfileWizard() {
   const totalSteps = 7;
   
   const [profile, setProfile] = useState<Partial<UserProfile>>({
-    age: 28,
+    age: undefined,
     state: "",
-    occupation: "Farmer",
-    annualIncome: 180000,
-    category: "OBC",
-    gender: "Male",
-    specialConditions: ["None of the Above"]
+    occupation: "",
+    annualIncome: undefined,
+    category: undefined,
+    gender: undefined,
+    specialConditions: []
   });
 
   const [stateConfirmedNotice, setStateConfirmedNotice] = useState(false);
@@ -469,50 +469,63 @@ export default function ProfileWizard() {
   };
 
   return (
-    <>
-      {/* 🌆 FULL-SCREEN DYNAMIC STATE LANDMARK BACKGROUND */}
-      <div className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden select-none">
+    <div className="relative w-full">
+      {/* 🌆 FULL-SCREEN DYNAMIC STATE LANDMARK BACKGROUND - Vivid and Visible */}
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none overflow-hidden select-none">
         <div 
           key={activeLandmark.name}
           className="absolute inset-0 bg-cover bg-center transition-all duration-1000 ease-out transform scale-105"
           style={{ backgroundImage: `url(${activeLandmark.bgUrl})` }}
         />
-        {/* Balanced, translucent dark scrim so the landmark architecture is clearly, vividly visible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/45 via-slate-950/55 to-slate-950/75 backdrop-blur-[1px]" />
+        {/* Crystal clear translucent dark scrim so the landmark architecture is unmistakably visible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/25 via-slate-950/35 to-slate-950/65" />
       </div>
 
-      {/* 🏛️ Prominent Global Landmark Status Banner */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 sm:px-5 rounded-2xl bg-black/65 backdrop-blur-md border border-white/20 mb-6 shadow-2xl">
-        <div className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-200">
-          <span className="flex h-3 w-3 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-          </span>
-          <Landmark className="w-4 h-4 text-orange-400 shrink-0" />
-          <span>
-            <span className="text-slate-400 font-medium">State Landmark:</span>{" "}
-            <strong className="text-white font-bold">{activeLandmark.landmark}</strong>{" "}
-            <span className="text-orange-400 font-semibold">({activeLandmark.landmarkCity}, {activeLandmark.name})</span>
-          </span>
+      {/* Content Layer with z-10 */}
+      <div className="relative z-10 w-full">
+        {/* 🏛️ Prominent Global Landmark Status Banner with Photo Preview */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3 sm:px-5 rounded-2xl bg-black/75 backdrop-blur-md border border-white/25 mb-6 shadow-2xl">
+          <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
+            {/* Landmark Photo Thumbnail */}
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-orange-400/50 shadow-md shrink-0 bg-slate-800">
+              <img 
+                src={activeLandmark.bgUrl} 
+                alt={activeLandmark.landmark} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </span>
+                <span className="text-slate-400 text-[11px] font-medium uppercase tracking-wider">Active State Backdrop:</span>
+              </div>
+              <div>
+                <strong className="text-white font-bold">{activeLandmark.landmark}</strong>{" "}
+                <span className="text-orange-400 font-semibold">({activeLandmark.landmarkCity}, {activeLandmark.name})</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 text-xs">
+            <span className="px-2.5 py-1 rounded-xl bg-orange-500/20 text-orange-300 font-bold border border-orange-500/30 font-mono">
+              {activeLandmark.hindi}
+            </span>
+            {profile.state && step > 1 && (
+              <button
+                onClick={() => setStep(1)}
+                className="text-[11px] text-slate-200 hover:text-white underline cursor-pointer bg-slate-900/80 px-3 py-1 rounded-lg border border-slate-700 hover:border-orange-500 transition-colors"
+              >
+                Change State
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-2.5 text-xs">
-          <span className="px-2.5 py-1 rounded-xl bg-orange-500/20 text-orange-300 font-bold border border-orange-500/30 font-mono">
-            {activeLandmark.hindi}
-          </span>
-          {profile.state && step > 1 && (
-            <button
-              onClick={() => setStep(1)}
-              className="text-[11px] text-slate-300 hover:text-white underline cursor-pointer bg-slate-900/60 px-2.5 py-1 rounded-lg border border-slate-700 hover:border-orange-500 transition-colors"
-            >
-              Change State
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Main Glassmorphic Assessment Card */}
-      <div className="relative w-full min-h-[640px] rounded-3xl overflow-hidden bg-slate-950/80 backdrop-blur-xl border border-white/15 shadow-2xl transition-all duration-700 p-6 sm:p-10 flex flex-col justify-between">
+        {/* Main Glassmorphic Assessment Card - Translucent Glass */}
+        <div className="relative w-full min-h-[640px] rounded-3xl overflow-hidden bg-slate-950/40 backdrop-blur-md border border-white/20 shadow-2xl transition-all duration-700 p-6 sm:p-10 flex flex-col justify-between">
         
         {/* Top Header & Progress */}
         <div>
@@ -881,7 +894,8 @@ export default function ProfileWizard() {
           </div>
         </div>
 
+        </div>
       </div>
-    </>
+    </div>
   );
 }

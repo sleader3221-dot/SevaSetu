@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: "Discover and apply for Indian government schemes easily with AI-powered personalized recommendations.",
 };
 
+import Script from "next/script";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,6 +22,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        {/* Government Portal Multi-Language Neural Translation Integration */}
+        <div id="google_translate_element" style={{ display: "none" }} />
+        <Script
+          id="google-translate-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                if (window.google && window.google.translate) {
+                  new window.google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'hi,ta,te,bn,mr,gu,kn,pa,en',
+                    autoDisplay: false
+                  }, 'google_translate_element');
+                }
+              }
+            `,
+          }}
+        />
+        <Script
+          id="google-translate-script"
+          strategy="afterInteractive"
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
+
         <Navbar />
         {children}
         <SevaMitraChat />

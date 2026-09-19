@@ -4,935 +4,869 @@ SCHEMES_DATA = [
         "name": "PM Kisan Samman Nidhi",
         "name_hindi": "पीएम किसान सम्मान निधि",
         "ministry": "Ministry of Agriculture and Farmers Welfare",
-        "description": "Income support to all landholding farmer families.",
-        "benefits": "₹6,000 per year in three equal installments.",
+        "description": "Income support to all landholding farmer families across India.",
+        "benefits": "₹6,000 per year in three equal installments of ₹2,000 each, deposited directly into the bank account.",
         "benefit_value": "₹6,000/yr",
         "benefit_amount": 6000,
         "eligibility": {
-            "occupations": [
-                "Farmer"
-            ],
-            "special_conditions": [
-                "Land less than 2 hectares"
-            ]
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Farmer"],
+            "special_conditions": ["Landholding farmer families"]
         },
-        "application_steps": [
-            "Visit PM Kisan portal",
-            "Register with Aadhaar",
-            "Submit land details"
-        ],
-        "required_documents": [
-            "Aadhaar Card",
-            "Bank Passbook",
-            "Land holding papers"
-        ],
+        "application_steps": ["Visit pmkisan.gov.in", "Click New Farmer Registration", "Enter Aadhaar number and bank details", "Submit land ownership documents", "Verify via e-KYC"],
+        "required_documents": ["Aadhaar Card", "Bank Passbook", "Land Ownership Records (Khatauni)", "Mobile Number linked to Aadhaar"],
         "portal_url": "https://pmkisan.gov.in/",
+        "registration_url": "https://pmkisan.gov.in/RegistrationFormNew.aspx",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Kisan+Samman+Nidhi+apply+online",
+        "helpline": "155261 / 011-24300606",
+        "deadline": None,
         "category": "Agriculture",
-        "target_group": [
-            "Farmers"
-        ]
+        "target_group": ["Farmers"]
     },
     {
         "id": "2",
         "name": "Ayushman Bharat PM-JAY",
         "name_hindi": "आयुष्मान भारत पीएम-जय",
         "ministry": "Ministry of Health and Family Welfare",
-        "description": "Health insurance cover for secondary and tertiary care hospitalization.",
-        "benefits": "Health cover of ₹5 lakhs per family per year.",
-        "benefit_value": "₹5,000,000 cover",
+        "description": "Provides health cover of ₹5 lakhs per family per year for secondary and tertiary care hospitalization.",
+        "benefits": "₹5,00,000 health cover per family per year.",
+        "benefit_value": "₹5,00,000",
         "benefit_amount": 500000,
         "eligibility": {
-            "categories": [
-                "SC",
-                "ST",
-                "OBC",
-                "General",
-                "EWS"
-            ],
-            "special_conditions": [
-                "BPL Family"
-            ]
+            "min_age": 0,
+            "max_age": None,
+            "income_limit": 500000,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["SECC 2011 Data Deprivation criteria"]
         },
-        "application_steps": [
-            "Check eligibility on PMJAY portal",
-            "Visit empanelled hospital",
-            "Get e-card"
-        ],
-        "required_documents": [
-            "Aadhaar Card",
-            "Ration Card"
-        ],
+        "application_steps": ["Visit PMJAY portal", "Click on Am I Eligible", "Enter mobile number and verify via OTP", "Check eligibility using state, name, or ration card", "Download Ayushman card via beneficiary portal"],
+        "required_documents": ["Aadhaar Card", "Ration Card", "Mobile Number"],
         "portal_url": "https://pmjay.gov.in/",
+        "registration_url": "https://beneficiary.nha.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Ayushman+Bharat+Card+apply+online",
+        "helpline": "14555",
+        "deadline": None,
         "category": "Health",
-        "target_group": [
-            "Poor families"
-        ]
+        "target_group": ["BPL Families", "Low Income"]
     },
     {
         "id": "3",
-        "name": "Post-Matric Scholarship for SC",
-        "name_hindi": "एससी के लिए पोस्ट-मैट्रिक छात्रवृत्ति",
-        "ministry": "Ministry of Social Justice and Empowerment",
-        "description": "Financial assistance to SC students pursuing post-matriculation courses.",
-        "benefits": "Maintenance allowance and reimbursement of fees.",
-        "benefit_value": "Variable",
-        "benefit_amount": 10000,
-        "eligibility": {
-            "categories": [
-                "SC"
-            ],
-            "income_limit": 250000
-        },
-        "application_steps": [
-            "Register on NSP",
-            "Fill application",
-            "Upload documents"
-        ],
-        "required_documents": [
-            "Caste Certificate",
-            "Income Certificate",
-            "Mark sheets"
-        ],
-        "portal_url": "https://scholarships.gov.in/",
-        "category": "Education",
-        "target_group": [
-            "SC Students"
-        ]
-    },
-    {
-        "id": "4",
         "name": "PM Awas Yojana - Gramin",
         "name_hindi": "पीएम आवास योजना - ग्रामीण",
         "ministry": "Ministry of Rural Development",
-        "description": "Housing for All in rural areas.",
-        "benefits": "Financial assistance of ₹1.2 lakh (plains) or ₹1.3 lakh (hilly areas).",
-        "benefit_value": "₹1.2L-1.3L",
-        "benefit_amount": 120000,
+        "description": "Financial assistance for the construction of a pucca house with basic amenities to homeless families.",
+        "benefits": "₹1,20,000 for plains, ₹1,30,000 for hilly states. Plus MGNREGA wages.",
+        "benefit_value": "₹1,30,000",
+        "benefit_amount": 130000,
         "eligibility": {
-            "special_conditions": [
-                "Rural resident",
-                "Houseless or living in kutcha house"
-            ]
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": 300000,
+            "categories": ["EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Houseless or living in kutcha houses (0, 1, or 2 rooms)"]
         },
-        "application_steps": [
-            "Gram Sabha identification",
-            "Registration by Gram Panchayat",
-            "Sanction order"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Bank Account Details",
-            "Job Card"
-        ],
+        "application_steps": ["Contact Gram Panchayat or Ward Member", "Submit application via Awaas+ app or Gram Sabha", "Verification by authorities", "Sanction and release of funds in installments"],
+        "required_documents": ["Aadhaar Card", "Job Card", "Bank Account Details", "Swachh Bharat Mission Number"],
         "portal_url": "https://pmayg.nic.in/",
+        "registration_url": "https://pmayg.nic.in/netiay/Home.aspx",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Awas+Yojana+Gramin+apply",
+        "helpline": "1800-11-6446",
+        "deadline": None,
         "category": "Housing",
-        "target_group": [
-            "Rural houseless"
-        ]
+        "target_group": ["Rural Poor", "Homeless"]
     },
     {
-        "id": "5",
+        "id": "4",
         "name": "PM Awas Yojana - Urban",
         "name_hindi": "पीएम आवास योजना - शहरी",
         "ministry": "Ministry of Housing and Urban Affairs",
-        "description": "Housing for All in urban areas.",
-        "benefits": "Interest subsidy up to ₹2.67 lakh.",
-        "benefit_value": "₹2.67L Subsidy",
+        "description": "Housing for all in urban areas with interest subsidy.",
+        "benefits": "Interest subsidy up to ₹2.67 lakh on home loans.",
+        "benefit_value": "₹2,67,000",
         "benefit_amount": 267000,
         "eligibility": {
+            "min_age": 18,
+            "max_age": None,
             "income_limit": 1800000,
-            "special_conditions": [
-                "Urban resident",
-                "Does not own a pucca house"
-            ]
+            "categories": ["EWS", "LIG", "MIG-I", "MIG-II"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Must not own a pucca house in India", "Female ownership required for EWS/LIG"]
         },
-        "application_steps": [
-            "Apply online or via CSC",
-            "Assessment",
-            "Bank loan sanction"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Income Proof",
-            "Property documents"
-        ],
+        "application_steps": ["Visit pmaymis.gov.in", "Select Citizen Assessment", "Choose Benefit under other 3 components", "Fill Aadhaar details", "Fill application and submit"],
+        "required_documents": ["Aadhaar Card", "Income Proof", "Bank Details", "Property Documents"],
         "portal_url": "https://pmaymis.gov.in/",
+        "registration_url": "https://pmaymis.gov.in/Open/Format_A_B_C.aspx",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Awas+Yojana+Urban+apply",
+        "helpline": "1800-11-3377 / 1800-11-3388",
+        "deadline": None,
         "category": "Housing",
-        "target_group": [
-            "Urban EWS/LIG"
-        ]
+        "target_group": ["Urban Poor", "Middle Class"]
     },
     {
-        "id": "6",
-        "name": "Sukanya Samriddhi Yojana",
-        "name_hindi": "सुकन्या समृद्धि योजना",
+        "id": "5",
+        "name": "Pradhan Mantri Mudra Yojana",
+        "name_hindi": "प्रधानमंत्री मुद्रा योजना",
         "ministry": "Ministry of Finance",
-        "description": "Small deposit scheme for the girl child.",
-        "benefits": "High interest rate (approx 8%) and tax benefits.",
-        "benefit_value": "High Interest",
-        "benefit_amount": 0,
-        "eligibility": {
-            "max_age": 10,
-            "gender": [
-                "Female"
-            ]
-        },
-        "application_steps": [
-            "Visit Post Office or Bank",
-            "Fill account opening form",
-            "Submit documents"
-        ],
-        "required_documents": [
-            "Birth Certificate of child",
-            "Parent/Guardian ID"
-        ],
-        "portal_url": "https://www.indiapost.gov.in/",
-        "category": "Women & Child",
-        "target_group": [
-            "Girl children"
-        ]
-    },
-    {
-        "id": "7",
-        "name": "PM Mudra Yojana",
-        "name_hindi": "पीएम मुद्रा योजना",
-        "ministry": "Ministry of Finance",
-        "description": "Loans to micro/small business entities.",
-        "benefits": "Loans up to ₹10 lakhs.",
+        "description": "Loans up to 10 lakhs to non-corporate, non-farm small/micro enterprises.",
+        "benefits": "Shishu (up to ₹50k), Kishore (₹50k-₹5L), Tarun (₹5L-₹10L) loans without collateral.",
         "benefit_value": "Up to ₹10L loan",
         "benefit_amount": 1000000,
         "eligibility": {
-            "occupations": [
-                "Business",
-                "Self-employed"
-            ]
+            "min_age": 18,
+            "max_age": 65,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Business", "Self-employed"],
+            "special_conditions": ["Must not be a defaulter to any bank"]
         },
-        "application_steps": [
-            "Approach Bank/NBFC",
-            "Submit business plan",
-            "Loan sanction"
-        ],
-        "required_documents": [
-            "ID Proof",
-            "Address Proof",
-            "Business proof"
-        ],
+        "application_steps": ["Visit udyamimitra.in or a bank branch", "Fill the Mudra loan application", "Submit business plan and documents", "Loan sanctioned based on appraisal"],
+        "required_documents": ["Identity Proof", "Address Proof", "Business Proof", "Income Tax Returns", "Project Report"],
         "portal_url": "https://www.mudra.org.in/",
-        "category": "MSME",
-        "target_group": [
-            "Small businesses"
-        ]
+        "registration_url": "https://www.udyamimitra.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Mudra+Loan+apply+online",
+        "helpline": "1800-180-1111",
+        "deadline": None,
+        "category": "Business",
+        "target_group": ["Entrepreneurs", "Small Businesses"]
+    },
+    {
+        "id": "6",
+        "name": "PM Ujjwala Yojana",
+        "name_hindi": "पीएम उज्ज्वला योजना",
+        "ministry": "Ministry of Petroleum and Natural Gas",
+        "description": "Deposit-free LPG connections to women from BPL families.",
+        "benefits": "Free LPG connection with first refill and stove.",
+        "benefit_value": "₹3,200 equivalent",
+        "benefit_amount": 3200,
+        "eligibility": {
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": 200000,
+            "categories": ["SC", "ST", "BPL"],
+            "states": "ALL",
+            "gender": ["Female"],
+            "occupations": ["All"],
+            "special_conditions": ["No existing LPG connection in the same household"]
+        },
+        "application_steps": ["Visit pmuy.gov.in", "Click on Apply for New Ujjwala 2.0 Connection", "Select LPG Distributor (Indane/Bharat/HP)", "Fill online application and submit", "Distributor contacts for installation"],
+        "required_documents": ["Aadhaar Card", "Ration Card", "Bank Account Details", "Passport Size Photo"],
+        "portal_url": "https://www.pmuy.gov.in/",
+        "registration_url": "https://www.pmuy.gov.in/ujjwala2.html",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Ujjwala+Yojana+apply+online",
+        "helpline": "1800-266-6696 / 1906",
+        "deadline": None,
+        "category": "Welfare",
+        "target_group": ["Women", "BPL Families"]
+    },
+    {
+        "id": "7",
+        "name": "Sukanya Samriddhi Yojana",
+        "name_hindi": "सुकन्या समृद्धि योजना",
+        "ministry": "Ministry of Finance",
+        "description": "Savings scheme for the girl child to fund her education and marriage expenses.",
+        "benefits": "High interest rate (8.2% currently) with tax benefits under Section 80C.",
+        "benefit_value": "Tax benefits + High Interest",
+        "benefit_amount": 0,
+        "eligibility": {
+            "min_age": 0,
+            "max_age": 10,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": ["Female"],
+            "occupations": ["All"],
+            "special_conditions": ["Maximum 2 girl children per family"]
+        },
+        "application_steps": ["Visit post office or authorized bank branch", "Fill SSY Account opening form (Form 1)", "Submit required documents", "Make initial deposit (Min ₹250)"],
+        "required_documents": ["Birth Certificate of Girl Child", "Identity and Address Proof of Parents/Guardian"],
+        "portal_url": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+        "registration_url": "https://www.indiapost.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Sukanya+Samriddhi+Yojana+account+opening",
+        "helpline": "1800-266-6868",
+        "deadline": None,
+        "category": "Savings",
+        "target_group": ["Girl Child", "Parents"]
     },
     {
         "id": "8",
-        "name": "Atal Pension Yojana",
-        "name_hindi": "अटल पेंशन योजना",
+        "name": "PM Jan Dhan Yojana",
+        "name_hindi": "पीएम जन धन योजना",
         "ministry": "Ministry of Finance",
-        "description": "Pension scheme for unorganized sector workers.",
-        "benefits": "Guaranteed minimum pension of ₹1,000 to ₹5,000 per month.",
-        "benefit_value": "₹1K-5K/mo",
-        "benefit_amount": 5000,
+        "description": "National Mission for Financial Inclusion to ensure access to financial services.",
+        "benefits": "Zero balance account, RuPay debit card, ₹10,000 overdraft, accidental insurance cover.",
+        "benefit_value": "Zero Balance Account + Insurance",
+        "benefit_amount": 0,
         "eligibility": {
-            "min_age": 18,
-            "max_age": 40,
-            "special_conditions": [
-                "Unorganized worker"
-            ]
+            "min_age": 10,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Unbanked individuals"]
         },
-        "application_steps": [
-            "Visit bank where saving account is held",
-            "Fill APY form",
-            "Set auto-debit"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Savings Bank Account"
-        ],
-        "portal_url": "https://npscra.nsdl.co.in/",
+        "application_steps": ["Visit nearby bank branch or Bank Mitra", "Fill the account opening form", "Submit KYC documents", "Get account details and RuPay card"],
+        "required_documents": ["Aadhaar Card or other valid ID", "Passport size photograph"],
+        "portal_url": "https://pmjdy.gov.in/",
+        "registration_url": "https://pmjdy.gov.in/scheme",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Jan+Dhan+Yojana+account+open",
+        "helpline": "1800-11-0001 / 1800-180-1111",
+        "deadline": None,
         "category": "Finance",
-        "target_group": [
-            "Unorganized workers"
-        ]
+        "target_group": ["Unbanked population"]
     },
     {
         "id": "9",
-        "name": "PM Vishwakarma",
-        "name_hindi": "पीएम विश्वकर्मा",
-        "ministry": "Ministry of MSME",
-        "description": "Support for traditional artisans and craftspeople.",
-        "benefits": "Credit support up to ₹3 lakh, toolkit incentive ₹15,000.",
-        "benefit_value": "₹3L support",
-        "benefit_amount": 315000,
+        "name": "Atal Pension Yojana",
+        "name_hindi": "अटल पेंशन योजना",
+        "ministry": "Ministry of Finance",
+        "description": "Pension scheme for citizens of India focused on unorganized sector workers.",
+        "benefits": "Guaranteed minimum pension of ₹1,000 to ₹5,000 per month after 60 years.",
+        "benefit_value": "₹1,000-₹5,000/month",
+        "benefit_amount": 60000,
         "eligibility": {
             "min_age": 18,
-            "occupations": [
-                "Artisan",
-                "Craftsman",
-                "Self-employed"
-            ]
+            "max_age": 40,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Unorganized Sector", "All"],
+            "special_conditions": ["Should have a savings bank account", "Should not be income tax payer"]
         },
-        "application_steps": [
-            "Register on portal",
-            "Verification by Gram Panchayat",
-            "Training and credit"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Bank Account Details",
-            "Skill proof"
-        ],
-        "portal_url": "https://pmvishwakarma.gov.in/",
-        "category": "MSME",
-        "target_group": [
-            "Artisans",
-            "Craftsmen"
-        ]
+        "application_steps": ["Approach the bank branch where you have an account", "Fill APY registration form", "Provide Aadhaar and mobile number", "Ensure auto-debit balance"],
+        "required_documents": ["Aadhaar Card", "Savings Bank Account"],
+        "portal_url": "https://npscra.nsdl.co.in/nsdl/scheme-details/apy",
+        "registration_url": "https://enps.nsdl.com/eNPS/NationalPensionSystem.html",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Atal+Pension+Yojana+apply",
+        "helpline": "1800-110-069",
+        "deadline": None,
+        "category": "Pension",
+        "target_group": ["Unorganized Sector", "Low Income"]
     },
     {
         "id": "10",
-        "name": "Stand-Up India",
-        "name_hindi": "स्टैंड-अप इंडिया",
-        "ministry": "Ministry of Finance",
-        "description": "Promotes entrepreneurship among women and SC/ST.",
-        "benefits": "Bank loans between ₹10 lakh and ₹1 Crore.",
-        "benefit_value": "₹10L-1Cr loan",
-        "benefit_amount": 10000000,
-        "eligibility": {
-            "min_age": 18,
-            "categories": [
-                "SC",
-                "ST"
-            ],
-            "gender": [
-                "Female"
-            ],
-            "occupations": [
-                "Business"
-            ]
-        },
-        "application_steps": [
-            "Apply via portal",
-            "Connect with bank",
-            "Loan sanction"
-        ],
-        "required_documents": [
-            "ID Proof",
-            "Project Report",
-            "Caste Certificate (if applicable)"
-        ],
-        "portal_url": "https://www.standupmitra.in/",
-        "category": "MSME",
-        "target_group": [
-            "SC/ST/Women Entrepreneurs"
-        ]
-    },
-    {
-        "id": "11",
-        "name": "PM Matru Vandana Yojana",
-        "name_hindi": "पीएम मातृ वंदना योजना",
-        "ministry": "Ministry of Women and Child Development",
-        "description": "Maternity benefit programme.",
-        "benefits": "Cash incentive of ₹5,000 in three installments.",
-        "benefit_value": "₹5,000",
-        "benefit_amount": 5000,
-        "eligibility": {
-            "gender": [
-                "Female"
-            ],
-            "min_age": 19,
-            "special_conditions": [
-                "Pregnant woman"
-            ]
-        },
-        "application_steps": [
-            "Register at Anganwadi Centre",
-            "Fill forms periodically",
-            "Receive funds"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "MCP Card",
-            "Bank Account Details"
-        ],
-        "portal_url": "https://wcd.nic.in/",
-        "category": "Women & Child",
-        "target_group": [
-            "Pregnant women"
-        ]
-    },
-    {
-        "id": "12",
-        "name": "Ujjwala Yojana",
-        "name_hindi": "उज्ज्वला योजना",
-        "ministry": "Ministry of Petroleum and Natural Gas",
-        "description": "Provides LPG connections to women from BPL households.",
-        "benefits": "Free LPG connection and first refill.",
-        "benefit_value": "Free LPG",
-        "benefit_amount": 1600,
-        "eligibility": {
-            "gender": [
-                "Female"
-            ],
-            "min_age": 18,
-            "special_conditions": [
-                "BPL Family"
-            ]
-        },
-        "application_steps": [
-            "Apply to LPG distributor",
-            "Submit KYC form",
-            "Verification"
-        ],
-        "required_documents": [
-            "BPL Ration Card",
-            "Aadhaar",
-            "Passport Photo"
-        ],
-        "portal_url": "https://www.pmuy.gov.in/",
-        "category": "Social Welfare",
-        "target_group": [
-            "BPL Women"
-        ]
-    },
-    {
-        "id": "13",
-        "name": "Startup India",
-        "name_hindi": "स्टार्टअप इंडिया",
-        "ministry": "Ministry of Commerce and Industry",
-        "description": "Initiative to build a strong eco-system for nurturing innovation and Startups.",
-        "benefits": "Tax exemptions and fast-track patenting.",
-        "benefit_value": "Tax benefits",
-        "benefit_amount": 0,
-        "eligibility": {
-            "occupations": [
-                "Business",
-                "Entrepreneur"
-            ],
-            "special_conditions": [
-                "Registered Startup"
-            ]
-        },
-        "application_steps": [
-            "Incorporate business",
-            "Register on Startup India portal",
-            "DPIIT Recognition"
-        ],
-        "required_documents": [
-            "Incorporation Certificate",
-            "Brief on startup"
-        ],
-        "portal_url": "https://www.startupindia.gov.in/",
-        "category": "MSME",
-        "target_group": [
-            "Startups"
-        ]
-    },
-    {
-        "id": "14",
-        "name": "PM SVANidhi",
-        "name_hindi": "पीएम स्वनिधि",
-        "ministry": "Ministry of Housing and Urban Affairs",
-        "description": "Micro-credit facility for street vendors.",
-        "benefits": "Working capital loan up to ₹10,000 to ₹50,000.",
-        "benefit_value": "₹10K-50K loan",
-        "benefit_amount": 50000,
-        "eligibility": {
-            "occupations": [
-                "Street Vendor"
-            ]
-        },
-        "application_steps": [
-            "Apply on SVANidhi portal or app",
-            "Bank verification",
-            "Loan disbursal"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Vending Certificate/ID Card"
-        ],
-        "portal_url": "https://pmsvanidhi.mohua.gov.in/",
-        "category": "Finance",
-        "target_group": [
-            "Street Vendors"
-        ]
-    },
-    {
-        "id": "15",
-        "name": "National Fellowship for OBC",
-        "name_hindi": "ओबीसी के लिए राष्ट्रीय फेलोशिप",
-        "ministry": "Ministry of Social Justice & Empowerment",
-        "description": "Financial assistance to OBC students for pursuing M.Phil/Ph.D.",
-        "benefits": "Fellowship of ₹31,000/month for JRF.",
-        "benefit_value": "₹31K/mo",
-        "benefit_amount": 31000,
-        "eligibility": {
-            "categories": [
-                "OBC"
-            ],
-            "education": [
-                "Post Graduate"
-            ],
-            "income_limit": 800000
-        },
-        "application_steps": [
-            "Qualify NET",
-            "Apply via UGC portal",
-            "Selection"
-        ],
-        "required_documents": [
-            "OBC Certificate",
-            "Income Certificate",
-            "PG Marksheet"
-        ],
-        "portal_url": "https://ugc.ac.in/",
-        "category": "Education",
-        "target_group": [
-            "OBC Scholars"
-        ]
-    },
-    {
-        "id": "16",
-        "name": "National Means-cum-Merit Scholarship",
-        "name_hindi": "राष्ट्रीय साधन-सह-मेधा छात्रवृत्ति",
-        "ministry": "Ministry of Education",
-        "description": "Scholarships for meritorious students of economically weaker sections.",
-        "benefits": "₹12,000 per annum (₹1,000 per month).",
-        "benefit_value": "₹12,000/yr",
-        "benefit_amount": 12000,
-        "eligibility": {
-            "income_limit": 350000,
-            "education": [
-                "Class 8 pass"
-            ]
-        },
-        "application_steps": [
-            "Appear for selection test",
-            "Apply on NSP",
-            "Verification"
-        ],
-        "required_documents": [
-            "Income Certificate",
-            "Caste Certificate",
-            "Previous marksheet"
-        ],
-        "portal_url": "https://scholarships.gov.in/",
-        "category": "Education",
-        "target_group": [
-            "School Students"
-        ]
-    },
-    {
-        "id": "17",
-        "name": "Central Sector Scholarship",
-        "name_hindi": "केंद्रीय क्षेत्र छात्रवृत्ति",
-        "ministry": "Ministry of Education",
-        "description": "Provides financial assistance to meritorious students from low-income families.",
-        "benefits": "₹10,000 to ₹20,000 per annum.",
-        "benefit_value": "₹10K-20K/yr",
-        "benefit_amount": 20000,
-        "eligibility": {
-            "income_limit": 450000,
-            "education": [
-                "Class 12 pass"
-            ]
-        },
-        "application_steps": [
-            "Apply on NSP",
-            "College verification",
-            "State board verification"
-        ],
-        "required_documents": [
-            "Income Certificate",
-            "Class 12 marksheet",
-            "Bank details"
-        ],
-        "portal_url": "https://scholarships.gov.in/",
-        "category": "Education",
-        "target_group": [
-            "College Students"
-        ]
-    },
-    {
-        "id": "18",
-        "name": "PM Fasal Bima Yojana",
-        "name_hindi": "पीएम फसल बीमा योजना",
-        "ministry": "Ministry of Agriculture and Farmers Welfare",
-        "description": "Crop insurance scheme for farmers.",
-        "benefits": "Financial support in event of crop failure.",
-        "benefit_value": "Crop Insurance",
-        "benefit_amount": 0,
-        "eligibility": {
-            "occupations": [
-                "Farmer"
-            ]
-        },
-        "application_steps": [
-            "Enroll via bank or CSC",
-            "Pay premium",
-            "Claim intimation if crop loss"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Land Records",
-            "Sowing Proof"
-        ],
-        "portal_url": "https://pmfby.gov.in/",
-        "category": "Agriculture",
-        "target_group": [
-            "Farmers"
-        ]
-    },
-    {
-        "id": "19",
-        "name": "Kisan Credit Card",
-        "name_hindi": "किसान क्रेडिट कार्ड",
-        "ministry": "Ministry of Finance",
-        "description": "Provides farmers with timely access to credit.",
-        "benefits": "Short term credit at subsidized interest rates.",
-        "benefit_value": "Low interest credit",
-        "benefit_amount": 300000,
-        "eligibility": {
-            "occupations": [
-                "Farmer"
-            ]
-        },
-        "application_steps": [
-            "Apply at bank",
-            "Submit land documents",
-            "KCC issuance"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Land holding documents",
-            "Passport Photo"
-        ],
-        "portal_url": "https://sbi.co.in/",
-        "category": "Agriculture",
-        "target_group": [
-            "Farmers"
-        ]
-    },
-    {
-        "id": "20",
-        "name": "Pradhan Mantri Jeevan Jyoti Bima",
-        "name_hindi": "प्रधानमंत्री जीवन ज्योति बीमा योजना",
-        "ministry": "Ministry of Finance",
-        "description": "Life insurance scheme.",
-        "benefits": "Life cover of ₹2 Lakhs at ₹436/year.",
-        "benefit_value": "₹2L Life Cover",
-        "benefit_amount": 200000,
-        "eligibility": {
-            "min_age": 18,
-            "max_age": 50
-        },
-        "application_steps": [
-            "Visit bank",
-            "Fill consent form",
-            "Auto-debit setup"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Bank Account Details"
-        ],
-        "portal_url": "https://jansuraksha.gov.in/",
-        "category": "Finance",
-        "target_group": [
-            "All Citizens"
-        ]
-    },
-    {
-        "id": "21",
         "name": "PM Suraksha Bima Yojana",
         "name_hindi": "पीएम सुरक्षा बीमा योजना",
         "ministry": "Ministry of Finance",
-        "description": "Accident insurance scheme.",
-        "benefits": "Accidental death/disability cover of ₹2 Lakhs at ₹20/year.",
-        "benefit_value": "₹2L Accidental Cover",
+        "description": "Accident insurance scheme offering accidental death and disability cover.",
+        "benefits": "₹2 lakh cover for accidental death/full disability, ₹1 lakh for partial disability. Premium ₹20/year.",
+        "benefit_value": "₹2,00,000 cover",
+        "benefit_amount": 20000,
+        "eligibility": {
+            "min_age": 18,
+            "max_age": 70,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Bank account with auto-debit facility"]
+        },
+        "application_steps": ["Visit bank branch or use net banking", "Select Social Security Schemes", "Enroll in PMSBY", "Enable auto-debit of ₹20 annually"],
+        "required_documents": ["Bank Account", "Aadhaar Card"],
+        "portal_url": "https://jansuraksha.gov.in/",
+        "registration_url": "https://jansuraksha.gov.in/Forms-PMSBY.aspx",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PMSBY+apply+online",
+        "helpline": "1800-180-1111",
+        "deadline": None,
+        "category": "Insurance",
+        "target_group": ["All Adults"]
+    },
+    {
+        "id": "11",
+        "name": "PM Jeevan Jyoti Bima Yojana",
+        "name_hindi": "पीएम जीवन ज्योति बीमा योजना",
+        "ministry": "Ministry of Finance",
+        "description": "Life insurance scheme offering coverage for death due to any reason.",
+        "benefits": "₹2 lakh life insurance cover. Premium ₹436/year.",
+        "benefit_value": "₹2,00,000 cover",
         "benefit_amount": 200000,
         "eligibility": {
             "min_age": 18,
-            "max_age": 70
+            "max_age": 50,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Bank account with auto-debit facility"]
         },
-        "application_steps": [
-            "Visit bank",
-            "Fill consent form",
-            "Auto-debit setup"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "Bank Account Details"
-        ],
+        "application_steps": ["Visit bank branch or net banking portal", "Select PMJJBY from Social Security Schemes", "Submit consent for auto-debit of ₹436 annually"],
+        "required_documents": ["Bank Account", "Aadhaar Card"],
         "portal_url": "https://jansuraksha.gov.in/",
-        "category": "Finance",
-        "target_group": [
-            "All Citizens"
-        ]
+        "registration_url": "https://jansuraksha.gov.in/Forms-PMJJBY.aspx",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PMJJBY+apply+online",
+        "helpline": "1800-180-1111",
+        "deadline": None,
+        "category": "Insurance",
+        "target_group": ["All Adults"]
+    },
+    {
+        "id": "12",
+        "name": "PM Matru Vandana Yojana",
+        "name_hindi": "पीएम मातृ वंदना योजना",
+        "ministry": "Ministry of Women and Child Development",
+        "description": "Maternity benefit program for pregnant women and lactating mothers.",
+        "benefits": "₹5,000 cash incentive (up to ₹11,000 with other schemes) for first child.",
+        "benefit_value": "₹11,000",
+        "benefit_amount": 11000,
+        "eligibility": {
+            "min_age": 19,
+            "max_age": 50,
+            "income_limit": 800000,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": ["Female"],
+            "occupations": ["All"],
+            "special_conditions": ["Pregnant for the first time", "Not employed in regular govt service"]
+        },
+        "application_steps": ["Visit Anganwadi Center or ASHA worker", "Fill Form 1-A with MCP card", "Submit documents for verification", "Incentives credited to bank account"],
+        "required_documents": ["Aadhaar Card", "MCP (Mother and Child Protection) Card", "Bank Account Details", "Husband's Aadhaar (Optional)"],
+        "portal_url": "https://wcd.nic.in/schemes/pradhan-mantri-matru-vandana-yojana",
+        "registration_url": "https://pmmvy.wcd.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PMMVY+apply+online",
+        "helpline": "104",
+        "deadline": None,
+        "category": "Women & Child",
+        "target_group": ["Pregnant Women"]
+    },
+    {
+        "id": "13",
+        "name": "National Social Assistance Programme - IGNOAPS",
+        "name_hindi": "इंदिरा गांधी राष्ट्रीय वृद्धावस्था पेंशन योजना",
+        "ministry": "Ministry of Rural Development",
+        "description": "Pension for senior citizens belonging to Below Poverty Line (BPL) households.",
+        "benefits": "₹200 to ₹500 per month central assistance + state contribution.",
+        "benefit_value": "₹500/month",
+        "benefit_amount": 6000,
+        "eligibility": {
+            "min_age": 60,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["BPL"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Must belong to BPL category"]
+        },
+        "application_steps": ["Contact Gram Panchayat/Municipality", "Get application form for NSAP", "Submit form with age and BPL proof", "Verification by authorities"],
+        "required_documents": ["Age Proof", "BPL Ration Card", "Bank/Post Office Account Details", "Aadhaar Card"],
+        "portal_url": "https://nsap.nic.in/",
+        "registration_url": "https://nsap.nic.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=IGNOAPS+apply+online",
+        "helpline": "State specific helpline numbers",
+        "deadline": None,
+        "category": "Pension",
+        "target_group": ["Senior Citizens", "BPL"]
+    },
+    {
+        "id": "14",
+        "name": "PM Scholarship Scheme",
+        "name_hindi": "पीएम स्कॉलरशिप योजना",
+        "ministry": "Ministry of Defence",
+        "description": "To encourage higher technical and professional education for dependent wards of ex-servicemen.",
+        "benefits": "₹2,500/month for boys, ₹3,000/month for girls.",
+        "benefit_value": "₹3,000/month",
+        "benefit_amount": 36000,
+        "eligibility": {
+            "min_age": 16,
+            "max_age": 25,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Wards of Ex-servicemen/Coast Guard", "Minimum 60% in 12th/Diploma"]
+        },
+        "application_steps": ["Visit Kendriya Sainik Board portal", "Register and Login", "Fill the application form for PMSS", "Upload required documents and submit"],
+        "required_documents": ["Ex-Serviceman Certificate", "10th and 12th Marksheets", "Bank Details linked with Aadhaar"],
+        "portal_url": "https://ksb.gov.in/pradhan-mantri-scholarship-scheme.htm",
+        "registration_url": "https://ksb.gov.in/registration.htm",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PMSS+scholarship+apply",
+        "helpline": "011-26715250",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["Students", "Defense Wards"]
+    },
+    {
+        "id": "15",
+        "name": "Central Sector Scholarship Scheme",
+        "name_hindi": "सेंट्रल सेक्टर स्कॉलरशिप स्कीम",
+        "ministry": "Ministry of Education",
+        "description": "Scholarship for college and university students.",
+        "benefits": "₹10,000 to ₹20,000 per year.",
+        "benefit_value": "₹20,000/yr",
+        "benefit_amount": 20000,
+        "eligibility": {
+            "min_age": 16,
+            "max_age": 25,
+            "income_limit": 800000,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Above 80th percentile in Class 12"]
+        },
+        "application_steps": ["Visit National Scholarship Portal (NSP)", "Register as new user", "Fill application using Aadhaar", "Submit application via institute"],
+        "required_documents": ["12th Marksheet", "Income Certificate", "Aadhaar Card", "Bank Account Details"],
+        "portal_url": "https://scholarships.gov.in/",
+        "registration_url": "https://scholarships.gov.in/student/login",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=NSP+Central+Sector+Scheme+apply",
+        "helpline": "0120-6619540",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["Meritorious Students"]
+    },
+    {
+        "id": "16",
+        "name": "Post Matric Scholarship for SC",
+        "name_hindi": "एससी के लिए पोस्ट मैट्रिक स्कॉलरशिप",
+        "ministry": "Ministry of Social Justice and Empowerment",
+        "description": "Financial assistance to SC students studying at post matriculation or post-secondary stage.",
+        "benefits": "Full tuition fee coverage and maintenance allowance.",
+        "benefit_value": "Variable based on course",
+        "benefit_amount": 50000,
+        "eligibility": {
+            "min_age": 15,
+            "max_age": None,
+            "income_limit": 250000,
+            "categories": ["SC"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Must belong to SC category"]
+        },
+        "application_steps": ["Visit State Scholarship Portal or NSP", "Fill the registration form", "Upload Caste and Income Certificates", "Submit and print for college"],
+        "required_documents": ["Caste Certificate", "Income Certificate", "Marksheets", "Fee Receipt", "Bank Passbook"],
+        "portal_url": "https://socialjustice.gov.in/",
+        "registration_url": "https://scholarships.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Post+Matric+Scholarship+SC+apply",
+        "helpline": "State-specific helplines",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["SC Students"]
+    },
+    {
+        "id": "17",
+        "name": "Post Matric Scholarship for OBC",
+        "name_hindi": "ओबीसी के लिए पोस्ट मैट्रिक स्कॉलरशिप",
+        "ministry": "Ministry of Social Justice and Empowerment",
+        "description": "Scholarship to OBC students studying at post-matriculation stages.",
+        "benefits": "Tuition fee reimbursement and maintenance allowance.",
+        "benefit_value": "Variable based on course",
+        "benefit_amount": 30000,
+        "eligibility": {
+            "min_age": 15,
+            "max_age": None,
+            "income_limit": 150000,
+            "categories": ["OBC"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Must belong to OBC category"]
+        },
+        "application_steps": ["Register on State Scholarship Portal or NSP", "Fill OBC Post Matric form", "Upload relevant certificates", "Submit application online"],
+        "required_documents": ["OBC Caste Certificate", "Income Certificate", "Marksheets", "Bank Account Details"],
+        "portal_url": "https://socialjustice.gov.in/",
+        "registration_url": "https://scholarships.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Post+Matric+Scholarship+OBC+apply",
+        "helpline": "State-specific helplines",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["OBC Students"]
+    },
+    {
+        "id": "18",
+        "name": "Pre Matric Scholarship for Minorities",
+        "name_hindi": "अल्पसंख्यकों के लिए प्री मैट्रिक स्कॉलरशिप",
+        "ministry": "Ministry of Minority Affairs",
+        "description": "Scholarship for students from minority communities in classes 1 to 10.",
+        "benefits": "₹5,400 to ₹10,700 per year.",
+        "benefit_value": "Up to ₹10,700/yr",
+        "benefit_amount": 10700,
+        "eligibility": {
+            "min_age": 5,
+            "max_age": 16,
+            "income_limit": 100000,
+            "categories": ["Minorities"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Minimum 50% marks in previous final exam"]
+        },
+        "application_steps": ["Visit National Scholarship Portal (NSP)", "Register as new student", "Fill Pre-Matric Minority form", "Submit via school"],
+        "required_documents": ["Student Photo", "Income Certificate", "Self-declaration of minority community", "Bank Account details"],
+        "portal_url": "https://minorityaffairs.gov.in/",
+        "registration_url": "https://scholarships.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Pre+Matric+Minority+Scholarship+apply",
+        "helpline": "0120-6619540",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["Minority Students"]
+    },
+    {
+        "id": "19",
+        "name": "PM Vishwakarma Yojana",
+        "name_hindi": "पीएम विश्वकर्मा योजना",
+        "ministry": "Ministry of Micro, Small and Medium Enterprises",
+        "description": "Support for traditional artisans and craftspeople.",
+        "benefits": "Collateral-free loan up to ₹3 lakh, ₹15,000 toolkit incentive, daily ₹500 stipend during training.",
+        "benefit_value": "₹3L Loan + ₹15,000 Toolkit",
+        "benefit_amount": 315000,
+        "eligibility": {
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Artisan", "Craftsman"],
+            "special_conditions": ["Working in one of the 18 traditional trades specified"]
+        },
+        "application_steps": ["Visit nearest CSC (Common Service Centre)", "Register on PM Vishwakarma Portal using Aadhaar", "Undergo basic training", "Apply for toolkit and loan"],
+        "required_documents": ["Aadhaar Card", "Bank Passbook", "Mobile Number", "Ration Card"],
+        "portal_url": "https://pmvishwakarma.gov.in/",
+        "registration_url": "https://pmvishwakarma.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+Vishwakarma+Yojana+apply",
+        "helpline": "1800-267-7777",
+        "deadline": None,
+        "category": "Employment",
+        "target_group": ["Artisans", "Craftspeople"]
+    },
+    {
+        "id": "20",
+        "name": "Stand Up India",
+        "name_hindi": "स्टैंड अप इंडिया",
+        "ministry": "Ministry of Finance",
+        "description": "Facilitates bank loans between ₹10 lakh and ₹1 crore to at least one SC/ST borrower and one woman borrower per bank branch.",
+        "benefits": "Loans from ₹10 lakh to ₹1 crore for greenfield enterprise.",
+        "benefit_value": "₹10L to ₹1Cr Loan",
+        "benefit_amount": 10000000,
+        "eligibility": {
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["SC", "ST"],
+            "states": "ALL",
+            "gender": ["Female"],
+            "occupations": ["Entrepreneurs"],
+            "special_conditions": ["First time venture (Greenfield enterprise)"]
+        },
+        "application_steps": ["Visit standupmitra.in portal", "Register and fill the application form", "Select preferred bank branch", "Submit detailed project report"],
+        "required_documents": ["Identity Proof", "Address Proof", "Caste Certificate", "Project Report", "IT Returns"],
+        "portal_url": "https://www.standupmitra.in/",
+        "registration_url": "https://www.standupmitra.in/Login/Register",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Stand+Up+India+loan+apply",
+        "helpline": "1800-180-1111",
+        "deadline": None,
+        "category": "Business",
+        "target_group": ["Women", "SC/ST Entrepreneurs"]
+    },
+    {
+        "id": "21",
+        "name": "PM SVANidhi",
+        "name_hindi": "पीएम स्वनिधि",
+        "ministry": "Ministry of Housing and Urban Affairs",
+        "description": "Special micro-credit facility for street vendors.",
+        "benefits": "Working capital loan of up to ₹10,000, then ₹20,000 and ₹50,000.",
+        "benefit_value": "Up to ₹50,000 Loan",
+        "benefit_amount": 50000,
+        "eligibility": {
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Street Vendor"],
+            "special_conditions": ["Vending in urban areas before March 2020"]
+        },
+        "application_steps": ["Visit pmsvanidhi.mohua.gov.in", "Click on Apply for Loan", "Login with mobile number", "Fill application form and upload documents", "Submit to preferred bank"],
+        "required_documents": ["Aadhaar Card", "Vending Certificate or ID card issued by ULB", "Bank Passbook"],
+        "portal_url": "https://pmsvanidhi.mohua.gov.in/",
+        "registration_url": "https://pmsvanidhi.mohua.gov.in/Login",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+SVANidhi+apply+online",
+        "helpline": "1800-11-1979",
+        "deadline": None,
+        "category": "Business",
+        "target_group": ["Street Vendors"]
     },
     {
         "id": "22",
-        "name": "Samagra Shiksha Abhiyan",
-        "name_hindi": "समग्र शिक्षा अभियान",
-        "ministry": "Ministry of Education",
-        "description": "Overarching programme for the school education sector.",
-        "benefits": "Free textbooks, uniforms, and improved school infrastructure.",
-        "benefit_value": "Educational Support",
-        "benefit_amount": 0,
+        "name": "MGNREGA",
+        "name_hindi": "मनरेगा",
+        "ministry": "Ministry of Rural Development",
+        "description": "Mahatma Gandhi National Rural Employment Guarantee Act provides at least 100 days of guaranteed wage employment.",
+        "benefits": "100 days of guaranteed wage employment in a financial year.",
+        "benefit_value": "Wage Employment",
+        "benefit_amount": 30000,
         "eligibility": {
-            "max_age": 18,
-            "special_conditions": [
-                "School student"
-            ]
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Unskilled Labor"],
+            "special_conditions": ["Must be a resident of a rural area", "Willing to do unskilled manual work"]
         },
-        "application_steps": [
-            "Enroll in government school"
-        ],
-        "required_documents": [
-            "Birth Certificate",
-            "Aadhaar"
-        ],
-        "portal_url": "https://samagra.education.gov.in/",
-        "category": "Education",
-        "target_group": [
-            "School Students"
-        ]
+        "application_steps": ["Apply for a Job Card at the local Gram Panchayat", "Submit application for work", "Work must be provided within 15 days"],
+        "required_documents": ["Aadhaar Card", "Passport size photograph", "Bank Account Details"],
+        "portal_url": "https://nrega.nic.in/",
+        "registration_url": "https://nrega.nic.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=MGNREGA+job+card+apply",
+        "helpline": "1800-11-1555",
+        "deadline": None,
+        "category": "Employment",
+        "target_group": ["Rural Workers"]
     },
     {
         "id": "23",
-        "name": "Digital India Internship",
-        "name_hindi": "डिजिटल इंडिया इंटर्नशिप",
-        "ministry": "Ministry of Electronics and IT",
-        "description": "Internship scheme for students.",
-        "benefits": "Stipend of ₹10,000 per month.",
-        "benefit_value": "₹10,000/mo",
-        "benefit_amount": 10000,
+        "name": "National Food Security Act",
+        "name_hindi": "राष्ट्रीय खाद्य सुरक्षा अधिनियम",
+        "ministry": "Ministry of Consumer Affairs, Food and Public Distribution",
+        "description": "Subsidized food grains for priority households and Antyodaya Anna Yojana (AAY) families.",
+        "benefits": "Rice at ₹3/kg, Wheat at ₹2/kg, Coarse grains at ₹1/kg.",
+        "benefit_value": "Subsidized Food Grains",
+        "benefit_amount": 0,
         "eligibility": {
-            "education": [
-                "Undergraduate",
-                "Postgraduate"
-            ]
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": 100000,
+            "categories": ["BPL", "AAY"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["All"],
+            "special_conditions": ["Priority households or AAY families"]
         },
-        "application_steps": [
-            "Apply on portal",
-            "Interview",
-            "Selection"
-        ],
-        "required_documents": [
-            "Resume",
-            "College NOC",
-            "Marksheets"
-        ],
-        "portal_url": "https://meity.gov.in/",
-        "category": "Employment",
-        "target_group": [
-            "Tech Students"
-        ]
+        "application_steps": ["Apply for a Ration Card at the local Food and Civil Supplies office", "Submit required documents", "Collect subsidized food grains from Fair Price Shops"],
+        "required_documents": ["Aadhaar Card", "Income Certificate", "Address Proof"],
+        "portal_url": "https://nfsa.gov.in/",
+        "registration_url": "https://nfsa.gov.in/portal/apply_ration_card",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Ration+Card+apply+online",
+        "helpline": "1967",
+        "deadline": None,
+        "category": "Welfare",
+        "target_group": ["Poor Families"]
     },
     {
         "id": "24",
-        "name": "Agnipath Scheme",
-        "name_hindi": "अग्निपथ योजना",
-        "ministry": "Ministry of Defence",
-        "description": "Recruitment scheme for Indian armed forces.",
-        "benefits": "4-year service with attractive package and Seva Nidhi.",
-        "benefit_value": "Salary + ₹11.71L Seva Nidhi",
-        "benefit_amount": 1171000,
+        "name": "Samagra Shiksha Abhiyan",
+        "name_hindi": "समग्र शिक्षा अभियान",
+        "ministry": "Ministry of Education",
+        "description": "Integrated scheme for school education from pre-school to class 12.",
+        "benefits": "Free education, textbooks, uniforms, and inclusive education for Children with Special Needs (CwSN).",
+        "benefit_value": "Free Education K-12",
+        "benefit_amount": 0,
         "eligibility": {
-            "min_age": 17,
-            "max_age": 21,
-            "education": [
-                "Class 10 pass",
-                "Class 12 pass"
-            ]
+            "min_age": 4,
+            "max_age": 18,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student"],
+            "special_conditions": ["Enrolled in a government or government-aided school"]
         },
-        "application_steps": [
-            "Apply online",
-            "Physical test",
-            "Medical test",
-            "Written exam"
-        ],
-        "required_documents": [
-            "Class 10/12 Certificates",
-            "Aadhaar",
-            "Domicile Certificate"
-        ],
-        "portal_url": "https://joinindianarmy.nic.in/",
-        "category": "Employment",
-        "target_group": [
-            "Youth"
-        ]
+        "application_steps": ["Enroll child in nearest government or government-aided school", "School authorities process benefits automatically"],
+        "required_documents": ["Birth Certificate", "Aadhaar Card", "Previous School Records"],
+        "portal_url": "https://samagra.education.gov.in/",
+        "registration_url": "https://samagra.education.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Samagra+Shiksha+Abhiyan",
+        "helpline": "011-23382249",
+        "deadline": None,
+        "category": "Education",
+        "target_group": ["School Children"]
     },
     {
         "id": "25",
-        "name": "PM Garib Kalyan Anna Yojana",
-        "name_hindi": "पीएम गरीब कल्याण अन्न योजना",
-        "ministry": "Ministry of Consumer Affairs, Food and Public Distribution",
-        "description": "Food security scheme.",
-        "benefits": "5 kg free wheat/rice per person per month.",
-        "benefit_value": "Free Ration",
-        "benefit_amount": 1000,
+        "name": "PM Fasal Bima Yojana",
+        "name_hindi": "पीएम फसल बीमा योजना",
+        "ministry": "Ministry of Agriculture and Farmers Welfare",
+        "description": "Crop insurance scheme in line with One Nation - One Scheme theme.",
+        "benefits": "Financial support to farmers suffering crop loss/damage arising out of unforeseen events.",
+        "benefit_value": "Crop Insurance Cover",
+        "benefit_amount": 0,
         "eligibility": {
-            "special_conditions": [
-                "BPL Family",
-                "Antyodaya Anna Yojana beneficiary"
-            ]
+            "min_age": 18,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Farmer"],
+            "special_conditions": ["Farmers growing notified crops in notified areas"]
         },
-        "application_steps": [
-            "Visit fair price shop",
-            "Aadhaar authentication"
-        ],
-        "required_documents": [
-            "Ration Card",
-            "Aadhaar"
-        ],
-        "portal_url": "https://dfpd.gov.in/",
-        "category": "Social Welfare",
-        "target_group": [
-            "Poor Families"
-        ]
+        "application_steps": ["Visit pmfby.gov.in", "Register as a farmer", "Fill application form with crop and land details", "Pay nominal premium (1.5%-5%)"],
+        "required_documents": ["Aadhaar Card", "Land Records (Khatauni)", "Bank Passbook", "Sowing Certificate"],
+        "portal_url": "https://pmfby.gov.in/",
+        "registration_url": "https://pmfby.gov.in/farmerRegistrationForm",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PMFBY+apply+online",
+        "helpline": "14447",
+        "deadline": None,
+        "category": "Agriculture",
+        "target_group": ["Farmers"]
     },
     {
         "id": "26",
-        "name": "Mahila Samman Savings Certificate",
-        "name_hindi": "महिला सम्मान बचत प्रमाण पत्र",
+        "name": "Kisan Credit Card",
+        "name_hindi": "किसान क्रेडिट कार्ड",
         "ministry": "Ministry of Finance",
-        "description": "Small savings scheme for women and girls.",
-        "benefits": "Fixed interest rate of 7.5% for a 2-year tenor.",
-        "benefit_value": "7.5% Interest",
-        "benefit_amount": 0,
+        "description": "Adequate and timely credit support from the banking system to farmers for their cultivation needs.",
+        "benefits": "Short-term credit up to ₹3 lakh at 4% interest rate (with subvention).",
+        "benefit_value": "₹3L Credit @ 4%",
+        "benefit_amount": 300000,
         "eligibility": {
-            "gender": [
-                "Female"
-            ]
+            "min_age": 18,
+            "max_age": 75,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Farmer"],
+            "special_conditions": ["Owner cultivators, tenant farmers, or sharecroppers"]
         },
-        "application_steps": [
-            "Visit Bank/Post Office",
-            "Fill account opening form",
-            "Deposit money"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "PAN Card",
-            "Photos"
-        ],
-        "portal_url": "https://www.indiapost.gov.in/",
-        "category": "Women & Child",
-        "target_group": [
-            "Women",
-            "Girls"
-        ]
+        "application_steps": ["Download KCC form from PM Kisan portal or visit bank", "Fill application and attach land documents", "Submit to bank branch", "Loan sanctioned and KCC issued"],
+        "required_documents": ["Aadhaar Card", "Land Records", "Passport Size Photograph"],
+        "portal_url": "https://sbi.co.in/web/agri-rural/agriculture-banking/crop-loan/kisan-credit-card",
+        "registration_url": "https://pmkisan.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Kisan+Credit+Card+apply",
+        "helpline": "1800-115-526",
+        "deadline": None,
+        "category": "Agriculture",
+        "target_group": ["Farmers"]
     },
     {
         "id": "27",
-        "name": "Senior Citizen Savings Scheme",
-        "name_hindi": "वरिष्ठ नागरिक बचत योजना",
-        "ministry": "Ministry of Finance",
-        "description": "Savings scheme tailored for senior citizens.",
-        "benefits": "High interest rate of 8.2% per annum.",
-        "benefit_value": "8.2% Interest",
-        "benefit_amount": 0,
+        "name": "Free Silai Machine Yojana",
+        "name_hindi": "फ्री सिलाई मशीन योजना",
+        "ministry": "Ministry of Social Justice (implemented by states)",
+        "description": "Free sewing machines provided to economically weaker women to encourage self-employment.",
+        "benefits": "One free sewing machine.",
+        "benefit_value": "₹5,000 approx",
+        "benefit_amount": 5000,
         "eligibility": {
-            "min_age": 60
+            "min_age": 20,
+            "max_age": 40,
+            "income_limit": 144000,
+            "categories": ["EWS", "BPL"],
+            "states": ["Haryana", "Gujarat", "Maharashtra", "Uttar Pradesh", "Karnataka", "Rajasthan", "Madhya Pradesh", "Chhattisgarh", "Bihar"],
+            "gender": ["Female"],
+            "occupations": ["Unemployed", "Homemaker"],
+            "special_conditions": ["Annual income must not exceed ₹1,44,000"]
         },
-        "application_steps": [
-            "Visit Bank/Post Office",
-            "Submit form",
-            "Deposit funds"
-        ],
-        "required_documents": [
-            "Age Proof",
-            "Aadhaar",
-            "PAN Card"
-        ],
-        "portal_url": "https://www.indiapost.gov.in/",
-        "category": "Finance",
-        "target_group": [
-            "Senior Citizens"
-        ]
+        "application_steps": ["Download application form from state govt website", "Fill details and attach required certificates", "Submit to local Tehsildar or BDO office"],
+        "required_documents": ["Aadhaar Card", "Income Certificate", "Age Proof", "Passport Size Photo", "Community Certificate"],
+        "portal_url": "https://www.india.gov.in/",
+        "registration_url": "https://www.india.gov.in/",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Free+Silai+Machine+Yojana+apply",
+        "helpline": "State specific helplines",
+        "deadline": None,
+        "category": "Employment",
+        "target_group": ["Women", "EWS"]
     },
     {
         "id": "28",
-        "name": "Deendayal Antyodaya Yojana",
-        "name_hindi": "दीनदयाल अंत्योदय योजना",
-        "ministry": "Ministry of Housing and Urban Affairs / Rural Development",
-        "description": "Skill development scheme to uplift the poor.",
-        "benefits": "Free skill training and placement assistance.",
-        "benefit_value": "Skill Training",
-        "benefit_amount": 0,
+        "name": "National Apprenticeship Promotion Scheme",
+        "name_hindi": "राष्ट्रीय शिक्षुता संवर्धन योजना",
+        "ministry": "Ministry of Skill Development and Entrepreneurship",
+        "description": "Promotes apprenticeship training and provides financial support to establishments undertaking apprenticeship.",
+        "benefits": "Stipend of up to ₹1,500/month during apprenticeship.",
+        "benefit_value": "₹1,500/month Stipend",
+        "benefit_amount": 18000,
         "eligibility": {
-            "min_age": 15,
-            "max_age": 35,
-            "special_conditions": [
-                "BPL Family"
-            ]
+            "min_age": 14,
+            "max_age": None,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student", "Unemployed"],
+            "special_conditions": ["Minimum educational qualification based on trade (Class 5 to Graduation)"]
         },
-        "application_steps": [
-            "Register at training center",
-            "Undergo training",
-            "Placement"
-        ],
-        "required_documents": [
-            "Aadhaar",
-            "BPL Ration Card",
-            "Education Proof"
-        ],
-        "portal_url": "https://nulm.gov.in/",
+        "application_steps": ["Register on apprenticeshipindia.gov.in", "Complete profile and Aadhaar verification", "Search for apprenticeship opportunities", "Apply and appear for interview/selection"],
+        "required_documents": ["Aadhaar Card", "Educational Certificates", "Bank Passbook"],
+        "portal_url": "https://www.apprenticeshipindia.gov.in/",
+        "registration_url": "https://www.apprenticeshipindia.gov.in/candidate-registration",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=NAPS+apprenticeship+registration",
+        "helpline": "1800-123-9626",
+        "deadline": None,
         "category": "Employment",
-        "target_group": [
-            "BPL Youth"
-        ]
+        "target_group": ["Youth", "Students"]
     },
     {
         "id": "29",
         "name": "PM CARES for Children",
-        "name_hindi": "बच्चों के लिए पीएम केयर्स",
+        "name_hindi": "पीएम केयर्स फॉर चिल्ड्रन",
         "ministry": "Ministry of Women and Child Development",
-        "description": "Support for children who lost their parents to COVID-19.",
-        "benefits": "₹10 Lakh corpus, monthly stipend from age 18 to 23, health insurance.",
-        "benefit_value": "₹10L Corpus + Support",
+        "description": "Support for children who lost both parents or legal guardians to the COVID-19 pandemic.",
+        "benefits": "Corpus of ₹10 lakh on turning 23, monthly stipend from 18 to 23 years, free education and health insurance.",
+        "benefit_value": "₹10,00,000 + Stipend",
         "benefit_amount": 1000000,
         "eligibility": {
+            "min_age": 0,
             "max_age": 18,
-            "special_conditions": [
-                "COVID Orphan"
-            ]
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": None,
+            "occupations": ["Student", "Child"],
+            "special_conditions": ["Lost both parents/surviving parent/legal guardian/adoptive parents due to COVID-19"]
         },
-        "application_steps": [
-            "Identification by District Magistrate",
-            "Registration on portal"
-        ],
-        "required_documents": [
-            "Death certificate of parents",
-            "Birth Certificate of child"
-        ],
+        "application_steps": ["Visit pmcaresforchildren.in", "Register child details on the portal", "Verification by District Magistrate", "Bank account opened and funds allocated"],
+        "required_documents": ["Death Certificate of Parents", "Aadhaar Card of Child", "Birth Certificate"],
         "portal_url": "https://pmcaresforchildren.in/",
-        "category": "Women & Child",
-        "target_group": [
-            "Orphans"
-        ]
+        "registration_url": "https://pmcaresforchildren.in/register",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=PM+CARES+for+Children+scheme",
+        "helpline": "1098 (Childline)",
+        "deadline": None,
+        "category": "Welfare",
+        "target_group": ["COVID Orphans"]
     },
     {
         "id": "30",
         "name": "Beti Bachao Beti Padhao",
         "name_hindi": "बेटी बचाओ बेटी पढ़ाओ",
         "ministry": "Ministry of Women and Child Development",
-        "description": "Campaign to generate awareness and improve welfare services for girls.",
-        "benefits": "Awareness and empowerment programs, linkage with SSY.",
-        "benefit_value": "Social Welfare",
+        "description": "Awareness campaign and institutional support to ensure survival, protection, and education of the girl child.",
+        "benefits": "Awareness programs, improved sex ratio, better education facilities for girls. Direct cash not part of this scheme natively but linked with others.",
+        "benefit_value": "Support & Awareness",
         "benefit_amount": 0,
         "eligibility": {
-            "gender": [
-                "Female"
-            ]
+            "min_age": 0,
+            "max_age": 18,
+            "income_limit": None,
+            "categories": ["General", "OBC", "SC", "ST", "EWS"],
+            "states": "ALL",
+            "gender": ["Female"],
+            "occupations": ["Child", "Student"],
+            "special_conditions": []
         },
-        "application_steps": [
-            "Participate in local programs",
-            "Open SSY account"
-        ],
-        "required_documents": [],
+        "application_steps": ["Not a direct benefit transfer scheme", "Benefits are availed through schools, Anganwadis, and hospitals via linked schemes like SSY"],
+        "required_documents": ["Birth Certificate of Girl Child"],
         "portal_url": "https://wcd.nic.in/bbbp-schemes",
+        "registration_url": "https://wcd.nic.in/bbbp-schemes",
+        "youtube_guide_url": "https://www.youtube.com/results?search_query=Beti+Bachao+Beti+Padhao",
+        "helpline": "Women Helpline: 181",
+        "deadline": None,
         "category": "Women & Child",
-        "target_group": [
-            "Girl children"
-        ]
+        "target_group": ["Girl Child", "Society"]
     }
 ]

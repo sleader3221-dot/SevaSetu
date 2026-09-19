@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   ArrowLeft, ExternalLink, CheckCircle2, FileText, Calendar, Building2, 
-  IndianRupee, Loader2, Sparkles, Volume2, Bell, Check, Radio
+  IndianRupee, Loader2, Sparkles, Volume2, Bell, Check, Radio, Video, Phone
 } from "lucide-react";
 import { getCategoryColor, mapSchemeFromAPI } from "@/lib/utils";
 
@@ -304,13 +304,52 @@ export default function SchemeDetailClient({ id }: { id: string }) {
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-              <a href={scheme.portalUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
-                <Button size="lg" className="w-full h-14 text-lg bg-primary hover:bg-orange-600 shadow-lg shadow-orange-200">
-                  Apply on Official Portal <ExternalLink className="w-5 h-5 ml-2" />
+            {/* Official Helpline Bar if available */}
+            {scheme.helpline && (
+              <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+                <div className="flex items-center gap-2.5 text-emerald-900 font-medium">
+                  <Phone className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <span>Official Toll-Free Scheme Helpline: <strong className="font-bold">{scheme.helpline}</strong></span>
+                </div>
+                <a 
+                  href={`tel:${scheme.helpline.split('/')[0].trim()}`}
+                  className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-colors"
+                >
+                  Call Helpline Now
+                </a>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-100">
+              {/* Direct Official Registration Portal */}
+              <a 
+                href={scheme.registrationUrl || scheme.portalUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex-1"
+              >
+                <Button size="lg" className="w-full h-14 text-base font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                  <span>Register on Official Portal</span>
+                  <ExternalLink className="w-5 h-5" />
                 </Button>
               </a>
-              <Button size="lg" variant="outline" className="h-14 text-lg border-gray-200 hover:bg-gray-50" onClick={() => {
+
+              {/* YouTube Application Video Guide */}
+              {scheme.youtubeGuideUrl && (
+                <a 
+                  href={scheme.youtubeGuideUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex-1"
+                >
+                  <Button size="lg" variant="outline" className="w-full h-14 text-base font-bold border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 flex items-center justify-center gap-2">
+                    <Video className="w-5 h-5 text-red-600" />
+                    <span>Watch How to Apply Video</span>
+                  </Button>
+                </a>
+              )}
+
+              <Button size="lg" variant="outline" className="h-14 text-base border-gray-200 hover:bg-gray-50" onClick={() => {
                 if (navigator.share) {
                   navigator.share({ title: scheme.name, url: window.location.href });
                 } else {

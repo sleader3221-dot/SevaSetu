@@ -5,12 +5,11 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, ShieldCheck, Zap, Languages, Award, 
   Landmark, FileCheck, CheckCircle2, Search, ExternalLink, 
-  Sparkles, Layers, Cpu, Compass 
+  Sparkles, Layers, Cpu, Compass, Phone 
 } from "lucide-react";
 import BharatGlobe3D from "@/components/3d/BharatGlobe3D";
-import IndiaMapExplorer from "@/components/IndiaMapExplorer";
-import WelfareSimulator3D from "@/components/3d/WelfareSimulator3D";
 import HoloCard3D from "@/components/3d/HoloCard3D";
+import NewsCarousel from "@/components/NewsCarousel";
 
 export default function Home() {
   return (
@@ -109,17 +108,41 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Dedicated Interactive India State Welfare Map Section */}
-      <section id="state-map" className="py-16 bg-slate-950 border-b border-slate-800 relative">
+      {/* Government Announcements Carousel Section */}
+      <section className="py-16 bg-slate-950 border-b border-slate-800 relative">
         <div className="container mx-auto px-4 max-w-7xl">
-          <IndiaMapExplorer />
+          <NewsCarousel />
         </div>
       </section>
 
-      {/* Interactive 3D Benefit Simulator Section */}
-      <section className="py-16 bg-slate-950 border-b border-slate-800 relative">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <WelfareSimulator3D />
+      {/* National Helplines Section */}
+      <section className="py-12 bg-slate-950 border-b border-slate-800">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              National Emergency & Welfare Helplines
+            </h2>
+            <p className="text-slate-400 text-sm mt-2 max-w-xl mx-auto">
+              Immediate assistance for citizens. Toll-free numbers accessible 24/7.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { name: "Women Helpline", number: "181", desc: "Domestic abuse & emergency support" },
+              { name: "PM Kisan", number: "155261", desc: "Farmer welfare and scheme support" },
+              { name: "Ayushman Bharat", number: "14555", desc: "Health scheme eligibility & queries" },
+              { name: "Emergency", number: "112", desc: "Police, Fire, and Medical emergencies" }
+            ].map((helpline, i) => (
+              <div key={i} className="p-5 rounded-2xl border border-slate-800 bg-slate-900/50 flex flex-col items-center text-center hover:bg-slate-900 transition-colors">
+                <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                  <Phone className="w-5 h-5 text-emerald-400" />
+                </div>
+                <h3 className="text-white font-bold mb-1">{helpline.name}</h3>
+                <div className="text-2xl font-black text-emerald-400 mb-2">{helpline.number}</div>
+                <p className="text-xs text-slate-400">{helpline.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

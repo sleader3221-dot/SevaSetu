@@ -28,6 +28,8 @@ interface PassbookData {
     benefit_value: string;
     score: number;
     portal_url: string;
+    registration_url?: string;
+    youtube_guide_url?: string;
   }>;
   generated_at: string;
   verified_by: string;
@@ -213,6 +215,7 @@ export default function PassbookModal({ isOpen, onClose, data, isLoading }: Pass
                         <th className="py-3 px-4">Ministry</th>
                         <th className="py-3 px-4 text-center">Eligibility Match</th>
                         <th className="py-3 px-4 text-right">Benefit Value</th>
+                        <th className="py-3 px-4 text-center print:hidden">Official Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -231,6 +234,29 @@ export default function PassbookModal({ isOpen, onClose, data, isLoading }: Pass
                           </td>
                           <td className="py-3 px-4 text-right font-extrabold text-primary">
                             {s.benefit_value}
+                          </td>
+                          <td className="py-3 px-4 text-center print:hidden">
+                            <div className="flex items-center justify-center gap-2">
+                              <a 
+                                href={s.registration_url || s.portal_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors"
+                              >
+                                Apply <ExternalLink className="w-3 h-3" />
+                              </a>
+                              {s.youtube_guide_url && (
+                                <a 
+                                  href={s.youtube_guide_url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center px-2 py-1 rounded-md bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs transition-colors"
+                                  title="Watch Video Tutorial"
+                                >
+                                  Video
+                                </a>
+                              )}
+                            </div>
                           </td>
                         </tr>
                       ))}

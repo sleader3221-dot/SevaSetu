@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { chatWithAI, generateSpeech } from "@/lib/api-client";
@@ -184,10 +184,30 @@ export default function SevaMitraChat() {
                             <span className="text-[10px] font-bold text-primary bg-orange-50 px-1.5 py-0.5 rounded">{s.benefit_value}</span>
                           </div>
                           <div className="flex justify-between items-center mt-1.5 text-[11px]">
-                            <span className="text-gray-500 truncate max-w-[150px]">{s.ministry}</span>
-                            <Link href={`/scheme/${s.id}`} className="text-primary hover:underline font-semibold flex items-center gap-0.5">
-                              Details <ArrowRight className="w-3 h-3" />
-                            </Link>
+                            <span className="text-gray-500 truncate max-w-[120px]">{s.ministry}</span>
+                            <div className="flex items-center gap-2">
+                              <a 
+                                href={s.registration_url || s.portal_url} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="text-emerald-700 hover:underline font-bold flex items-center gap-0.5"
+                              >
+                                Apply <ExternalLink className="w-2.5 h-2.5" />
+                              </a>
+                              {s.youtube_guide_url && (
+                                <a 
+                                  href={s.youtube_guide_url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className="text-red-600 hover:underline font-bold"
+                                >
+                                  Video
+                                </a>
+                              )}
+                              <Link href={`/scheme/${s.id}`} className="text-primary hover:underline font-semibold flex items-center gap-0.5">
+                                Details <ArrowRight className="w-3 h-3" />
+                              </Link>
+                            </div>
                           </div>
                         </Card>
                       ))}

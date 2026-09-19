@@ -3,7 +3,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English' },
@@ -16,6 +16,40 @@ const LANGUAGES = [
 export default function LanguageSelector() {
   const [lang, setLang] = useState(LANGUAGES[0]);
 
+  useEffect(() => {
+    const savedCode = localStorage.getItem('sevasetu-language');
+    if (savedCode) {
+      const savedLang = LANGUAGES.find(l => l.code === savedCode);
+      if (savedLang) setLang(savedLang);
+    }
+  }, []);
+
+  const handleLanguageChange = (selectedLang: typeof LANGUAGES[0]) => {
+    setLang(selectedLang);
+    localStorage.setItem('sevasetu-language', selectedLang.code);
+    
+    // Set googtrans cookies for full-page translation
+    const host = window.location.hostname;
+    const cookieVal = selectedLang.code === 'en' ? '/en/en' : `/en/${selectedLang.code}`;
+    document.cookie = `googtrans=${cookieVal}; path=/;`;
+    if (host) {
+      document.cookie = `googtrans=${cookieVal}; path=/; domain=${host};`;
+      document.cookie = `googtrans=${cookieVal}; path=/; domain=.${host};`;
+    }
+
+    // Trigger select element if injected by Google Translate
+    const selectElem = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+    if (selectElem) {
+      selectElem.value = selectedLang.code;
+      selectElem.dispatchEvent(new Event('change'));
+    } else {
+      // Reload briefly to apply translation cookies across all components
+      window.location.reload();
+    }
+
+    window.dispatchEvent(new CustomEvent('languageChange', { detail: { code: selectedLang.code } }));
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center gap-2 text-gray-700 hover:text-primary hover:bg-orange-50 rounded-full px-4 h-10">
@@ -26,7 +60,7 @@ export default function LanguageSelector() {
         {LANGUAGES.map((l) => (
           <DropdownMenuItem 
             key={l.code} 
-            onClick={() => setLang(l)}
+            onClick={() => handleLanguageChange(l)}
             className={`cursor-pointer justify-between py-3 px-4 ${lang.code === l.code ? 'bg-orange-50 text-primary font-bold' : 'text-gray-700 font-medium'}`}
           >
             <span>{l.native}</span>
