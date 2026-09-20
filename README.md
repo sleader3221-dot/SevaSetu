@@ -227,7 +227,7 @@ Processes uploaded documents via Amazon Textract:
 
 ## 🎬 Demo Video
 
-📺 [Watch the 3-minute demo on YouTube](https://youtube.com/watch?v=PLACEHOLDER)
+📺 [Watch the 3-minute demo on YouTube](https://youtu.be/NT7KPaBxUS8)
 
 ---
 
@@ -268,13 +268,7 @@ sevasetu/
 └── README.md           # This file
 ```
 
----
 
-## 👥 Team
-
-- **[Your Name]** — Full-Stack Developer
-
----
 
 ## 📜 License
 
